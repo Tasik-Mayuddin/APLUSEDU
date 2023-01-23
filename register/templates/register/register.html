@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Register with APlusEDU
+{% endblock %}
+
+{% block content %}
+<h3>Create an Account</h3>
+<form method="POST">
+    {% csrf_token %}
+
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username">
+    <br>
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="id_email">
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" name="password1" id="password1">
+    <br>
+    <label for="password">Confirm Password:</label>
+    <input type="password" name="password2" id="password2">
+
+    <button type="submit">Register</button>
+</form>
+{% endblock %}
