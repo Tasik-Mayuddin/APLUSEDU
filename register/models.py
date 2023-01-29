@@ -7,5 +7,5 @@ class Account(models.Model):
    user_role = models.CharField(max_length=20, choices=[("Parent", "Parent"), ("Tutor", "Tutor")])
 
    def __str__(self):
-      return self.user.username
+      return str(self.user_role)
 
