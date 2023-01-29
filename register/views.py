@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 def login(response):
-
     return render(response, 'registration/login.html', {})
 
 def register(response):

@@ -7,6 +7,13 @@ Profile
 {% block content %}
     <h1>Welcome to your profile!</h1> 
     <div class="welcomeButtons">
-        <a href="/tutor_profile">Profile</a>
+        <h1>{{current_user}}'s Profile Summary</h1>
+        <p>{{profile_summary}}</p>
+        
+        <form id="author-summary-form" method="POST">
+            {% csrf_token %}
+            <textarea name="new-summary"></textarea>
+            <button type="submit" name="edit-summary" value="edit-summary">Edit Summary</button>
+        </form>
     </div>
 {% endblock %}
