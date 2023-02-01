@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+    <h1>Customize your subjects and levels!</h1> 
+    <div class="welcomeButtons">
+        {% for subject, level in tsl_output.items %}
+            <table>
+                <tr>
+                    <p>{{ subject }}: {{ level|join:", " }}</p>
+                </tr>
+            </table>
+       {% endfor %}
+    </div>
+
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" value="add-subjects">Add</button>
+        </form>
+    </div>
+{% endblock %}

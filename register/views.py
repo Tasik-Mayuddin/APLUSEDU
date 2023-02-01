@@ -4,10 +4,10 @@ from django.http import HttpResponse
 from .forms import RegisterForm
 from django.contrib.auth import logout
 from .models import Account
-from django.contrib.auth.models import User
 
 # Create your views here.
 def login(response):
+    logout()
     return render(response, 'registration/login.html', {})
 
 def register(response):
