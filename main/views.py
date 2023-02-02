@@ -1,9 +1,9 @@
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import ProfileSummary, SubjectAndLevels
+from .models import ProfileSummary, SubjectAndLevel
 from django.contrib.auth.models import User
-from .forms import AddSubjectForm
+from .forms import AddSubjectForm, AddDayForm
 from collections import defaultdict
 
 
@@ -14,9 +14,13 @@ def welcome(response):
             return HttpResponseRedirect('/tutor_dashboard/')
     return render(response, 'main/welcome.html', {})
 
+# For page displaying tutor's dashboard
+
 def tDash(response):
     if response.user.account.user_role == "Tutor":
         return render(response, 'main/tutor_dashboard.html')
+
+# For page displaying tutor's profile
 
 def tProf(response):
     if response.user.account.user_role == "Tutor":
@@ -34,6 +38,8 @@ def tProf(response):
         
         return render(response, 'main/tutor_profile.html', {"current_user":response.user, "profile_summary":profSumOutput})
 
+# For page displaying tutor's subject and levels
+
 def tSubj(response):
     if response.user.account.user_role == "Tutor":
 
@@ -46,9 +52,9 @@ def tSubj(response):
                 form_levels = filled_snl_form['levels'] # extract levels
                 for indi_level in form_levels: # loops through levels
                     try:
-                        sal = SubjectAndLevels.objects.get(subject=form_subject, level=indi_level) # check of instance of SubjectAndLevel exists
-                    except SubjectAndLevels.DoesNotExist:
-                        sal = SubjectAndLevels.objects.create(subject=form_subject, level=indi_level) # if it doesnt exist, create new
+                        sal = SubjectAndLevel.objects.get(subject=form_subject, level=indi_level) # check of instance of SubjectAndLevel exists
+                    except SubjectAndLevel.DoesNotExist:
+                        sal = SubjectAndLevel.objects.create(subject=form_subject, level=indi_level) # if it doesnt exist, create new
 
                     sal.users.add(response.user) # adds the user (tutor) into the instance
                     sal.save()
@@ -56,7 +62,7 @@ def tSubj(response):
                 return HttpResponseRedirect('/tutor_subjects/')       
 
         
-        tsl_list = response.user.subjectandlevels_set.all().order_by('subject', 'level')
+        tsl_list = response.user.subjectandlevel_set.all().order_by('subject', 'level')
         
         tsl_output = defaultdict(list)
 
@@ -67,5 +73,12 @@ def tSubj(response):
         form = AddSubjectForm()
         
         return render(response, 'main/tutor_subjects.html', {"tsl_output":tsl_output, "form":form})
+
+# For page displaying tutor's available day and times
+
+def tTime(response):
+    form = AddDayForm()
+    return render(response, 'main/tutor_timetable.html', {"form":form})
+
 
     

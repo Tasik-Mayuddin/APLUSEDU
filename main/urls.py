@@ -6,4 +6,5 @@ urlpatterns = [
     path('tutor_dashboard/', views.tDash, name='t-dash'),
     path('tutor_profile/', views.tProf, name='t-prof'),
     path('tutor_subjects/', views.tSubj, name='t-subj'),
+    path('tutor_timetable/', views.tTime, name='t-timetable'),
 ]

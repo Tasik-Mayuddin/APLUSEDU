@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Timetable
+{% endblock %}
+
+{% block content %}
+    <h1>Choose your available time!</h1> 
+    <div class="welcomeButtons">
+        {% for day, time in dnt_output.items %}
+            <table>
+                <tr>
+                    <p>{{ day }}: {{ time|join:", " }}</p>
+                </tr>
+            </table>
+       {% endfor %}
+    </div>
+
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" value="add-dayntime">Add</button>
+        </form>
+    </div>
+{% endblock %}
