@@ -22,7 +22,8 @@ from register import views as rViews
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
-    path('',include('django.contrib.auth.urls')),
+    path('', include('parent.urls')),
+    path('', include('django.contrib.auth.urls')),
     path('login/', rViews.login, name="login"),
     path('register/', rViews.register, name="register"),
 ]

@@ -12,6 +12,8 @@ def welcome(response):
     if response.user.is_authenticated:
         if response.user.account.user_role == 'Tutor':
             return HttpResponseRedirect('/tutor_dashboard/')
+        elif response.user.account.user_role == 'Parent':
+            return HttpResponseRedirect('/parent_dashboard/')
     return render(response, 'main/welcome.html', {})
 
 # For page displaying tutor's dashboard
