@@ -1,7 +1,7 @@
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import ProfileSummary, SubjectAndLevel
+from .models import ProfileSummary, SubjectAndLevel, DayAndTime
 from django.contrib.auth.models import User
 from .forms import AddSubjectForm, AddDayForm
 from collections import defaultdict
@@ -47,9 +47,9 @@ def tSubj(response):
             filled_form = AddSubjectForm(response.POST) # fills an instance of the form with POST data
             
             if filled_form.is_valid(): 
-                filled_snl_form = filled_form.cleaned_data
-                form_subject = filled_snl_form['subject'] # extract subject
-                form_levels = filled_snl_form['levels'] # extract levels
+                filled_form_clean = filled_form.cleaned_data
+                form_subject = filled_form_clean['subject'] # extract subject
+                form_levels = filled_form_clean['levels'] # extract levels
                 for indi_level in form_levels: # loops through levels
                     try:
                         sal = SubjectAndLevel.objects.get(subject=form_subject, level=indi_level) # check of instance of SubjectAndLevel exists
@@ -62,7 +62,7 @@ def tSubj(response):
                 return HttpResponseRedirect('/tutor_subjects/')       
 
         
-        tsl_list = response.user.subjectandlevel_set.all().order_by('subject', 'level')
+        tsl_list = response.user.subjectandlevel_set.all().order_by('subject', 'level') # tsl - teacher subject level
         
         tsl_output = defaultdict(list)
 
@@ -77,8 +77,40 @@ def tSubj(response):
 # For page displaying tutor's available day and times
 
 def tTime(response):
-    form = AddDayForm()
-    return render(response, 'main/tutor_timetable.html', {"form":form})
+
+    if response.user.account.user_role == 'Tutor':
+
+        if response.method == "POST":
+            filled_form = AddDayForm(response.POST)
+            if filled_form.is_valid():
+                filled_form_clean = filled_form.cleaned_data
+                form_day = filled_form_clean['day']
+                form_start_time = filled_form_clean['start_time']
+                form_end_time = filled_form_clean['end_time']
+                
+                dnt_query = DayAndTime.objects.filter(user=response.user, day=form_day)
+                intercept = False
+                if dnt_query.exists():                   
+                    for x in dnt_query:
+                        if (form_start_time > x.start_time and form_start_time < x.end_time) or (form_end_time > x.start_time and form_end_time < x.end_time):
+                            intercept = True
+                            print("it intercepts")
+                            break
+                if not intercept:    
+                    dnt = DayAndTime.objects.create(day=form_day, start_time=form_start_time, end_time=form_end_time, user=response.user)
+                
+                
+
+        tdt_list = response.user.dayandtime_set.all() # tdt - teacher day time
+
+        tdt_output = defaultdict(list)
+        for x in tdt_list:
+            tdt_output[x.day].append(str(x.start_time)+" - "+str(x.end_time))
+        tdt_output = dict(tdt_output)
+
+        form = AddDayForm()
+
+        return render(response, 'main/tutor_timetable.html', {"tdt_output":tdt_output, "form":form})
 
 
     

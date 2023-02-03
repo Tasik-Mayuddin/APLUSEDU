@@ -7,7 +7,7 @@ Timetable
 {% block content %}
     <h1>Choose your available time!</h1> 
     <div class="welcomeButtons">
-        {% for day, time in dnt_output.items %}
+        {% for day, time in tdt_output.items %}
             <table>
                 <tr>
                     <p>{{ day }}: {{ time|join:", " }}</p>

@@ -9,7 +9,7 @@ class AddSubjectForm(forms.Form):
 
 class AddDayForm(forms.Form):
     day = forms.ChoiceField(choices=DAY_CHOICES, widget=forms.RadioSelect())
-    start_time = forms.TimeField()
-    end_time = forms.TimeField()
+    start_time = forms.TimeField(widget=forms.TextInput(attrs={'type': 'time'}), input_formats=['%H:%M'])
+    end_time = forms.TimeField(widget=forms.TextInput(attrs={'type': 'time'}), input_formats=['%H:%M'])
 
     
