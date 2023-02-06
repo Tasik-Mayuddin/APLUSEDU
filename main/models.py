@@ -31,4 +31,6 @@ class BookedSlot (models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     time_slot = models.ForeignKey(DayAndTime, on_delete=models.PROTECT)
+    subject_and_level = models.ForeignKey(SubjectAndLevel, on_delete=models.CASCADE, null=True)
+    
 

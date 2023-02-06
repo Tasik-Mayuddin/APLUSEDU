@@ -1,0 +1,30 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ student.name }}
+{% endblock %}
+
+{% block content %}
+
+    <h1>{{ student.name }}</h1>
+    <p>{{ student.level }}</p>
+    <p>
+        {% for x in student.subject_set.all %}
+            {{ x.subject }} | 
+        {% endfor %}
+    </p>
+    <a href="/student/{{ student.id }}/tutor_list">Look for a Tutor!</a>
+
+
+    <h2>My allocations!</h2> 
+    <div class="welcomeButtons">
+        {% for subject, level in tsl_output.items %}
+            <table>
+                <tr>
+                    <p>{{ subject }}: {{ level|join:", " }}</p>
+                </tr>
+            </table>
+       {% endfor %}
+    </div>
+
+{% endblock %}

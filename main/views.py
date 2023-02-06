@@ -90,7 +90,7 @@ def tTime(response):
                 form_start_time = filled_form_clean['start_time']
                 form_end_time = filled_form_clean['end_time']
                 
-                dnt_query = DayAndTime.objects.filter(user=response.user, day=form_day)
+                dnt_query = response.user.dayandtime_set.filter(day=form_day)
                 intercept = False
                 if dnt_query.exists():                   
                     for x in dnt_query:
@@ -113,6 +113,7 @@ def tTime(response):
         form = AddDayForm()
 
         return render(response, 'main/tutor_timetable.html', {"tdt_output":tdt_output, "form":form})
+
 
 
     

@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+My students
+{% endblock %}
+
+{% block content %}
+    <h1>Add students!</h1> 
+    <div class="welcomeButtons">
+        {% for student in ps_list.all %}
+            <table>
+                <tr>
+                    <a href="/student/{{ student.id }}">{{ student.name }}</a>
+                </tr>
+            </table>
+       {% endfor %}
+    </div>
+
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" value="add-subjects">Add</button>
+        </form>
+    </div>
+{% endblock %}
