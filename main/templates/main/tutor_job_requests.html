@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Job requests
+{% endblock %}
+
+{% block content %}
+    <h1>Customize your subjects and levels!</h1> 
+    <div class="welcomeButtons">
+        {% for job in jr_output.all %}
+            <table>
+                <tr>
+                    <p>
+                        {{ job.student.parent }} would like {{ job.subject_and_level.level }} {{ job.subject_and_level.subject }} at {{ job.start_time }} - {{ job.end_time }}
+                    </p>
+                </tr>
+            </table>
+       {% endfor %}
+    </div>
+
+{% endblock %}

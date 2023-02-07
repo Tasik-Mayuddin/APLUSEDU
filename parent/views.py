@@ -39,16 +39,25 @@ def pStud(response):
 
 def pStudID(response, id):
     student_validate = response.user.student_set.filter(id=id)
+    
     if student_validate.exists():
         student = response.user.student_set.get(id=id)
 
+        # to delete pending/verified booked slots
+        if response.method == "POST":
+            if response.POST.get("delete"):
+                bslot_del = student.bookedslot_set.get(id=response.POST.get("booked_slot_id")) # ensures that the booked slot belongs to student, retrieves id from hidden input
+                bslot_del.delete()
+                return HttpResponseRedirect('/student/'+str(id))
 
-        return render(response, 'parent/student.html', {"student":student})   
+        bslot_list = student.bookedslot_set.all()
+
+        return render(response, 'parent/student.html', {"student":student, "bslot_list":bslot_list})   
     else:
         return HttpResponseRedirect('/parent_students/')
 
 def pStudTut(response, id):
-    student_validate = response.user.student_set.filter(id=id)
+    student_validate = response.user.student_set.filter(id=id) # ensures the student belongs to the user (parent)
     if student_validate.exists():
         student = response.user.student_set.get(id=id)
         if response.method == "POST":
@@ -59,19 +68,39 @@ def pStudTut(response, id):
                 form_start_time = filled_form_clean['start_time']
                 form_end_time = filled_form_clean['end_time']
 
-                dnt_query = User.objects.get(id=response.POST.get("tutor_id")).dayandtime_set.filter( # identify correct DayAndTime instance
+                # identify correct DayAndTime instance
+                dnt_query = User.objects.get(id=response.POST.get("tutor_id")).dayandtime_set.filter( 
                     day=form_day, 
                     start_time__lte=form_start_time, 
                     end_time__gte=form_end_time,
-                    ) 
+                ) 
                 if dnt_query.exists():
-                    BookedSlot.objects.create(
-                        day=form_day, 
-                        start_time=form_start_time, 
-                        end_time=form_end_time, 
-                        subject_and_level = SubjectAndLevel.objects.get(subject=response.POST.get("subject"), level=student.level), # method of obtaining the subject, info i tied to the html button
-                        time_slot = dnt_query.first(),
-                        ) 
+                    dnt_extracted = dnt_query.first() # since it will only return a single object, the first() is taken
+                    print("dnt extraction successs")
+
+                    # perform a check to ensure that the booked slot does not clash with existing approved booked slots
+                    intercept = False
+                    print(intercept)
+                    for x in dnt_extracted.bookedslot_set.filter(status="approved"):
+                        if (form_start_time > x.start_time and form_start_time < x.end_time) or (form_end_time > x.start_time and form_end_time < x.end_time):
+                            intercept = True
+                            print("booked slot intercepts (line78)")
+                            break
+                    print(intercept)
+                    # if there are no clashes, a bookedslot with the status "pending" is created
+                    if not intercept:
+                        BookedSlot.objects.create(
+                            day=form_day, 
+                            start_time=form_start_time, 
+                            end_time=form_end_time, 
+                            subject_and_level = SubjectAndLevel.objects.get(subject=response.POST.get("subject"), level=student.level), # obtains subject name from hidden input from html button
+                            time_slot = dnt_extracted,
+                            student = student,
+                            status = "pending",
+                            )
+                        return HttpResponseRedirect("/student/"+str(id))
+                    else:
+                        print("please do not clash with other booked slots") 
                 
         tutor_list = {}
         for x in student.subject_set.all():

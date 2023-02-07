@@ -1,7 +1,7 @@
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import ProfileSummary, SubjectAndLevel, DayAndTime
+from .models import ProfileSummary, SubjectAndLevel, DayAndTime, BookedSlot
 from django.contrib.auth.models import User
 from .forms import AddSubjectForm, AddDayForm
 from collections import defaultdict
@@ -114,6 +114,12 @@ def tTime(response):
 
         return render(response, 'main/tutor_timetable.html', {"tdt_output":tdt_output, "form":form})
 
+def tJob(response):
+    if response.user.account.user_role == 'Tutor':
+        dnt_query = response.user.dayandtime_set.all()
+        jr_output = BookedSlot.objects.filter(time_slot__in=dnt_query)
+        return render(response, 'main/tutor_job_requests.html', {"jr_output":jr_output})
 
+    
 
     

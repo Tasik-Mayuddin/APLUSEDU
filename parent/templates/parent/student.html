@@ -18,10 +18,17 @@
 
     <h2>My allocations!</h2> 
     <div class="welcomeButtons">
-        {% for subject, level in tsl_output.items %}
+        {% for booked_slot in bslot_list.all %}
             <table>
                 <tr>
-                    <p>{{ subject }}: {{ level|join:", " }}</p>
+                    <p>
+                        {{ booked_slot.time_slot.user.username }}, {{ booked_slot.subject_and_level.subject }} | Day: {{ booked_slot.day }} {{ booked_slot.start_time }} - {{ booked_slot.end_time }} ({{ booked_slot.status }}) 
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="booked_slot_id" value="{{ booked_slot.id }}">
+                            <button type="submit" name="delete" value="delete">delete</button>
+                        </form>
+                    </p>
                 </tr>
             </table>
        {% endfor %}

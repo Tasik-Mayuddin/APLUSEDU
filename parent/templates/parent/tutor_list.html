@@ -7,10 +7,8 @@ Find a tutor!
 {% block content %}
     <h1>Generated tutor list</h1> 
     <div class="welcomeButtons">
-        {% csrf_token %}
+        
         {% for subject, tutors in tutor_list.items %}
-
-
 
             <h2>{{ subject }}:</h2>
 
@@ -18,10 +16,11 @@ Find a tutor!
                 <p>
                     {{ tutor.username }}
                     {% for timeslot in tutor.dayandtime_set.all %}
-                        {{ timeslot.day }} : {{ timeslot.start_time }} - {{ timeslot.end_time }} |
+                        {{ timeslot.day }} : {{ timeslot.start_time }} - {{ timeslot.end_time }} 
                     {% endfor %}
                 </p>
                 <form method="POST">
+                    {% csrf_token %}
                     {{form.as_p}}
                     <input type="hidden" name="tutor_id" value="{{ tutor.id }}">
                     <input type="hidden" name="subject" value="{{ subject }}">
