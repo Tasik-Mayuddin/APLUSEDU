@@ -5,6 +5,7 @@ from .models import ProfileSummary, SubjectAndLevel, DayAndTime, BookedSlot
 from django.contrib.auth.models import User
 from .forms import AddSubjectForm, AddDayForm
 from collections import defaultdict
+from APLUSEDU.utils import clash_check
 
 
 # Create your views here.
@@ -94,9 +95,8 @@ def tTime(response):
                 intercept = False
                 if dnt_query.exists():                   
                     for x in dnt_query:
-                        if (form_start_time > x.start_time and form_start_time < x.end_time) or (form_end_time > x.start_time and form_end_time < x.end_time):
+                        if clash_check(form_start_time, form_end_time, x.start_time, x.end_time):
                             intercept = True
-                            print("it intercepts")
                             break
                 if not intercept:    
                     dnt = DayAndTime.objects.create(day=form_day, start_time=form_start_time, end_time=form_end_time, user=response.user)
@@ -116,8 +116,25 @@ def tTime(response):
 
 def tJob(response):
     if response.user.account.user_role == 'Tutor':
+        if response.method == "POST":
+            if response.POST.get("accept"):
+                bslot_extract = BookedSlot.objects.get(id=response.POST.get("bookedslot_id"))
+                if bslot_extract.time_slot.user == response.user:
+                    bslot_query = bslot_extract.time_slot.bookedslot_set.filter(status="approved")
+                    intercept = False
+                    for x in bslot_query:
+                        if clash_check(bslot_extract.start_time, bslot_extract.end_time, x.start_time, x.end_time):
+                            intercept = True
+                            break   
+                    if not intercept:                 
+                        bslot_extract.status = "approved"
+                        bslot_extract.save()
+
         dnt_query = response.user.dayandtime_set.all()
-        jr_output = BookedSlot.objects.filter(time_slot__in=dnt_query)
+        jr_output = BookedSlot.objects.none() # create an empty query set
+        for dnt in dnt_query:
+            jr_output = jr_output | dnt.bookedslot_set.all()
+        
         return render(response, 'main/tutor_job_requests.html', {"jr_output":jr_output})
 
     

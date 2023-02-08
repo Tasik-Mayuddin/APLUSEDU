@@ -5,6 +5,7 @@ from django.http.response import HttpResponseRedirect
 from main.models import SubjectAndLevel, BookedSlot, DayAndTime
 from main.forms import AddDayForm
 from django.contrib.auth.models import User
+from APLUSEDU.utils import clash_check
 
 
 # Create your views here.
@@ -76,17 +77,13 @@ def pStudTut(response, id):
                 ) 
                 if dnt_query.exists():
                     dnt_extracted = dnt_query.first() # since it will only return a single object, the first() is taken
-                    print("dnt extraction successs")
 
                     # perform a check to ensure that the booked slot does not clash with existing approved booked slots
                     intercept = False
-                    print(intercept)
                     for x in dnt_extracted.bookedslot_set.filter(status="approved"):
-                        if (form_start_time > x.start_time and form_start_time < x.end_time) or (form_end_time > x.start_time and form_end_time < x.end_time):
+                        if clash_check(form_start_time, form_end_time, x.start_time, x.end_time):
                             intercept = True
-                            print("booked slot intercepts (line78)")
                             break
-                    print(intercept)
                     # if there are no clashes, a bookedslot with the status "pending" is created
                     if not intercept:
                         BookedSlot.objects.create(

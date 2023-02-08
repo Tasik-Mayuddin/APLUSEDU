@@ -11,8 +11,15 @@ Job requests
             <table>
                 <tr>
                     <p>
-                        {{ job.student.parent }} would like {{ job.subject_and_level.level }} {{ job.subject_and_level.subject }} at {{ job.start_time }} - {{ job.end_time }}
+                        {{ job.student.parent }} would like {{ job.subject_and_level.level }} {{ job.subject_and_level.subject }} at {{ job.start_time }} - {{ job.end_time }} for {{ job.student.name }} 
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="bookedslot_id" value="{{ job.id }}">
+                            <button type="submit" name="accept" value="accept">Accept</button>
+                            <button type="submit" name="decline" value="decline">Decline</button>
+                        </form>
                     </p>
+                    
                 </tr>
             </table>
        {% endfor %}
