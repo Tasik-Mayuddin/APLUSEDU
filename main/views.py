@@ -117,8 +117,8 @@ def tTime(response):
 def tJob(response):
     if response.user.account.user_role == 'Tutor':
         if response.method == "POST":
+            bslot_extract = BookedSlot.objects.get(id=response.POST.get("bookedslot_id"))
             if response.POST.get("accept"):
-                bslot_extract = BookedSlot.objects.get(id=response.POST.get("bookedslot_id"))
                 if bslot_extract.time_slot.user == response.user:
                     bslot_query = bslot_extract.time_slot.bookedslot_set.filter(status="approved")
                     intercept = False
@@ -129,6 +129,12 @@ def tJob(response):
                     if not intercept:                 
                         bslot_extract.status = "approved"
                         bslot_extract.save()
+            elif response.POST.get("decline"):
+                if bslot_extract.time_slot.user == response.user:
+                    bslot_extract.delete()
+
+            return HttpResponseRedirect("/job_requests/")
+
 
         dnt_query = response.user.dayandtime_set.all()
         jr_output = BookedSlot.objects.none() # create an empty query set
@@ -136,6 +142,8 @@ def tJob(response):
             jr_output = jr_output | dnt.bookedslot_set.all()
         
         return render(response, 'main/tutor_job_requests.html', {"jr_output":jr_output})
+
+    
 
     
 
