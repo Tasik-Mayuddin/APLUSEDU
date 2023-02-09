@@ -112,7 +112,12 @@ def tTime(response):
 
         form = AddDayForm()
 
-        return render(response, 'main/tutor_timetable.html', {"tdt_output":tdt_output, "form":form})
+        dnt_query = response.user.dayandtime_set.all()
+        bslot_output = BookedSlot.objects.none() # create an empty query set
+        for dnt in dnt_query:
+            bslot_output = bslot_output | dnt.bookedslot_set.filter(status="approved")
+
+        return render(response, 'main/tutor_timetable.html', {"tdt_output":tdt_output, "form":form, "bslot_output":bslot_output})
 
 def tJob(response):
     if response.user.account.user_role == 'Tutor':
@@ -139,7 +144,7 @@ def tJob(response):
         dnt_query = response.user.dayandtime_set.all()
         jr_output = BookedSlot.objects.none() # create an empty query set
         for dnt in dnt_query:
-            jr_output = jr_output | dnt.bookedslot_set.all()
+            jr_output = jr_output | dnt.bookedslot_set.filter(status="pending")
         
         return render(response, 'main/tutor_job_requests.html', {"jr_output":jr_output})
 

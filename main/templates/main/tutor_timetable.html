@@ -23,4 +23,14 @@ Timetable
             <button type="submit" value="add-dayntime">Add</button>
         </form>
     </div>
+    <div>
+        <h1>TIMETABLE</h1>
+        {% for bslot in bslot_output.all %}
+            <table>
+                <tr>
+                    <p>{{ bslot.day }} {{ bslot.start_time }} - {{ bslot.end_time }}, {{ bslot.subject_and_level.level }} {{ bslot.subject_and_level.subject }}, {{ bslot.student.name }}</p>
+                </tr>
+            </table>
+       {% endfor %}
+    </div>
 {% endblock %}
