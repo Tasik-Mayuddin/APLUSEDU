@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
     path('', include('parent.urls')),
+    path("chat/", include("chat.urls")),
     path('', include('django.contrib.auth.urls')),
     path('login/', rViews.login, name="login"),
     path('register/', rViews.register, name="register"),
