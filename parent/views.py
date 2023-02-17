@@ -6,6 +6,7 @@ from main.models import SubjectAndLevel, BookedSlot, DayAndTime
 from main.forms import AddDayForm
 from django.contrib.auth.models import User
 from APLUSEDU.utils import clash_check
+from chat.models import ChatRoom, Message
 
 
 # Create your views here.
@@ -70,7 +71,8 @@ def pStudTut(response, id):
                 form_end_time = filled_form_clean['end_time']
 
                 # identify correct DayAndTime instance
-                dnt_query = User.objects.get(id=response.POST.get("tutor_id")).dayandtime_set.filter( 
+                tutor = User.objects.get(id=response.POST.get("tutor_id"))
+                dnt_query = tutor.dayandtime_set.filter( 
                     day=form_day, 
                     start_time__lte=form_start_time, 
                     end_time__gte=form_end_time,
@@ -95,6 +97,14 @@ def pStudTut(response, id):
                             student = student,
                             status = "pending",
                             )
+                        
+                        # create chatroom between tutor and parent upon request of tutor
+                        try:
+                            chatroom = ChatRoom.objects.get(tutor = tutor, parent = response.user)
+                        except ChatRoom.DoesNotExist:
+                            chatroom = ChatRoom.objects.create(tutor = tutor, parent = response.user)
+                            chatroom.save()
+
                         return HttpResponseRedirect("/student/"+str(id))
                     else:
                         print("please do not clash with other booked slots") 
