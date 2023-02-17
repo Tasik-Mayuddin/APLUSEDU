@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from APLUSEDU.utils import clash_check
 
 
+
 # Create your views here.
 
 # Parent dashboard
@@ -70,7 +71,8 @@ def pStudTut(response, id):
                 form_end_time = filled_form_clean['end_time']
 
                 # identify correct DayAndTime instance
-                dnt_query = User.objects.get(id=response.POST.get("tutor_id")).dayandtime_set.filter( 
+                tutor = User.objects.get(id=response.POST.get("tutor_id"))
+                dnt_query = tutor.dayandtime_set.filter( 
                     day=form_day, 
                     start_time__lte=form_start_time, 
                     end_time__gte=form_end_time,
@@ -87,14 +89,26 @@ def pStudTut(response, id):
                     # if there are no clashes, a bookedslot with the status "pending" is created
                     if not intercept:
                         BookedSlot.objects.create(
-                            day=form_day, 
-                            start_time=form_start_time, 
-                            end_time=form_end_time, 
+                            day = form_day, 
+                            start_time = form_start_time, 
+                            end_time = form_end_time, 
                             subject_and_level = SubjectAndLevel.objects.get(subject=response.POST.get("subject"), level=student.level), # obtains subject name from hidden input from html button
                             time_slot = dnt_extracted,
                             student = student,
                             status = "pending",
                             )
+                        
+                        # create chatroom between tutor and student
+                        try: 
+                            chatroom = ChatRoom.objects.get(tutor=tutor, parent=response.user)
+                        except ChatRoom.DoesNotExist:
+                            chatroom = ChatRoom.objects.create(
+                                tutor = tutor,
+                                parent = response.user
+                            )
+                        
+                        # auto send request message similar to linkedin
+
                         return HttpResponseRedirect("/student/"+str(id))
                     else:
                         print("please do not clash with other booked slots") 
