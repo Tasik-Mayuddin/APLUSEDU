@@ -4,11 +4,11 @@ from django.db import models
 # Create your models here.
 
 class ChatRoom (models.Model):
-    tutor = models.ForeignKey(User, related_name='tutor', on_delete=models.CASCADE, null=True)
-    parent = models.ForeignKey(User, related_name='parent', on_delete=models.CASCADE, null=True)
+    tutor = models.ForeignKey(User, related_name='tutor_chats', on_delete=models.CASCADE, null=True)
+    parent = models.ForeignKey(User, related_name='parent_chats', on_delete=models.CASCADE, null=True)
 
     def last_10_messages(self):
-        return self.message_set.order_by('-timestamp')[:10]
+        return self.message_set.order_by('timestamp')[:10]
 
 
 class Message (models.Model):

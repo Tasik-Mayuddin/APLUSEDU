@@ -1,14 +1,16 @@
 import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-from .models import Message
+from .models import ChatRoom, Message
 from django.contrib.auth.models import User
 
 
 class ChatConsumer(WebsocketConsumer):
 
     def fetch_messages(self, data):
-        messages = Message.last_10_messages()
+        room_id = 1
+        chatroom = ChatRoom.objects.get(id=room_id)
+        messages = chatroom.last_10_messages()
         content = {
             'command': 'messages',
             'messages': self.messages_to_json(messages) 
@@ -16,9 +18,13 @@ class ChatConsumer(WebsocketConsumer):
         self.send_message(content)
 
     def new_message(self, data):
+        room_id = 1
+        chatroom = ChatRoom.objects.get(id=room_id)
+
+
         author = data['from']
         author_user = User.objects.get(username=author)
-        message = Message.objects.create(author=author_user, content=data['message'])
+        message = Message.objects.create(author=author_user, content=data['message'], chat_room = chatroom)
         content = {
             'command': 'new_message',
             'message': self.message_to_json(message)
@@ -44,8 +50,8 @@ class ChatConsumer(WebsocketConsumer):
     }
 
     def connect(self):
-        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
-        self.room_group_name = "chat_%s" % self.room_name
+        self.room_id = self.scope["url_route"]["kwargs"]["room_id"]
+        self.room_group_name = "chat_%s" % self.room_id
 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(

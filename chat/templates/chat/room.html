@@ -48,7 +48,7 @@
       </div>
       <div id="contacts">
         <ul>
-          <li class="contact">
+     <!-- <li class="contact">
             <div class="wrap">
               <span class="contact-status online"></span>
               <img src="http://emilcarlsson.se/assets/louislitt.png" alt="" />
@@ -57,17 +57,19 @@
                 <p class="preview">You just got LITT up, Mike.</p>
               </div>
             </div>
-          </li>
-          <li class="contact active">
-            <div class="wrap">
-              <span class="contact-status busy"></span>
-              <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-              <div class="meta">
-                <p class="name">Harvey Specter</p>
-                <p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
+          </li> -->
+          {% for chatroom in chatrooms.all %}
+            <li class="contact active">
+              <div class="wrap">
+                <span class="contact-status busy"></span>
+                <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                <div class="meta">
+                  <p class="name">{{chatroom.parent.username}}</p>
+                  <p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
+                </div>
               </div>
-            </div>
-          </li>
+            </li>
+          {% endfor %}
         </ul>
       </div>
       <div id="bottom-bar">
@@ -75,49 +77,51 @@
         <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
       </div>
     </div>
+    
     <div class="content">
-      <div class="contact-profile">
-        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-        <p>{{ username }}</p>
-        <div class="social-media">
-          <i class="fa fa-facebook" aria-hidden="true"></i>
-          <i class="fa fa-twitter" aria-hidden="true"></i>
-          <i class="fa fa-instagram" aria-hidden="true"></i>
-        </div>
-      </div>
-      <div class="messages">
-        <ul id="chat-log">
-          {% comment %} <li class="sent">
-            <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-            <p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
-          </li>
-          <li class="replies">
-            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-            <p>When you're backed against the wall, break the god damn thing down.</p>
-          </li> {% endcomment %}
-        </ul>
-      </div>
-      <div class="message-input">
-        <div class="wrap">
-        <input id="chat-message-input" type="text" placeholder="Write your message..." />
-        <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-        <button id="chat-message-submit" class="submit">
-          <i class="fa fa-paper-plane" aria-hidden="true"></i>
-        </button>
-        </div>
+    <div class="contact-profile">
+      <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+      <p>{{ username }}</p>
+      <div class="social-media">
+        <i class="fa fa-facebook" aria-hidden="true"></i>
+        <i class="fa fa-twitter" aria-hidden="true"></i>
+        <i class="fa fa-instagram" aria-hidden="true"></i>
       </div>
     </div>
+    <div class="messages">
+      <ul id="chat-log">
+        {% comment %} <li class="sent">
+          <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+          <p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
+        </li>
+        <li class="replies">
+          <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+          <p>When you're backed against the wall, break the god damn thing down.</p>
+        </li> {% endcomment %}
+      </ul>
+    </div>
+    <div class="message-input">
+      <div class="wrap">
+      <input id="chat-message-input" type="text" placeholder="Write your message..." />
+      <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+      <button id="chat-message-submit" class="submit">
+        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+      </button>
+      </div>
+    </div>
+  
+  </div>
   </div>
 
 <script src="{% static 'js/main.js' %}"></script>
 <script src="{% static 'js/reconnecting-websocket.js' %}"></script>
 <script>
-    var roomName = {{ room_name_json }};
+    var roomId = {{ room_id_json }};
     var username = {{ username }};
 
     var chatSocket = new WebSocket(
         'ws://' + window.location.host +
-        '/ws/chat/' + roomName + '/');
+        '/ws/chat/' + roomId + '/');
 
     chatSocket.onopen = function(e) {
       fetchMessages();
