@@ -13,7 +13,7 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}?v=1">
   </head>
 
 <body>
@@ -22,7 +22,7 @@
       <div id="profile">
         <div class="wrap">
           <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
-          <p>Mike Ross</p>
+          <p>{{ user.username }}</p>
           <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
           <div id="status-options">
             <ul>
@@ -59,16 +59,31 @@
             </div>
           </li> -->
           {% for chatroom in chatrooms.all %}
+          <a href="/chat/{{chatroom.id}}/">
             <li class="contact active">
               <div class="wrap">
                 <span class="contact-status busy"></span>
                 <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
                 <div class="meta">
-                  <p class="name">{{chatroom.parent.username}}</p>
-                  <p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
+                  <p class="name">
+                    {% if user == chatroom.tutor %}
+                      {{ chatroom.parent.username }}
+                    {% elif user == chatroom.parent %}
+                      {{ chatroom.tutor.username }}
+                    {% endif %}
+                  </p>
+                  <p class="preview">
+                    {% if chatroom.last_message.author == user %}
+                      You: 
+                    {% else %}
+                      {{ chatroom.last_message.author }}: 
+                    {% endif %}
+                    {{ chatroom.last_message.content }}
+                  </p>
                 </div>
               </div>
             </li>
+          </a>
           {% endfor %}
         </ul>
       </div>
@@ -81,7 +96,9 @@
     <div class="content">
     <div class="contact-profile">
       <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-      <p>{{ username }}</p>
+      <p>
+        {{ responder_username }}
+      </p>
       <div class="social-media">
         <i class="fa fa-facebook" aria-hidden="true"></i>
         <i class="fa fa-twitter" aria-hidden="true"></i>
@@ -117,7 +134,7 @@
 <script src="{% static 'js/reconnecting-websocket.js' %}"></script>
 <script>
     var roomId = {{ room_id_json }};
-    var username = {{ username }};
+    var username = "{{ user.username }}";
 
     var chatSocket = new WebSocket(
         'ws://' + window.location.host +
@@ -171,7 +188,6 @@
       var pTag = document.createElement('p');
       pTag.textContent = data.content;
       imgTag.src = 'http://emilcarlsson.se/assets/mikeross.png';
-
       if (author === username) {
         msgListTag.className = 'sent';
       } else {

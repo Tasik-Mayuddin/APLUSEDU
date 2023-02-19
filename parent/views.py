@@ -7,63 +7,63 @@ from main.forms import AddDayForm
 from django.contrib.auth.models import User
 from APLUSEDU.utils import clash_check
 from chat.models import ChatRoom, Message
-
+from APLUSEDU.constants import DAY_CHOICES
 
 # Create your views here.
 
 # Parent dashboard
 
-def pDash(response):
-    if response.user.account.user_role == "Parent":
-        return render(response, 'parent/parent_dashboard.html')
+def pDash(request):
+    if request.user.account.user_role == "Parent":
+        return render(request, 'parent/parent_dashboard.html')
 
 # Parent's students
 
-def pStud(response):
-    if response.user.account.user_role == "Parent":
+def pStud(request):
+    if request.user.account.user_role == "Parent":
         
-        if response.method == "POST":
-            filled_form = AddStudentForm(response.POST)
+        if request.method == "POST":
+            filled_form = AddStudentForm(request.POST)
             if filled_form.is_valid():
                 filled_form_clean = filled_form.cleaned_data
                 form_name = filled_form_clean['name']
                 form_level = filled_form_clean['level']
                 form_subjects = filled_form_clean['subjects']
-                if not response.user.student_set.filter(name=form_name).exists(): # prevents duplicates
-                    new_student = Student.objects.create(name=form_name, level=form_level, parent=response.user)
+                if not request.user.student_set.filter(name=form_name).exists(): # prevents duplicates
+                    new_student = Student.objects.create(name=form_name, level=form_level, parent=request.user)
                     for x in form_subjects: 
                         Subject.objects.create(subject=x, student=new_student)
 
-        ps_list = response.user.student_set.all()
+        ps_list = request.user.student_set.all()
         form = AddStudentForm()
 
-        return render(response, 'parent/parent_students.html', {"ps_list":ps_list, "form":form})
+        return render(request, 'parent/parent_students.html', {"ps_list":ps_list, "form":form})
 
-def pStudID(response, id):
-    student_validate = response.user.student_set.filter(id=id)
+def pStudID(request, id):
+    student_validate = request.user.student_set.filter(id=id)
     
     if student_validate.exists():
-        student = response.user.student_set.get(id=id)
+        student = request.user.student_set.get(id=id)
 
         # to delete pending/verified booked slots
-        if response.method == "POST":
-            if response.POST.get("delete"):
-                bslot_del = student.bookedslot_set.get(id=response.POST.get("booked_slot_id")) # ensures that the booked slot belongs to student, retrieves id from hidden input
+        if request.method == "POST":
+            if request.POST.get("delete"):
+                bslot_del = student.bookedslot_set.get(id=request.POST.get("booked_slot_id")) # ensures that the booked slot belongs to student, retrieves id from hidden input
                 bslot_del.delete()
                 return HttpResponseRedirect('/student/'+str(id))
 
         bslot_list = student.bookedslot_set.all()
 
-        return render(response, 'parent/student.html', {"student":student, "bslot_list":bslot_list})   
+        return render(request, 'parent/student.html', {"student":student, "bslot_list":bslot_list})   
     else:
         return HttpResponseRedirect('/parent_students/')
 
-def pStudTut(response, id):
-    student_validate = response.user.student_set.filter(id=id) # ensures the student belongs to the user (parent)
+def pStudTut(request, id):
+    student_validate = request.user.student_set.filter(id=id) # ensures the student belongs to the user (parent)
     if student_validate.exists():
-        student = response.user.student_set.get(id=id)
-        if response.method == "POST":
-            filled_form = AddDayForm(response.POST)
+        student = request.user.student_set.get(id=id)
+        if request.method == "POST":
+            filled_form = AddDayForm(request.POST)
             if filled_form.is_valid():
                 filled_form_clean = filled_form.cleaned_data
                 form_day = filled_form_clean['day']
@@ -71,7 +71,7 @@ def pStudTut(response, id):
                 form_end_time = filled_form_clean['end_time']
 
                 # identify correct DayAndTime instance
-                tutor = User.objects.get(id=response.POST.get("tutor_id"))
+                tutor = User.objects.get(id=request.POST.get("tutor_id"))
                 dnt_query = tutor.dayandtime_set.filter( 
                     day=form_day, 
                     start_time__lte=form_start_time, 
@@ -88,11 +88,12 @@ def pStudTut(response, id):
                             break
                     # if there are no clashes, a bookedslot with the status "pending" is created
                     if not intercept:
+                        subject_and_level = SubjectAndLevel.objects.get(subject=request.POST.get("subject"), level=student.level)
                         BookedSlot.objects.create(
                             day=form_day, 
                             start_time=form_start_time, 
                             end_time=form_end_time, 
-                            subject_and_level = SubjectAndLevel.objects.get(subject=response.POST.get("subject"), level=student.level), # obtains subject name from hidden input from html button
+                            subject_and_level = subject_and_level, # obtains subject name from hidden input from html button
                             time_slot = dnt_extracted,
                             student = student,
                             status = "pending",
@@ -100,10 +101,19 @@ def pStudTut(response, id):
                         
                         # create chatroom between tutor and parent upon request of tutor
                         try:
-                            chatroom = ChatRoom.objects.get(tutor = tutor, parent = response.user)
+                            chatroom = ChatRoom.objects.get(tutor = tutor, parent = request.user)
                         except ChatRoom.DoesNotExist:
-                            chatroom = ChatRoom.objects.create(tutor = tutor, parent = response.user)
+                            chatroom = ChatRoom.objects.create(tutor = tutor, parent = request.user)
                             chatroom.save()
+                        # send initial tutor request message
+                        req_msg = f"Hi Mr/Mrs {tutor.username}, I would like to request \
+                            {subject_and_level.get_level_display()} {subject_and_level.get_subject_display()} \
+                            for my child, {student.name}, for {dict(DAY_CHOICES)[form_day]}: {form_start_time} - {form_end_time}"
+                        Message.objects.create(
+                            author = request.user,
+                            content = req_msg,
+                            chat_room = chatroom
+                        )
 
                         return HttpResponseRedirect("/student/"+str(id))
                     else:
@@ -118,7 +128,7 @@ def pStudTut(response, id):
                 continue
 
         form = AddDayForm()
-
-        return render(response, 'parent/tutor_list.html', {"tutor_list":tutor_list, "form":form})   
+        
+        return render(request, 'parent/tutor_list.html', {"tutor_list":tutor_list, "form":form})   
     else:
         return HttpResponseRedirect('/parent_students/')

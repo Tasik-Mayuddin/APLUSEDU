@@ -352,6 +352,10 @@ body {
   #frame #sidepanel #contacts::-webkit-scrollbar-thumb {
     background-color: #243140;
   }
+  #frame #sidepanel #contacts a {
+    color: inherit;
+    text-decoration: none;
+  }
   #frame #sidepanel #contacts ul li.contact {
     position: relative;
     padding: 10px 0 15px 0;
@@ -539,7 +543,7 @@ body {
     cursor: pointer;
   }
   #frame .content .contact-profile .social-media i:nth-last-child(1) {
-    margin-right: 20px;
+    margin-right: 50px;
   }
   #frame .content .contact-profile .social-media i:hover {
     color: #435f7a;
@@ -573,20 +577,20 @@ body {
     font-size: 0.9em;
   }
   #frame .content .messages ul li:nth-last-child(1) {
-    margin-bottom: 20px;
+    margin-bottom: 50px;
   }
-  #frame .content .messages ul li.sent img {
+  #frame .content .messages ul li.replies img {
     margin: 6px 8px 0 0;
   }
-  #frame .content .messages ul li.sent p {
+  #frame .content .messages ul li.replies p {
     background: #435f7a;
     color: #f5f5f5;
   }
-  #frame .content .messages ul li.replies img {
+  #frame .content .messages ul li.sent img {
     float: right;
     margin: 6px 0 0 8px;
   }
-  #frame .content .messages ul li.replies p {
+  #frame .content .messages ul li.sent p {
     background: #f5f5f5;
     float: right;
   }

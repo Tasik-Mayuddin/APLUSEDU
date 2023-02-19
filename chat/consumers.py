@@ -3,13 +3,14 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from .models import ChatRoom, Message
 from django.contrib.auth.models import User
+from APLUSEDU.utils import authenticate_id
 
 
 class ChatConsumer(WebsocketConsumer):
 
     def fetch_messages(self, data):
-        room_id = 1
-        chatroom = ChatRoom.objects.get(id=room_id)
+        chatroom = ChatRoom.objects.get(id=self.room_id)
+        
         messages = chatroom.last_10_messages()
         content = {
             'command': 'messages',
@@ -18,8 +19,7 @@ class ChatConsumer(WebsocketConsumer):
         self.send_message(content)
 
     def new_message(self, data):
-        room_id = 1
-        chatroom = ChatRoom.objects.get(id=room_id)
+        chatroom = ChatRoom.objects.get(id=self.room_id)
 
 
         author = data['from']
@@ -52,6 +52,7 @@ class ChatConsumer(WebsocketConsumer):
     def connect(self):
         self.room_id = self.scope["url_route"]["kwargs"]["room_id"]
         self.room_group_name = "chat_%s" % self.room_id
+        print(self.room_id)
 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
