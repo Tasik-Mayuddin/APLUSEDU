@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'daphne',
+    'rest_framework',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'register.apps.RegisterConfig',
     'parent.apps.ParentConfig',
     'chat',
+    'api',
 
     
 ]
@@ -65,7 +67,7 @@ ROOT_URLCONF = 'APLUSEDU.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "frontend/build"),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -142,6 +144,7 @@ LOGIN_REDIRECT_URL = "/"
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "frontend/build/static"),
 ]
 
 # Default primary key field type
