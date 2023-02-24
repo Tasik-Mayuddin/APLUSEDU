@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import './App.css'
+import ParentDash from './components/ParentDash'
+import Children from './components/Children'
 
 function App() {
+
+// fetch API
+const fetchAPI = async (endpoint) => {
+  const res = await fetch(endpoint)
+  const data = await res.json()
+  return(data)
+}
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="container">
+        <Routes>
+          <Route path='/dashboard' element={<ParentDash />}/>
+          <Route path='/children' element={<Children fetchAPI={fetchAPI} />}/>
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

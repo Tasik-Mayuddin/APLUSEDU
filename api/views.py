@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 
-from rest_framework.decorators import api_view
+from django.contrib.auth.decorators import login_required
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import TaskSerializer
+from .serializers import TaskSerializer, ChildrenSerializer
 from main.models import SubjectAndLevel
+from parent.models import Student
 
 
 # Create your views here.
@@ -20,9 +24,24 @@ def apiOverview(request):
     }
     return Response(api_urls)
 
+
+# Get list of children of a parent
+
+# @login_required
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+
 @api_view(['GET'])
-def subjectList(request):
+def childrenList(request):
     print(request.user)
-    subject_and_levels = SubjectAndLevel.objects.all()
-    serializer = TaskSerializer(subject_and_levels, many=True)
+    children_list = Student.objects.all() 
+    serializer = ChildrenSerializer(children_list, many=True)
+    return Response(serializer.data)
+
+# Add child 
+@api_view(['POST'])
+def addChild(request):
+    serializer = ChildrenSerializer(data=request.data)
+    if serializer.is_valid() and request.user.account.user_role == "Parent":
+        serializer.save()
     return Response(serializer.data)
