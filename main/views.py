@@ -1,21 +1,33 @@
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
 from .models import ProfileSummary, SubjectAndLevel, DayAndTime, BookedSlot
 from django.contrib.auth.models import User
 from .forms import AddSubjectForm, AddDayForm
 from collections import defaultdict
 from APLUSEDU.utils import clash_check
+from rest_framework.authtoken.models import Token
 
 
 # Create your views here.
 def welcome(response):
     if response.user.is_authenticated:
+        token = Token.objects.get_or_create(user=response.user)
         if response.user.account.user_role == 'Tutor':
             return HttpResponseRedirect('/tutor_dashboard/')
         elif response.user.account.user_role == 'Parent':
             return HttpResponseRedirect('/parent_dashboard/')
     return render(response, 'main/welcome.html', {})
+
+# # Url for React to obtain token
+# def getToken(response):
+#     if response.user.is_authenticated:
+#         token = Token.objects.get_or_create(user=response.user)
+#         print(token[0])
+#         res = HttpResponse()
+#         res.set_cookie('token', token[0])
+#         return res
+
 
 # For page displaying tutor's dashboard
 

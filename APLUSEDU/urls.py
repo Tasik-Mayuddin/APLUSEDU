@@ -18,6 +18,8 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from register import views as rViews
+from frontend.views import react
+from django.views.generic import TemplateView
 
 
 urlpatterns = [
@@ -29,9 +31,12 @@ urlpatterns = [
     path('login/', rViews.login, name="login"),
     path('register/', rViews.register, name="register"),
 
-    # TemplateView.as_view(template_name='index.html')
     
     path('api/', include('api.urls')),
+
+    # react
+
+    re_path(r'^(?:.*)/?$', react)
 
 ]
 

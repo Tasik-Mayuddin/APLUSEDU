@@ -27,16 +27,14 @@ def apiOverview(request):
 
 # Get list of children of a parent
 
-# @login_required
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
-
 @api_view(['GET'])
+@login_required
 def childrenList(request):
-    print(request.user)
-    children_list = Student.objects.all() 
+    children_list = request.user.student_set.all() 
     serializer = ChildrenSerializer(children_list, many=True)
     return Response(serializer.data)
+
+    
 
 # Add child 
 @api_view(['POST'])

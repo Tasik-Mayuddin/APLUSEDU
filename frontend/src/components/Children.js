@@ -8,16 +8,19 @@ const Children = () => {
 
   useEffect(() => {
     const getChildrenList = async () => {
+      //const res = await fetch('http://127.0.0.1:8000/api/children-list/')
       // const res = await fetch('http://127.0.0.1:8000/api/children-list/', {
       //   method: 'GET',
-      //   headers: {
-      //     'Authorization': `Token 241a8f9796e58be8bc051fd80d88b573d9dff98d`,
-      //   }
+      //   credentials: 'include'
       // })
       // const res = await axios.get('http://127.0.0.1:8000/api/children-list/',
       //   {'withCredentials': true });
-      const res = await axios.get('http://127.0.0.1:8000/api/children-list/')
-      const data = await res.data
+      // const res = await axios.get('http://127.0.0.1:8000/api/children-list/')
+
+      const res = await fetch('http://127.0.0.1:8000/api/children-list/')
+      
+      const data = await res.json()
+      
       setChildrenList(data)
     }
     getChildrenList()

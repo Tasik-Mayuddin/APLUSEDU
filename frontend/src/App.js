@@ -12,6 +12,15 @@ const fetchAPI = async (endpoint) => {
   return(data)
 }
 
+// obtain token
+
+// const getToken = async () => {
+//   fetch('http://127.0.0.1:8000/get_token').then(response => response.json()).then(data => {
+//     const token = data.token
+//     document.cookie = `token=${token}; path=/`
+//   })}
+// getToken()
+
   return (
     <Router>
       <div className="container">
