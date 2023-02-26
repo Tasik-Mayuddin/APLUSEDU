@@ -1,13 +1,13 @@
 SUBJECT_CHOICES = [
-    ('math', 'Mathematics'),
-    ('english', 'English'),
-    ('science', 'Science'),
+    ('Mathematics', 'Mathematics'),
+    ('English', 'English'),
+    ('Science', 'Science'),
 ]
 
 LEVEL_CHOICES = [
-    ('primary_1', 'Primary 1'),
-    ('primary_2', 'Primary 2'),
-    ('primary_3', 'Primary 3'),
+    ('Primary 1', 'Primary 1'),
+    ('Primary 2', 'Primary 2'),
+    ('Primary 3', 'Primary 3'),
 ]
 
 DAY_CHOICES = [

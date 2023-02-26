@@ -19,7 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from register import views as rViews
 from frontend.views import react
-from django.views.generic import TemplateView
+from main.models import Subject, Level
 
 
 urlpatterns = [
@@ -43,3 +43,12 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+# Create the subject and level models upon server deployment
+def subjectsLevelsInit():
+    subject_choices = ['Mathematics', 'English', 'Science']
+    level_choices = ['Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
+    for subject in subject_choices:
+        Subject.objects.get_or_create(name=subject)
+    for level in level_choices:
+        Level.objects.get_or_create(name=level)
+subjectsLevelsInit()

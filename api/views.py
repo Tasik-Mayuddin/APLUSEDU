@@ -34,7 +34,8 @@ def childrenList(request):
     serializer = ChildrenSerializer(children_list, many=True)
     return Response(serializer.data)
 
-    
+
+
 
 # Add child 
 @api_view(['POST'])
