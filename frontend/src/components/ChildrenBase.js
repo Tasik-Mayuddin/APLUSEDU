@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
 import ButtonBig from "./ButtonBig"
 import AddOrEditChild from "./AddOrEditChild"
+import { fetchAPI, fetchPostAPI } from "../functions"
 
-const ChildrenBase = ({ fetchAPI }) => {
+const ChildrenBase = () => {
 
   // Detect if + button pressed
   const [toggleView, setToggleView] = useState(false)
@@ -18,19 +19,30 @@ const ChildrenBase = ({ fetchAPI }) => {
     getChildrenList()
   }, [])
 
+  // Submit form
+  
+  const onSubmit = async (e, toPost) => {
+    e.preventDefault()
 
+    const data = await fetchPostAPI("add-child/", toPost)
+    console.log(data)
+    setChildrenList([...childrenList, data])
+  }
+  
 
   return (
-    <>
+    <div>
       <h1>My Children</h1>
 
-      {toggleView&&<AddOrEditChild />}
+      {toggleView&&<AddOrEditChild onSubmit={onSubmit} />}
 
-      {childrenList.map((child)=>(
-        <ButtonBig text={child.name} />
+      {childrenList.map((child, id)=>(
+        <ButtonBig key={id} text={child.name} />
       ))}
+
       <ButtonBig text={"+"} color={'green'} onClick={()=>setToggleView(true)} />
-    </>
+
+    </div>
   )
 }
 

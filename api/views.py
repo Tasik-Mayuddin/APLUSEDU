@@ -6,8 +6,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import TaskSerializer, ChildrenSerializer
-from main.models import SubjectAndLevel
+from .serializers import ChildrenSerializer, LevelSerializer, SubjectSerializer
+from main.models import SubjectAndLevel, Level, Subject
 from parent.models import Student
 
 
@@ -26,7 +26,6 @@ def apiOverview(request):
 
 
 # Get list of children of a parent
-
 @api_view(['GET'])
 @login_required
 def childrenList(request):
@@ -35,12 +34,36 @@ def childrenList(request):
     return Response(serializer.data)
 
 
+# Get whole list of levels
+@api_view(['GET'])
+@login_required
+def levelList(request):
+    level_list = Level.objects.all()
+    serializer = LevelSerializer(level_list, many=True)
+    return Response(serializer.data)
 
+# Get whole list of subjects
+@api_view(['GET'])
+@login_required
+def subjectList(request):
+    subject_list = Subject.objects.all()
+    serializer = SubjectSerializer(subject_list, many=True)
+    return Response(serializer.data)
 
+    
 # Add child 
+
 @api_view(['POST'])
+@login_required
 def addChild(request):
-    serializer = ChildrenSerializer(data=request.data)
+    req_data = request.data
+    
+    # Add required parent field here, prevents malicious intent for adding students to other parents in frontend
+    req_data['parent'] = request.user.id
+
+    serializer = ChildrenSerializer(data=req_data)
+    
     if serializer.is_valid() and request.user.account.user_role == "Parent":
         serializer.save()
+    
     return Response(serializer.data)

@@ -1,14 +1,25 @@
 from rest_framework import serializers
-from main.models import SubjectAndLevel
+from main.models import SubjectAndLevel, Level, Subject
 from parent.models import Student
 
-class TaskSerializer(serializers.ModelSerializer):
+
+class LevelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SubjectAndLevel
+        model = Level
         fields = "__all__"
 
+class SubjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subject
+        fields = "__all__"
+
+
+# /api/children-list/
 class ChildrenSerializer(serializers.ModelSerializer):
+    # level = LevelSerializer()
+    # subjects = SubjectSerializer(many=True)
     class Meta:
         model = Student
-        fields = ["name", "level", "parent"]
+        fields = "__all__"
+
 
