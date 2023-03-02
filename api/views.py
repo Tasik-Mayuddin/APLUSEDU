@@ -6,9 +6,9 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import ChildrenSerializer, LevelSerializer, SubjectSerializer
+from .serializers import ChildrenSerializer, LevelSerializer, SubjectSerializer, BookedSlotSerializer
 from main.models import SubjectAndLevel, Level, Subject
-from parent.models import Student
+from parent.models import Student, BookedSlot
 
 
 # Create your views here.
@@ -71,6 +71,28 @@ def child(request, id):
 
         return Response('Child deleted')
 
+# List of allocations for each student
+@api_view(['GET'])
+@login_required
+def studentAllocations(request, id):
+    child = request.user.student_set.get(id=id) # Get instance of child
+    booked_slots = child.bookedslot_set.all()
+    serializer = BookedSlotSerializer(booked_slots, many=True)
+
+    res = serializer.data
+    # additional fields to serializer.data->res
+    for i, booked_slot in enumerate(booked_slots):
+
+        tutor = booked_slot.day_and_time.user.username
+        day = booked_slot.day_and_time.day
+        subject = booked_slot.subject_and_level.subject.name
+        
+        res[i]['tutor'] = tutor
+        res[i]['subject'] = subject
+        res[i]['day'] = day
+        
+    return Response(res)
+
 
 
 # Get whole list of levels
@@ -88,6 +110,7 @@ def subjectList(request):
     subject_list = Subject.objects.all()
     serializer = SubjectSerializer(subject_list, many=True)
     return Response(serializer.data)
+
 
 
     

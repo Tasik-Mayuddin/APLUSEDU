@@ -81,7 +81,8 @@ def pStudTut(request, id):
                     day=form_day, 
                     start_time__lte=form_start_time, 
                     end_time__gte=form_end_time,
-                ) 
+                )
+                
                 if dnt_query.exists():
                     dnt_extracted = dnt_query.first() # since it will only return a single object, the first() is taken
 

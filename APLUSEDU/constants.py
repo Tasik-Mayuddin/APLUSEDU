@@ -11,11 +11,11 @@ LEVEL_CHOICES = [
 ]
 
 DAY_CHOICES = [
-    ('sun', 'Sunday'),
-    ('mon', 'Monday'),
-    ('tues', 'Tuesday'),
-    ('wed', 'Wednesday'),
-    ('thurs', 'Thursday'),
-    ('fri', 'Friday'),
-    ('sat', 'Saturday'),
+    ('Sunday', 'Sunday'),
+    ('Monday', 'Monday'),
+    ('Tuesday', 'Tuesday'),
+    ('Wednesday', 'Wednesday'),
+    ('Thursday', 'Thursday'),
+    ('Friday', 'Friday'),
+    ('Saturday', 'Saturday'),
 ]
