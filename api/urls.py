@@ -4,11 +4,12 @@ from . import views
 urlpatterns = [
     path('', views.apiOverview, name="api-overview"),
 
-    # GET
-    path('children-list/', views.childrenList, name="subject-list"),
-    path('level-list/', views.levelList, name="level-list"),
-    path('subject-list/', views.subjectList, name="subject-list"),
+    path('children', views.childrenList, name="children"),
+    path('children/<int:id>', views.child, name="child"),
+    
+    path('levels', views.levelList, name="levels"),
+    path('subjects', views.subjectList, name="subjects"),
 
-    # POST
-    path('add-child/', views.addChild, name="add-child"),
+
+
 ]

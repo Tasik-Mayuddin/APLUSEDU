@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import ButtonBig from "./ButtonBig"
 import AddOrEditChild from "./AddOrEditChild"
 import { fetchAPI, fetchPostAPI } from "../functions"
+import { Link } from 'react-router-dom'
 
 const ChildrenBase = () => {
 
@@ -13,18 +14,17 @@ const ChildrenBase = () => {
   const [childrenList, setChildrenList] = useState([])
   useEffect(() => {
     const getChildrenList = async () => {
-      const fetchChildrenList = await fetchAPI('children-list/')
+      const fetchChildrenList = await fetchAPI('children')
       setChildrenList(fetchChildrenList)
     }
     getChildrenList()
   }, [])
 
-  // Submit form
-  
+  //when user submits the form in AddOrEditChild
   const onSubmit = async (e, toPost) => {
     e.preventDefault()
 
-    const data = await fetchPostAPI("add-child/", toPost)
+    const data = await fetchPostAPI("children", toPost)
     console.log(data)
     setChildrenList([...childrenList, data])
   }
@@ -37,7 +37,9 @@ const ChildrenBase = () => {
       {toggleView&&<AddOrEditChild onSubmit={onSubmit} />}
 
       {childrenList.map((child, id)=>(
-        <ButtonBig key={id} text={child.name} />
+        <Link to={`/children/${child.id}`} key={id} >
+          <ButtonBig text={child.name} />
+        </Link>
       ))}
 
       <ButtonBig text={"+"} color={'green'} onClick={()=>setToggleView(true)} />

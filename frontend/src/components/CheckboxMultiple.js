@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react"
 
-const CheckboxMultiple = ({ label, name, list, setState }) => {
+const CheckboxMultiple = ({ label, name, list, setState, oriChecked }) => {
 
-  const [selectedOptions, setSelectedOptions] = useState([])
+  const [selectedOptions, setSelectedOptions] = useState(oriChecked?oriChecked:[])
   
 
   // When user selects an option, trigger the setEffect
   const handleOptionChange = (e) => {
-    const selectedOption = e.target.value
+    const selectedOption = Number(e.target.value)
     if (e.target.checked) {
       setSelectedOptions([...selectedOptions, selectedOption])
     } else {
@@ -17,7 +17,7 @@ const CheckboxMultiple = ({ label, name, list, setState }) => {
 
   useEffect(() => {
     setState(selectedOptions)
-  }, [selectedOptions])
+  }, [selectedOptions, setState])
 
   return (
     <>
@@ -25,7 +25,7 @@ const CheckboxMultiple = ({ label, name, list, setState }) => {
         {list.map((item, id) => (
                 <div key={item.id}>
                   <label htmlFor={"id_"+name+"_"+id}>{item.name} 
-                      <input type="checkbox" id={"id_"+name+"_"+id} name={name} value={item.id} onChange={handleOptionChange} />
+                      <input type="checkbox" id={"id_"+name+"_"+id} name={name} value={item.id} onChange={handleOptionChange} defaultChecked={oriChecked.includes(item.id)} />
                   </label>
                   <br/>
                 </div>

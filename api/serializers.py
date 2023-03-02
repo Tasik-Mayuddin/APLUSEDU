@@ -16,8 +16,6 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 # /api/children-list/
 class ChildrenSerializer(serializers.ModelSerializer):
-    # level = LevelSerializer()
-    # subjects = SubjectSerializer(many=True)
     class Meta:
         model = Student
         fields = "__all__"
