@@ -30,14 +30,14 @@ class Level (models.Model):
 class SubjectAndLevel (models.Model):      
     subject = models.ForeignKey(Subject, on_delete=models.RESTRICT)
     level = models.ForeignKey(Level, on_delete=models.RESTRICT)
-    users = models.ManyToManyField(User)
+    tutors = models.ManyToManyField(User)
 
 # Represents the original available times of the tutors
 class DayAndTime (models.Model):
     day = models.CharField(max_length=20, choices=DAY_CHOICES)
     start_time = models.TimeField()
     end_time = models.TimeField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    tutor = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
     

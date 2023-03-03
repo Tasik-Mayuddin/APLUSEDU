@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
-import { fetchAPI } from '../functions'
-import CheckboxMultiple from './CheckboxMultiple'
-import DropdownMenu from './DropdownMenu'
+import { fetchAPI } from '../../functions'
+import CheckboxMultiple from '../Inputs/CheckboxMultiple'
+import DropdownMenu from '../Inputs/DropdownMenu'
 
 
 const AddOrEditChild = ({ onSubmit, editName, editLevel, editSubjects }) => {
+
 	const [name, setFormName] = useState(editName?editName:'')
-	const [level, setFormLevel] = useState(editLevel?editLevel:'')
-	const [subjects, setFormSubjects] = useState(editSubjects?editSubjects:[])
+	const [level, setFormLevel] = useState(editLevel?editLevel.id:'')
+	const [subjects, setFormSubjects] = useState(editSubjects?editSubjects.map(subj=>subj.id):[])
  
   const [levelList, setLevelList] = useState([])
   const [subjectList, setSubjectList] = useState([])

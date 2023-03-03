@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
-import ButtonBig from "./ButtonBig"
+import ButtonBig from "../Buttons/ButtonBig"
 import AddOrEditChild from "./AddOrEditChild"
-import { fetchAPI, fetchPostAPI } from "../functions"
+import { fetchAPI, fetchPostAPI } from "../../functions"
 import { Link } from 'react-router-dom'
 
 const ChildrenBase = () => {

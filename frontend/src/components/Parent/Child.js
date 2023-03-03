@@ -1,8 +1,8 @@
-import { useParams } from 'react-router-dom'
-import ButtonBig from './ButtonBig'
+import { useParams, Link } from 'react-router-dom'
+import ButtonBig from '../Buttons/ButtonBig'
 import { useEffect, useState } from 'react'
 import AddOrEditChild from './AddOrEditChild'
-import { fetchAPI, fetchPutAPI } from '../functions'
+import { fetchAPI, fetchPutAPI } from '../../functions'
 import StudentAllocation from './StudentAllocation'
 
 const Child = () => {
@@ -12,19 +12,19 @@ const Child = () => {
 	const [allocations, setAllocations] = useState([])
 
 	useEffect(() => {
-    const getChild = async () => {
-      const fetchChild = await fetchAPI(`children/${slug}`)
-      setChild(fetchChild)
-    }
+		const getChild = async () => {
+			const fetchChild = await fetchAPI(`children/${slug}`)
+			setChild(fetchChild)
+		}
 
 		const getAllocations = async () => {
 			const fetchAllocations = await fetchAPI(`children/${slug}/allocations`)
 			setAllocations(fetchAllocations)
 		}
-    
-    getChild()
+		
+		getChild()
 		getAllocations()
-  }, [slug])
+  	}, [slug])
 
 	//when user submits the form in AddOrEditChild
 	const onSubmit = async (e, toPost) => {
@@ -40,8 +40,11 @@ const Child = () => {
 			<h1>{child.name}</h1>
 			<button onClick={()=>(setToggleEdit(true))}>Edit</button>
 			{toggleEdit&&<AddOrEditChild onSubmit={onSubmit} editName={child.name} editLevel={child.level} editSubjects={child.subjects} />}
+			
+			<Link to={`/children/${slug}/tutors`}>
+				<ButtonBig text={"Look for a Tutor!"} />
+			</Link>
 
-			<ButtonBig text={"Look for a Tutor!"} />
 			<h2>Allocations</h2>
 			{allocations.map((item, id)=>(
 				<StudentAllocation key={id} allocationDetails={item} />

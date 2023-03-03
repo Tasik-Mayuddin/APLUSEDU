@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from main.models import SubjectAndLevel, Level, Subject
+from main.models import SubjectAndLevel, Level, Subject, ProfileSummary
 from parent.models import Student, BookedSlot
+from django.contrib.auth.models import User
 
 
 class LevelSerializer(serializers.ModelSerializer):
@@ -14,6 +15,13 @@ class SubjectSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class ChildrenSerializer(serializers.ModelSerializer):
+    level = LevelSerializer()
+    subjects = SubjectSerializer(many=True)
+    class Meta:
+        model = Student
+        fields = "__all__"
+
+class ChildrenCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = "__all__"
@@ -27,5 +35,15 @@ class BookedSlotCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookedSlot
         fields = "__all__"
+
+class ProfileSummarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProfileSummary
+        fields = ["summary_text"]
+
+class TutorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username"]
 
 

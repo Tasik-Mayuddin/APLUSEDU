@@ -19,7 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from register import views as rViews
 from frontend.views import react
-from main.models import Subject, Level
+from main.models import Subject, Level, SubjectAndLevel
 
 
 urlpatterns = [
@@ -48,7 +48,11 @@ def subjectsLevelsInit():
     subject_choices = ['Mathematics', 'English', 'Science']
     level_choices = ['Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
     for subject in subject_choices:
-        Subject.objects.get_or_create(name=subject)
-    for level in level_choices:
-        Level.objects.get_or_create(name=level)
+        for level in level_choices:
+            subject, _ = Subject.objects.get_or_create(name=subject)
+            level, _ = Level.objects.get_or_create(name=level)
+            SubjectAndLevel.objects.get_or_create(
+                subject = subject,
+                level = level,
+            )
 subjectsLevelsInit()

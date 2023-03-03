@@ -8,6 +8,8 @@ urlpatterns = [
     path('children/<int:id>', views.child, name="child"),
     path('children/<int:id>/allocations', views.studentAllocations, name="student-allocations"),
 
+    path('tutors', views.tutorQuery, name="tutors"),
+
     path('levels', views.levelList, name="levels"),
     path('subjects', views.subjectList, name="subjects"),
 

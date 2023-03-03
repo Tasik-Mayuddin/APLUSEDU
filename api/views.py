@@ -6,8 +6,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import ChildrenSerializer, LevelSerializer, SubjectSerializer, BookedSlotSerializer
-from main.models import SubjectAndLevel, Level, Subject
+from .serializers import ChildrenSerializer, ChildrenCreateSerializer, LevelSerializer, SubjectSerializer, BookedSlotSerializer, TutorSerializer
+from main.models import SubjectAndLevel, Level, Subject, ProfileSummary
 from parent.models import Student, BookedSlot
 
 
@@ -38,7 +38,7 @@ def childrenList(request):
     elif request.method == "POST":
         req_data = request.data
         req_data['parent'] = request.user.id # add necessary parent field here
-        serializer = ChildrenSerializer(data=req_data)
+        serializer = ChildrenCreateSerializer(data=req_data)
 
         if serializer.is_valid() and request.user.account.user_role == "Parent":
             serializer.save()
@@ -59,7 +59,7 @@ def child(request, id):
     elif request.method == "PUT":
         req_data = request.data
         req_data['parent'] = request.user.id # add necessary parent field here
-        serializer = ChildrenSerializer(instance=child, data=req_data) 
+        serializer = ChildrenCreateSerializer(instance=child, data=req_data) 
 
         if serializer.is_valid() and request.user.account.user_role == "Parent":
             serializer.save()
@@ -83,7 +83,7 @@ def studentAllocations(request, id):
     # additional fields to serializer.data->res
     for i, booked_slot in enumerate(booked_slots):
 
-        tutor = booked_slot.day_and_time.user.username
+        tutor = booked_slot.day_and_time.tutor.username
         day = booked_slot.day_and_time.day
         subject = booked_slot.subject_and_level.subject.name
         
@@ -91,6 +91,31 @@ def studentAllocations(request, id):
         res[i]['subject'] = subject
         res[i]['day'] = day
         
+    return Response(res)
+
+
+# Tutor query
+@api_view(['GET'])
+@login_required
+def tutorQuery(request):
+    # get corresponding SubjectAndLevel instance
+    subject_and_level = SubjectAndLevel.objects.get(
+        subject = request.query_params.get('subject'),
+        level = request.query_params.get('level')
+    )
+
+    # get corrsponding list of tutors 
+    tutor_list = subject_and_level.tutors.all()
+    serializer = TutorSerializer(tutor_list, many=True)
+    res = serializer.data
+    for i, tutor in enumerate(tutor_list):
+        try:
+            summary = ProfileSummary.objects.get(author=tutor).summary_text
+        except ProfileSummary.DoesNotExist:
+            summary = ""
+
+        res[i]["summary"] = summary
+
     return Response(res)
 
 

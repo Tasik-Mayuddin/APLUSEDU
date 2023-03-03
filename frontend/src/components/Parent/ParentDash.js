@@ -1,4 +1,4 @@
-import ButtonBig from './ButtonBig'
+import ButtonBig from '../Buttons/ButtonBig'
 import { Link } from 'react-router-dom'
 
 const ParentDash = () => {
