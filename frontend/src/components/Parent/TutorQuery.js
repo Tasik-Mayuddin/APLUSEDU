@@ -36,6 +36,9 @@ const TutorQuery = () => {
 		getTutors()}
 	}, [currentSubject, level])
 
+	console.log("test")
+// test
+
   return (
     <>
         {subjects.map((subj, id)=>(
