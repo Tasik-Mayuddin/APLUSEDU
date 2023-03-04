@@ -1,7 +1,7 @@
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
-from .models import ProfileSummary, SubjectAndLevel, DayAndTime, Subject, Level
+from .models import TutorProfile, SubjectAndLevel, DayAndTime, Subject, Level
 from parent.models import BookedSlot
 from django.contrib.auth.models import User
 from .forms import AddSubjectForm, AddDayForm
@@ -44,13 +44,13 @@ def tProf(request):
         if request.method == "POST":
             if request.POST.get("edit-summary"):
                 new_summary = request.POST.get("new-summary")
-                profSum = ProfileSummary.objects.create(author=request.user, summary_text=new_summary)
-                profSumOutput = profSum.summary_text
+                profSum = TutorProfile.objects.create(author=request.user, summary=new_summary)
+                profSumOutput = profSum.summary
                 return HttpResponseRedirect('/tutor_profile/')
         
         try:
-            profSumOutput = ProfileSummary.objects.get(author=request.user).summary_text
-        except ProfileSummary.DoesNotExist:
+            profSumOutput = TutorProfile.objects.get(author=request.user).summary
+        except TutorProfile.DoesNotExist:
             profSumOutput = "No profile summary"
         
         return render(request, 'main/tutor_profile.html', {"current_user":request.user, "profile_summary":profSumOutput})

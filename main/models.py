@@ -1,18 +1,27 @@
 from django.db import models
 from django.contrib.auth.models import User
 from APLUSEDU.constants import DAY_CHOICES
-
+import datetime
 
 
 # Create your models here.
 
 # Profile summary, for tutors, intended to be resume-ish
-class ProfileSummary (models.Model):
+class TutorProfile (models.Model):
     author = models.OneToOneField(User, on_delete=models.CASCADE, related_name='author')
-    summary_text = models.TextField(max_length=10000)
+    summary = models.TextField(max_length=10000)
+    initial_experience = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    education = models.CharField(max_length=255)
+    occupation = models.CharField(max_length=255)
+    
+    # Calculate years of experience dynamically
+    @property
+    def experience_years(self):
+        return round((datetime.datetime.now() - self.created_at).days/365 + self.initial_experience)
 
     def __str__(self):
-        return str(self.summary_text)
+        return self.summary
     
 # Subject
 class Subject (models.Model):

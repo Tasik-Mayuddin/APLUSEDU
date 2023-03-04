@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import ChildrenSerializer, ChildrenCreateSerializer, LevelSerializer, SubjectSerializer, BookedSlotSerializer, TutorSerializer
-from main.models import SubjectAndLevel, Level, Subject, ProfileSummary
+from main.models import SubjectAndLevel, Level, Subject, TutorProfile
 from parent.models import Student, BookedSlot
 
 
@@ -110,8 +110,8 @@ def tutorQuery(request):
     res = serializer.data
     for i, tutor in enumerate(tutor_list):
         try:
-            summary = ProfileSummary.objects.get(author=tutor).summary_text
-        except ProfileSummary.DoesNotExist:
+            summary = TutorProfile.objects.get(author=tutor).summary
+        except TutorProfile.DoesNotExist:
             summary = ""
 
         res[i]["summary"] = summary
