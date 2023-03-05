@@ -128,7 +128,7 @@ def pStudTut(request, id):
 
         for subject in student.subjects.all():
             try:
-                tutor_list[subject] = SubjectAndLevel.objects.get(subject=subject, level=student.level).users.all()
+                tutor_list[subject] = SubjectAndLevel.objects.get(subject=subject, level=student.level).tutors.all()
             except SubjectAndLevel.DoesNotExist:
                 continue
         form = AddDayForm()

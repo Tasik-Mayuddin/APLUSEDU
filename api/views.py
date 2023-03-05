@@ -6,9 +6,10 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import ChildrenSerializer, ChildrenCreateSerializer, LevelSerializer, SubjectSerializer, BookedSlotSerializer, TutorSerializer
+from .serializers import ChildrenSerializer, ChildrenCreateSerializer, LevelSerializer, SubjectSerializer, BookedSlotSerializer, TutorSerializer, TutorAvailabilitySerializer
 from main.models import SubjectAndLevel, Level, Subject, TutorProfile
 from parent.models import Student, BookedSlot
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -107,17 +108,16 @@ def tutorQuery(request):
     # get corrsponding list of tutors 
     tutor_list = subject_and_level.tutors.all()
     serializer = TutorSerializer(tutor_list, many=True)
-    res = serializer.data
-    for i, tutor in enumerate(tutor_list):
-        try:
-            summary = TutorProfile.objects.get(author=tutor).summary
-        except TutorProfile.DoesNotExist:
-            summary = ""
 
-        res[i]["summary"] = summary
+    return Response(serializer.data)
 
-    return Response(res)
-
+# Tutor availability
+@api_view(['GET'])
+@login_required
+def tutorAvailability(request, id):
+    tutor = User.objects.get(id=id)
+    serializer = TutorAvailabilitySerializer(tutor)
+    return Response(serializer.data)
 
 
 # Get whole list of levels

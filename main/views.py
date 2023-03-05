@@ -71,7 +71,7 @@ def tSubj(request):
                         subject = Subject.objects.get(name=form_subject),
                         level = Level.objects.get(name=indi_level)
                         )
-                    sal.users.add(request.user) # adds the user (tutor) into the instance
+                    sal.tutors.add(request.user) # adds the user (tutor) into the instance
                     sal.save()    
                 return HttpResponseRedirect('/tutor_subjects/')       
 
