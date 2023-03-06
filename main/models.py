@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from APLUSEDU.constants import DAY_CHOICES
-import datetime
+from APLUSEDU.utils import clash_check
 from django.utils import timezone
 
 
@@ -48,6 +48,13 @@ class DayAndTime (models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     tutor = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    # Determine if new booking clashes with existing approved bookings (check against the student/tutor bookedslots)
+    def bookingClash(self, student, start_time, end_time):
+        for bslot_approved in self.bookedslot_set.filter(status="approved") | student.bookedslot_set.all(): # .all for student to avoid clashing booking requests
+            if clash_check(start_time, end_time, bslot_approved.start_time, bslot_approved.end_time):
+                return True
+        return False
 
 
     

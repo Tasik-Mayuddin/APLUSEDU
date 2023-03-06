@@ -2,10 +2,10 @@ import DropdownMenu from "../Inputs/DropdownMenu"
 import { useState } from "react"
 import TimeInput from "../Inputs/TimeInput"
 
-const TutorAvailability = ({ availability, tutor_id, onRequest }) => {
+const TutorAvailability = ({ availability, child_id, subject, onRequest }) => {
     const [day, setFormDay] = useState('')
-    const [startTime, setStartTime] = useState('')
-    const [endTime, setEndTime] = useState('')
+    const [start_time, setStartTime] = useState('')
+    const [end_time, setEndTime] = useState('')
 
     
 
@@ -27,7 +27,7 @@ const TutorAvailability = ({ availability, tutor_id, onRequest }) => {
                 ))}
 
 
-            <form onSubmit={(e)=>onRequest(e, {tutor_id, day, startTime, endTime})}>
+            <form onSubmit={(e)=>onRequest(e, {child_id, subject, day, start_time, end_time})}>
                 <div className="form-control">
                     <DropdownMenu 
                         label = {"Day: "} 

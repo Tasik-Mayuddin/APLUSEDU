@@ -110,7 +110,7 @@ def tTime(request):
                             intercept = True
                             break
                 if not intercept:    
-                    dnt = DayAndTime.objects.create(day=form_day, start_time=form_start_time, end_time=form_end_time, user=request.user)
+                    dnt = DayAndTime.objects.create(day=form_day, start_time=form_start_time, end_time=form_end_time, tutor=request.user)
                 
                 
 

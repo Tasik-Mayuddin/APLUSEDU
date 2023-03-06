@@ -26,10 +26,7 @@ class ChildrenCreateSerializer(serializers.ModelSerializer):
         model = Student
         fields = "__all__"
 
-class BookedSlotCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = BookedSlot
-        fields = "__all__"
+
 
 class TutorProfileSerializer(serializers.ModelSerializer):
     experience_years = serializers.ReadOnlyField()
@@ -59,6 +56,11 @@ class BookedSlotSerializer(serializers.ModelSerializer):
         model = BookedSlot
         fields = ["start_time", "end_time", "status"]
 
+class BookedSlotCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookedSlot
+        fields = "__all__"
+
 class DayAndTimeSerializer(serializers.ModelSerializer):
     bookedslot_set = BookedSlotSerializer(many=True)
     class Meta:
@@ -70,4 +72,6 @@ class TutorAvailabilitySerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["username", "dayandtime_set"]
+
+
 

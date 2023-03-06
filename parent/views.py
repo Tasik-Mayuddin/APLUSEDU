@@ -85,13 +85,8 @@ def pStudTut(request, id):
                 
                 if dnt_query.exists():
                     dnt_extracted = dnt_query.first() # since it will only return a single object, the first() is taken
+                    intercept = dnt_extracted.bookingClash(student, form_start_time, form_end_time) # call method to determine if clash
 
-                    # perform a check to ensure that the booked slot does not clash with existing approved booked slots
-                    intercept = False
-                    for x in dnt_extracted.bookedslot_set.filter(status="approved"):
-                        if clash_check(form_start_time, form_end_time, x.start_time, x.end_time):
-                            intercept = True
-                            break
                     # if there are no clashes, a bookedslot with the status "pending" is created
                     if not intercept:
                         subject_and_level = SubjectAndLevel.objects.get(

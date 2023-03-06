@@ -49,7 +49,7 @@ const TutorQuery = () => {
 
 	const onRequest = (e, toPost) => {
         e.preventDefault()
-        fetchPostAPI("tutor-request", toPost)
+        fetchPostAPI(`tutors/${currentTutorId}/request`, toPost)
 		setToggleView(false)
     }
 
@@ -71,7 +71,7 @@ const TutorQuery = () => {
 					onClick={onCheck}
 				/>
 			))}
-			{toggleView&&<TutorAvailability availability={tutorTime} tutor_id={currentTutorId} onRequest={onRequest} />}
+			{toggleView&&<TutorAvailability availability={tutorTime} child_id={slug} subject={currentSubject} onRequest={onRequest} />}
 		</>
 	)
 }
