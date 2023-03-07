@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import ButtonBig from "../Buttons/ButtonBig"
 import AddOrEditChild from "./AddOrEditChild"
 import { fetchAPI, fetchPostAPI } from "../../functions"
-import { Link } from 'react-router-dom'
+import ChildDetails from "./ChildDetails"
 
 const ChildrenBase = () => {
 
@@ -25,8 +25,8 @@ const ChildrenBase = () => {
     e.preventDefault()
 
     const data = await fetchPostAPI("children", toPost)
-    console.log(data)
     setChildrenList([...childrenList, data])
+    setToggleView(false)
   }
   
 
@@ -34,12 +34,10 @@ const ChildrenBase = () => {
     <div>
       <h1>My Children</h1>
 
-      {toggleView&&<AddOrEditChild onSubmit={onSubmit} />}
+      {toggleView&&<AddOrEditChild onSubmit={onSubmit} hideModal={()=>setToggleView(false)} />}
 
       {childrenList.map((child, id)=>(
-        <Link to={`/children/${child.id}`} key={id} >
-          <ButtonBig text={child.name} />
-        </Link>
+        <ChildDetails child={child} key={id} />
       ))}
 
       <ButtonBig text={"+"} color={'green'} onClick={()=>setToggleView(true)} />

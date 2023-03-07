@@ -135,7 +135,7 @@ def tJob(request):
         if request.method == "POST":
             bslot_extract = BookedSlot.objects.get(id=request.POST.get("bookedslot_id"))
             if request.POST.get("accept"):
-                if bslot_extract.day_and_time.user == request.user:
+                if bslot_extract.day_and_time.tutor == request.user:
                     bslot_query = bslot_extract.day_and_time.bookedslot_set.filter(status="approved")
                     intercept = False
                     for x in bslot_query:
@@ -146,7 +146,7 @@ def tJob(request):
                         bslot_extract.status = "approved"
                         bslot_extract.save()
             elif request.POST.get("decline"):
-                if bslot_extract.day_and_time.user == request.user:
+                if bslot_extract.day_and_time.tutor == request.user:
                     bslot_extract.delete()
 
             return HttpResponseRedirect("/job_requests/")

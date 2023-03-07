@@ -1,17 +1,110 @@
+html {
+  background: url(https://wallpapersmug.com/download/1366x768/280b25/horizon-sunset-mountains-dark.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Open Sans';font-size: 22px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+/* The side navigation menu */
+.sidenav {
+  height: 100%; /* 100% Full-height */
+  width: 250px; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #dbdbdb; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #000000;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #00eeff;
+  background-color: white;
+}
+
+.sidenav a.current {
+  color: #000000;
+  background-color: white;
 }
 
 .container {
-  border: 2px solid steelblue;
   border-radius: 5px;
-  width: 1280px;
+  max-width: 1400px;
   min-height: 720px;
-  margin: 30px auto;
+  margin: 60px 30px 0px 300px;
   padding: 30px;
-  /* overflow: auto; */
   text-align: center;
   position: relative;
+  background-color: rgba(255, 255, 255, 0.753);
+}
+
+.btn-small {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #0084ff;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+  width: 150px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.btn-small:hover {
+  background-color: #00b7ff;
+  color: white;
+}
+
+.btn-small:focus {
+  outline: none;
+}
+
+.btn-subject {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #ff00b3;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 16px;
+  padding: 10px;
+  width: 150px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.btn-subject:hover {
+  background-color: #ff59d6;
+  color: white;
+}
+
+.btn-subject:focus {
+  outline: none;
 }
 
 .btn-big {
@@ -20,12 +113,13 @@ body {
   color: #fff;
   border: none;
   padding: 10px;
-  width: 800px;
+  width: 50%;
+  margin: auto;
   margin-bottom: 50px;
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
-  font-size: 70px;
+  font-size: 30px;
   font-family: inherit;
 }
 
@@ -34,14 +128,57 @@ body {
   width: 100%;
 }
 
+.child-details {
+  width: 250px;
+  min-height: 110px;
+  margin: auto;
+  width: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  text-align: left;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.child-details:hover {
+  background-color: rgba(255, 255, 255, 0.753);
+  transition: all 0.2s;
+}
+
+.child-header {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.425);
+  border-radius: 8px;
+}
+
+
 .popup-block {
   display: block;
   background-color: white;
-  border: 2px solid black;
+  border-radius: 8px;
   position: absolute;
   width: 300px;
   padding: 60px;
-  text-align: center;
+  text-align: left;
+  top: 50%;
+  left: 50%; /* Added left property */
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(10px);
+  transition: 1s filter linear;
+  
+  z-index: 9999; /* make sure the overlay is on top of everything else */
 }
 
 .form-control {
@@ -72,22 +209,44 @@ body {
   font-size: 22px;
 }
 
+.form-control-checkbox {
+  margin: 10px auto;
+}
+
 .form-control input[type="checkbox"] {
-  width: 60px;
-  height: 22px;
+  width: 40px;
+  height: 18px;
+  float: left;
+}
+
+.tutor-query-header {
+  display: flex;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.726);
+}
+
+.tutor-query-header button.current {
+  background-color: white;
+  border: 2px solid rgb(255, 0, 242);
+  color: rgb(255, 0, 242);
 }
 
 .tutor-details {
-  border: 2px solid black;
-  margin: 5px;
+  background-color: rgba(255, 255, 255, 0.699);
+  border-radius: 8px;
+  margin: auto;
+  max-width: 1200px;
 }
 
 .tutor-availability {
+  min-width: 600px;
   position: absolute;
-  border: 2px solid black;
-  padding: 100px;
+  border-radius: 8px;
+  padding: 40px;
   top: 50%;
   left: 50%; /* Added left property */
   transform: translate(-50%, -50%);
-  background-color: white;
+  background-color: rgb(255, 255, 255);
+  z-index: 10000;
+  display: flex;
+  justify-content: space-between;
 }

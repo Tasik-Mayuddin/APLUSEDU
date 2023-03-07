@@ -44,8 +44,9 @@ def childrenList(request):
 
         if serializer.is_valid() and request.user.account.user_role == "Parent":
             serializer.save()
-        
-        return Response(serializer.data)
+
+            serializer_res = ChildrenSerializer(request.user.student_set.last())
+            return Response(serializer_res.data)
 
 # Individual child of parent
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -65,8 +66,8 @@ def child(request, id):
 
         if serializer.is_valid() and request.user.account.user_role == "Parent":
             serializer.save()
-        
-        return Response(serializer.data)
+            serializer_res = ChildrenSerializer(request.user.student_set.last())
+            return Response(serializer_res.data)
     
     elif request.method == "DELETE":
         child.delete()

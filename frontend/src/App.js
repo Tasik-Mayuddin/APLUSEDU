@@ -4,25 +4,31 @@ import ParentDash from './components/Parent/ParentDash'
 import ChildrenBase from './components/Parent/ChildrenBase'
 import Child from './components/Parent/Child'
 import TutorQuery from './components/Parent/TutorQuery'
+import SideMenu from './components/Common/SideMenu'
 
 function App() {
 
+  const parentSideMenu = [['My Children', '/children'], ['Chat with Tutors', '/chat']]
 
   return (
-    <Router>
-      <div className="container">
-        <Routes>
+    <>
+      
+      <Router>
+      <SideMenu nameHrefTupleList={parentSideMenu}/>
+        <div className="container">
+          <Routes>
 
-           {/*parent interface routing */}
-          <Route path='/dashboard' element={<ParentDash />}/>
-          <Route path='/children' element={<ChildrenBase />}/>
-          <Route path='/children/:slug' element={<Child />} />
-          <Route path='/children/:slug/tutors' element={<TutorQuery />} />
+            {/*parent interface routing */}
+            <Route path='/dashboard' element={<ParentDash />}/>
+            <Route path='/children' element={<ChildrenBase />}/>
+            <Route path='/children/:slug' element={<Child />} />
+            <Route path='/children/:slug/tutors' element={<TutorQuery />} />
 
 
-        </Routes>
-      </div>
-    </Router>
+          </Routes>
+        </div>
+      </Router>
+    </>
   );
 }
 

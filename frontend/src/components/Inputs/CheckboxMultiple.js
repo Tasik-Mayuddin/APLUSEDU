@@ -23,11 +23,10 @@ const CheckboxMultiple = ({ label, name, list, setState, oriChecked }) => {
     <>
         <label>{label}</label>
         {list.map((item, id) => (
-                <div key={item.id}>
+                <div key={item.id} className={'form-control-checkbox'}>
                   <label htmlFor={"id_"+name+"_"+id}>{item.name} 
                       <input type="checkbox" id={"id_"+name+"_"+id} name={name} value={item.id} onChange={handleOptionChange} defaultChecked={oriChecked.includes(item.id)} />
                   </label>
-                  <br/>
                 </div>
             ))}
     </>

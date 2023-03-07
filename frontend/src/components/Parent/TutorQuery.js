@@ -3,6 +3,7 @@ import { fetchAPI, fetchPostAPI } from "../../functions"
 import { useParams } from 'react-router-dom'
 import TutorDetails from "./TutorDetails"
 import TutorAvailability from "./TutorAvailability"
+import ButtonSubject from "../Buttons/ButtonSubject"
 
 const TutorQuery = () => {
 	const { slug } = useParams()
@@ -55,10 +56,17 @@ const TutorQuery = () => {
 
 	return (
 		<>
-			{subjects.map((subj, id)=>(
-				<button key={id} onClick={()=>setCurrentSubject(subj)}>{subj.name}</button>
-			))}
-
+			<div className="tutor-query-header">
+				{subjects.map((subj, id)=>(
+					<>
+						{currentSubject===subj?
+						<ButtonSubject current='true' text={subj.name} key={id} onClick={()=>setCurrentSubject(subj)}></ButtonSubject>:
+						<ButtonSubject text={subj.name} key={id} onClick={()=>setCurrentSubject(subj)}></ButtonSubject>
+						}
+						
+					</>
+				))}
+			</div>
 			{tutors.map((tutor, id)=>(
 				<TutorDetails 
 					key={id} 
@@ -71,7 +79,7 @@ const TutorQuery = () => {
 					onClick={onCheck}
 				/>
 			))}
-			{toggleView&&<TutorAvailability availability={tutorTime} child_id={slug} subject={currentSubject} onRequest={onRequest} />}
+			{toggleView&&<TutorAvailability availability={tutorTime} child_id={slug} subject={currentSubject} onRequest={onRequest} hideModal={()=>setToggleView(false)} />}
 		</>
 	)
 }

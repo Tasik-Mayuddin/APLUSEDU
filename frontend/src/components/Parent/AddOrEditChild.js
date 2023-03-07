@@ -4,7 +4,7 @@ import CheckboxMultiple from '../Inputs/CheckboxMultiple'
 import DropdownMenu from '../Inputs/DropdownMenu'
 
 
-const AddOrEditChild = ({ onSubmit, editName, editLevel, editSubjects }) => {
+const AddOrEditChild = ({ onSubmit, editName, editLevel, editSubjects, hideModal }) => {
 
 	const [name, setFormName] = useState(editName?editName:'')
 	const [level, setFormLevel] = useState(editLevel?editLevel.id:'')
@@ -32,21 +32,24 @@ const AddOrEditChild = ({ onSubmit, editName, editLevel, editSubjects }) => {
 
 
   return (
-    <div className="popup-block">
-        <form className="add-edit-form" onSubmit={(e)=>onSubmit(e, { name, level, subjects })}>
-            <div className="form-control">
-              <label>Name</label>
-              <input type="text" placeholder="Insert your child's name" onChange={(e) => setFormName(e.target.value)} defaultValue={name} />
-            </div>
-            <div className="form-control">
-              <DropdownMenu label = {"Level: "} placeholder = {"Select Difficulty"} list = {levelList} onChange={(e) => setFormLevel(Number(e.target.value))} oriSelected={level} />
-            </div>
-						<div className="form-control">
-              <CheckboxMultiple label = {"Subject: "} name = {"subject"} list = {subjectList} setState={(data) => setFormSubjects(data)} oriChecked={subjects} /> 
-            </div>
-            <input type='submit' value={editName?'Save Changes':'Add Child'} className="btn btn-block"/>
-        </form>
-    </div>
+    <>
+      <div className="overlay" onClick={hideModal}></div>
+      <div className="popup-block">
+          <form className="add-edit-form" onSubmit={(e)=>onSubmit(e, { name, level, subjects })}>
+              <div className="form-control">
+                <label>Name:</label>
+                <input type="text" placeholder="Insert your child's name" onChange={(e) => setFormName(e.target.value)} defaultValue={name} />
+              </div>
+              <div className="form-control">
+                <DropdownMenu label = {"Level: "} placeholder = {"Select Difficulty"} list = {levelList} onChange={(e) => setFormLevel(Number(e.target.value))} oriSelected={level} />
+              </div>
+              <div className="form-control">
+                <CheckboxMultiple label = {"Subject: "} name = {"subject"} list = {subjectList} setState={(data) => setFormSubjects(data)} oriChecked={subjects} /> 
+              </div>
+              <input type='submit' value={editName?'Save Changes':'Add Child'} className="btn btn-block"/>
+          </form>
+      </div>
+    </>
   )
 }
 

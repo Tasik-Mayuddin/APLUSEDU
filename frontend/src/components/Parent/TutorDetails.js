@@ -1,3 +1,4 @@
+import ButtonSmall from "../Buttons/ButtonSmall"
 
 
 const TutorDetails = ({ name, summary, experience, occupation, education, tutor_id, onClick }) => {
@@ -6,7 +7,7 @@ const TutorDetails = ({ name, summary, experience, occupation, education, tutor_
         <h2>{name}</h2>
         {experience&&<h4>{experience} years of experience | {occupation} | {education}</h4>}
         <p>{summary}</p>
-        <button onClick={()=>onClick(tutor_id)}>Check Availability</button>
+        <ButtonSmall text={'Check Availability'} onClick={()=>onClick(tutor_id)}></ButtonSmall>
     </div>
   )
 }

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import AddOrEditChild from './AddOrEditChild'
 import { fetchAPI, fetchPutAPI } from '../../functions'
 import StudentAllocation from './StudentAllocation'
+import ButtonSmall from '../Buttons/ButtonSmall'
 
 const Child = () => {
   const { slug } = useParams();
@@ -31,15 +32,17 @@ const Child = () => {
     e.preventDefault()
 
     const data = await fetchPutAPI(`children/${slug}`, toPost)
-    console.log(data)
     setChild(data)
+	setToggleEdit(false)
   }
 
   return (
     <>
-			<h1>{child.name}</h1>
-			<button onClick={()=>(setToggleEdit(true))}>Edit</button>
-			{toggleEdit&&<AddOrEditChild onSubmit={onSubmit} editName={child.name} editLevel={child.level} editSubjects={child.subjects} />}
+			<div className='child-header'>
+				<h1>{child.name}</h1>
+				<ButtonSmall text={'Edit Child Details'} color={'blue'} onClick={()=>(setToggleEdit(true))}></ButtonSmall>
+			</div>
+			{toggleEdit&&<AddOrEditChild onSubmit={onSubmit} editName={child.name} editLevel={child.level} editSubjects={child.subjects} hideModal={()=>setToggleEdit(false)} />}
 			
 			<Link to={`/children/${slug}/tutors`}>
 				<ButtonBig text={"Look for a Tutor!"} />
