@@ -6,7 +6,11 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializers import ChildrenSerializer, ChildrenCreateSerializer, LevelSerializer, SubjectSerializer, BookedSlotSerializer, BookedSlotCreateSerializer, TutorSerializer, TutorAvailabilitySerializer
+
+from .serializers import ChildrenSerializer, ChildrenCreateSerializer,\
+      LevelSerializer, SubjectSerializer, BookedSlotSerializer, BookedSlotCreateSerializer,\
+          TutorSerializer, TutorAvailabilitySerializer, AccountSerializer, TutorProfileSerializer
+
 from main.models import SubjectAndLevel, Level, Subject, TutorProfile
 from chat.models import ChatRoom, Message
 from parent.models import Student, BookedSlot
@@ -66,7 +70,7 @@ def child(request, id):
 
         if serializer.is_valid() and request.user.account.user_role == "Parent":
             serializer.save()
-            serializer_res = ChildrenSerializer(request.user.student_set.last())
+            serializer_res = ChildrenSerializer(request.user.student_set.get(id=serializer.data['id']))
             return Response(serializer_res.data)
     
     elif request.method == "DELETE":
@@ -192,4 +196,28 @@ def subjectList(request):
 
 
 
+# Get user role
+@api_view(['GET'])
+@login_required
+def userRole(request):
+    account = request.user.account
+    serializer = AccountSerializer(account)
+    res = serializer.data
+    res = {'role': res['user_role']}
+    return Response(res)
     
+
+# Get tutor profile
+@api_view(['GET'])
+@login_required
+def tutorProfile(request):
+
+    # get this user's profile
+    if request.method == 'GET':
+        try:
+            profile = TutorProfile.objects.get(author=request.user)
+        except TutorProfile.DoesNotExist:
+            return Response()
+        
+        serializer = TutorProfileSerializer(profile)
+        return Response(serializer.data)

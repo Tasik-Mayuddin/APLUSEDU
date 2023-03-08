@@ -27,7 +27,7 @@ const SideMenu = ({ nameHrefTupleList }) => {
             
             {nameHrefTupleList.map((item, id)=>(
 
-                <Link key={id} to={item[1]} className={location.pathname.startsWith(item[1])&&'current'} >{item[0]}</Link>
+                <Link key={id} to={item[1]} className={location.pathname.startsWith(item[1])?'current':''} >{item[0]}</Link>
 
             ))}
         </div>

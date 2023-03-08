@@ -16,5 +16,8 @@ urlpatterns = [
     path('subjects', views.subjectList, name="subjects"),
 
 
+    path('role', views.userRole, name="user-role"),
+    
+    path('tutor_profile', views.tutorProfile, name="tutor-profile"),
 
 ]

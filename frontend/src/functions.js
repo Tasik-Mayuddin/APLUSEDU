@@ -1,9 +1,14 @@
+// FOR DEVELOPMENT
+const parentToken = "Token b1bdeda32b6c9514b2b81623fb5362a7aab22646"
+const tutorToken = "Token 2553ca17566263e55681ee82da318ee0eb71e51b"
+const currentToken = tutorToken
+
 // function to fetch from API, GET
 export const fetchAPI = async (endpoint) => {
     const res = await fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
         method: "GET",
         headers: {
-            "Authorization": "Token b1bdeda32b6c9514b2b81623fb5362a7aab22646"
+            "Authorization": currentToken
         }
     })
     const data = await res.json()
@@ -18,7 +23,7 @@ export const fetchPostAPI = async(endpoint, toPost) => {
         method:'POST',
         headers: {
           'Content-type': 'application/json',
-          "Authorization": "Token b1bdeda32b6c9514b2b81623fb5362a7aab22646"
+          "Authorization": currentToken
         },
         body: JSON.stringify(toPost)
       })
@@ -34,7 +39,7 @@ export const fetchPutAPI = async(endpoint, toPost) => {
         method:'PUT',
         headers: {
           'Content-type': 'application/json',
-          "Authorization": "Token b1bdeda32b6c9514b2b81623fb5362a7aab22646"
+          "Authorization": currentToken
         },
         body: JSON.stringify(toPost)
       })

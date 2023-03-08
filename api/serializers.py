@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from main.models import SubjectAndLevel, Level, Subject, TutorProfile, DayAndTime
 from parent.models import Student, BookedSlot
+from register.models import Account
 from django.contrib.auth.models import User
 
 
@@ -27,12 +28,18 @@ class ChildrenCreateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-
+# used for parent and tutor interface
 class TutorProfileSerializer(serializers.ModelSerializer):
     experience_years = serializers.ReadOnlyField()
     class Meta:
         model = TutorProfile
-        fields = ["summary", "education", "occupation", "experience_years"]
+        fields = ["summary", "education", "occupation", "experience_years", "initial_experience", "created_at"]
+
+# used for tutor interface
+class TutorProfileCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TutorProfile
+        fields = "__all__"
 
 class TutorSerializer(serializers.ModelSerializer):
     tutorprofile = TutorProfileSerializer(required=False)
@@ -74,4 +81,7 @@ class TutorAvailabilitySerializer(serializers.ModelSerializer):
         fields = ["username", "dayandtime_set"]
 
 
-
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = "__all__"

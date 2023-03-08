@@ -145,7 +145,7 @@ a {
   transition: all 0.2s;
 }
 
-.child-header {
+.child-header, .profile-header {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -153,6 +153,7 @@ a {
   background-color: rgba(255, 255, 255, 0.425);
   border-radius: 8px;
 }
+
 
 
 .popup-block {
@@ -249,4 +250,30 @@ a {
   z-index: 10000;
   display: flex;
   justify-content: space-between;
+}
+
+
+.profile-details {
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 10px 40px;
+}
+
+.profile-details h3 {
+  font-size: 18px
+}
+
+.profile-popup {
+  display: block;
+  background-color: white;
+  border-radius: 8px;
+  position: absolute;
+  max-width: 1200px;
+  padding: 60px;
+  text-align: left;
+  top: 50%;
+  left: 50%; /* Added left property */
+  transform: translate(-50%, -50%);
+  z-index: 10000; 
 }
