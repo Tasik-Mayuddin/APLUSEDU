@@ -85,3 +85,9 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = "__all__"
+
+    
+class SubjectAndLevelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubjectAndLevel
+        fields = ["subject", "level"]

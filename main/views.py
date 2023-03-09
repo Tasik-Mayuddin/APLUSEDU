@@ -35,7 +35,7 @@ def welcome(request):
 
 def tDash(request):
     if request.user.account.user_role == "Tutor":
-        print(Token.objects.get(user=request.user))
+        # print(Token.objects.get_or_create(user=request.user))
         return render(request, 'main/tutor_dashboard.html')
 
 # For page displaying tutor's profile

@@ -1,11 +1,11 @@
 import ButtonSmall from "../Buttons/ButtonSmall"
 import { useState, useEffect } from "react"
-import { fetchAPI } from "../../functions"
+import { fetchAPI, fetchPostAPI, fetchPutAPI } from "../../functions"
 import AddOrEditProfile from "./AddOrEditProfile"
 
 
 const Profile = () => {
-    const [profile, setProfile] = useState([])
+    const [profile, setProfile] = useState('')
     const [showModal, setShowModal] = useState(false)
 
     useEffect(()=>{
@@ -15,6 +15,20 @@ const Profile = () => {
         }
         getProfile()
     },[])
+
+    // POST & PUT onSubmit functions
+    const onSubmitPost = async (e, toPost) => {
+        e.preventDefault()
+        const data = await fetchPostAPI('tutor_profile', toPost)
+        setProfile(data)
+        setShowModal(false)
+    }
+    const onSubmitPut = async (e, toPost) => {
+        e.preventDefault()
+        const data = await fetchPutAPI('tutor_profile', toPost)
+        setProfile(data)
+        setShowModal(false)
+    }
 
     return (
         <>
@@ -31,7 +45,7 @@ const Profile = () => {
                     <h3>University: {profile.education}</h3>
                     <h3>Occupation: {profile.occupation}</h3>
                 </div>
-                {showModal&&<AddOrEditProfile editProfile = {profile} hideModal = {()=>setShowModal(false)} />}
+                {showModal&&<AddOrEditProfile editProfile = {profile} hideModal = {()=>setShowModal(false)} onSubmit={profile?onSubmitPut:onSubmitPost} />}
             </div>
         </>
     )

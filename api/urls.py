@@ -19,5 +19,5 @@ urlpatterns = [
     path('role', views.userRole, name="user-role"),
     
     path('tutor_profile', views.tutorProfile, name="tutor-profile"),
-
+    path('tutor_subjectsandlevels', views.tutorSubjectsAndLevels, name="tutor-subjectsandlevels"),
 ]

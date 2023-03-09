@@ -11,13 +11,14 @@ const AddOrEditProfile = ({ onSubmit, editProfile, hideModal }) => {
     // get edit date
     const dateCreated = new Date(editProfile&&editProfile.created_at)
     const month = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"][dateCreated.getMonth()];
+        "July", "August", "September", "October", "November", "December"][dateCreated.getMonth()]
     const dateCreatedDisp = `${month}  ${dateCreated.getFullYear()}`
+
     return (
         <>
         <div className="overlay" onClick={hideModal}></div>
         <div className="profile-popup">
-            <form className="add-edit-form" onSubmit={(e)=>onSubmit(e, {summary})}>
+            <form className="add-edit-form" onSubmit={(e)=>onSubmit(e, {summary, initial_experience, education, occupation})}>
                 <div className="form-control">
                     <label>About me:</label>
                     <input type="text" placeholder="Tell us about yourself" onChange={(e) => setSummary(e.target.value)} defaultValue={summary} />

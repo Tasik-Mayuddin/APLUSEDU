@@ -9,7 +9,8 @@ from rest_framework.response import Response
 
 from .serializers import ChildrenSerializer, ChildrenCreateSerializer,\
       LevelSerializer, SubjectSerializer, BookedSlotSerializer, BookedSlotCreateSerializer,\
-          TutorSerializer, TutorAvailabilitySerializer, AccountSerializer, TutorProfileSerializer
+          TutorSerializer, TutorAvailabilitySerializer, AccountSerializer, TutorProfileSerializer,\
+          TutorProfileCreateSerializer, SubjectAndLevelSerializer
 
 from main.models import SubjectAndLevel, Level, Subject, TutorProfile
 from chat.models import ChatRoom, Message
@@ -208,7 +209,7 @@ def userRole(request):
     
 
 # Get tutor profile
-@api_view(['GET'])
+@api_view(['GET', 'POST', 'PUT'])
 @login_required
 def tutorProfile(request):
 
@@ -220,4 +221,31 @@ def tutorProfile(request):
             return Response()
         
         serializer = TutorProfileSerializer(profile)
+        return Response(serializer.data)
+    
+    # create user's profile
+    elif request.method == 'POST':
+        request.data['author'] = request.user.id
+        serializer = TutorProfileCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            serializer_res = TutorProfileSerializer(request.user.tutorprofile)
+            return Response(serializer_res.data)
+        
+    # edit user's profile
+    elif request.method == 'PUT':
+        request.data['author'] = request.user.id
+        serializer = TutorProfileCreateSerializer(instance=request.user.tutorprofile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            serializer_res = TutorProfileSerializer(request.user.tutorprofile)
+            return Response(serializer_res.data)
+        
+
+# Get tutor profile
+@api_view(['GET', 'POST', 'PUT'])
+@login_required
+def tutorSubjectsAndLevels(request):
+    if request.method == 'GET':
+        serializer = SubjectAndLevelSerializer(request.user.subjectandlevel_set.all(), many=True)
         return Response(serializer.data)

@@ -8,6 +8,7 @@ import SideMenu from './components/Common/SideMenu'
 import { fetchAPI } from './functions'
 import { useState, useEffect } from 'react'
 import Profile from './components/Tutor/Profile'
+import SubjectsAndLevels from './components/Tutor/SubjectsAndLevels'
 
 function App() {
 
@@ -23,7 +24,7 @@ function App() {
   
 
   const parentSideMenu = [['My Children', '/children'], ['Chat with Tutors', '/chat']]
-  const tutorSideMenu = [['My Profile', '/profile'], ['Subjects and Levels', '/subjectandlevels'], ['Chat with Parents', '/chat']]
+  const tutorSideMenu = [['My Profile', '/profile'], ['Subjects and Levels', '/subjectsandlevels'], ['Chat with Parents', '/chat']]
 
   return (
     <>
@@ -45,6 +46,7 @@ function App() {
             <Routes>
               {/*tutor interface routing */}
               <Route path='/profile' element={<Profile />} />
+              <Route path='/subjectsandlevels' element={<SubjectsAndLevels />} />
             </Routes>
           }
           
