@@ -1,13 +1,13 @@
 
 
-const DropdownMenu = ({ label, placeholder, list, onChange, oriSelected, extra_options }) => {
+const DropdownMenu = ({ label, placeholder, list, onChange, oriSelected, extra_options, valueName }) => {
   return (
     <>
       <label>{label}</label>
       <select type="text" onChange={onChange} value={oriSelected} > 
         <option value='' disabled>{placeholder}</option>
         {list&&list.map((item) => (
-          <option key={item.id} value={item.id}>
+          <option key={item.id} value={valueName?item.name:item.id}>
             {item.name}
           </option>
         ))}

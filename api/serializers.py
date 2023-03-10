@@ -3,6 +3,7 @@ from main.models import SubjectAndLevel, Level, Subject, TutorProfile, DayAndTim
 from parent.models import Student, BookedSlot
 from register.models import Account
 from django.contrib.auth.models import User
+from collections import defaultdict
 
 
 class LevelSerializer(serializers.ModelSerializer):
@@ -87,7 +88,3 @@ class AccountSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     
-class SubjectAndLevelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SubjectAndLevel
-        fields = ["subject", "level"]

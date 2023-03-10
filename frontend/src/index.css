@@ -67,11 +67,12 @@ a {
   color: #ffffff;
   text-align: center;
   font-size: 16px;
-  padding: 10px;
-  width: 150px;
+  padding: 10px 20px;
+  
   transition: all 0.5s;
   cursor: pointer;
-  margin: 5px;
+  margin: auto 5px;
+  height: 40px;
 }
 
 .btn-small:hover {
@@ -276,4 +277,46 @@ a {
   left: 50%; /* Added left property */
   transform: translate(-50%, -50%);
   z-index: 10000; 
+}
+
+
+.subjlvl-details {
+  width: 250px;
+  min-height: 110px;
+  margin: auto;
+  width: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  text-align: left;
+  margin-bottom: 20px;
+  overflow: hidden;
+  padding: 10px;
+  font-size: smaller;
+}
+.subjlvl-details h2 {
+  font-weight: bold;
+  margin: 10px;
+}
+.subjlvl-details h3 {
+  font-weight: normal;
+  margin: 10px;
+}
+
+.subjlvl-details-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.subjlvl-popup-block {
+  display: block;
+  background-color: white;
+  border-radius: 8px;
+  position: absolute;
+  width: 400px;
+  padding: 60px;
+  text-align: left;
+  top: 50%;
+  left: 50%; /* Added left property */
+  transform: translate(-50%, -50%);
+  z-index: 10000;
 }

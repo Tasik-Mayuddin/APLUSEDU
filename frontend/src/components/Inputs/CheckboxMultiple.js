@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-const CheckboxMultiple = ({ label, name, list, setState, oriChecked }) => {
+const CheckboxMultiple = ({ label, name, list, setState, oriChecked, valueName }) => {
 
   const [selectedOptions, setSelectedOptions] = useState(oriChecked?oriChecked:[])
   
@@ -25,7 +25,7 @@ const CheckboxMultiple = ({ label, name, list, setState, oriChecked }) => {
         {list.map((item, id) => (
                 <div key={item.id} className={'form-control-checkbox'}>
                   <label htmlFor={"id_"+name+"_"+id}>{item.name} 
-                      <input type="checkbox" id={"id_"+name+"_"+id} name={name} value={item.id} onChange={handleOptionChange} defaultChecked={oriChecked.includes(item.id)} />
+                      <input type="checkbox" id={"id_"+name+"_"+id} name={name} value={valueName?item.name:item.id} onChange={handleOptionChange} defaultChecked={oriChecked.includes(item.id)} />
                   </label>
                 </div>
             ))}

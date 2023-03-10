@@ -10,12 +10,13 @@ from rest_framework.response import Response
 from .serializers import ChildrenSerializer, ChildrenCreateSerializer,\
       LevelSerializer, SubjectSerializer, BookedSlotSerializer, BookedSlotCreateSerializer,\
           TutorSerializer, TutorAvailabilitySerializer, AccountSerializer, TutorProfileSerializer,\
-          TutorProfileCreateSerializer, SubjectAndLevelSerializer
+          TutorProfileCreateSerializer
 
 from main.models import SubjectAndLevel, Level, Subject, TutorProfile
 from chat.models import ChatRoom, Message
 from parent.models import Student, BookedSlot
 from django.contrib.auth.models import User
+from collections import defaultdict
 
 
 # Create your views here.
@@ -242,10 +243,35 @@ def tutorProfile(request):
             return Response(serializer_res.data)
         
 
-# Get tutor profile
-@api_view(['GET', 'POST', 'PUT'])
+# Get tutor's subjects and levels
+@api_view(['GET', 'POST', 'DELETE'])
 @login_required
 def tutorSubjectsAndLevels(request):
-    if request.method == 'GET':
-        serializer = SubjectAndLevelSerializer(request.user.subjectandlevel_set.all(), many=True)
-        return Response(serializer.data)
+
+    if request.method == 'POST' and request.user.account.user_role == 'Tutor':
+        for level_id in request.data['levels']:
+            subject_and_level = SubjectAndLevel.objects.get(
+                subject = Subject.objects.get(id = request.data['subject']),
+                level = Level.objects.get(id = level_id)
+            )
+            subject_and_level.tutors.add(request.user)
+            subject_and_level.save()
+    
+    elif request.method == 'DELETE':
+        subject_to_delete = request.data
+        for subject_and_level in request.user.subjectandlevel_set.filter(subject=Subject.objects.get(name=subject_to_delete)):
+            subject_and_level.tutors.remove(request.user)
+            subject_and_level.save()
+    
+    subject_and_level_list = request.user.subjectandlevel_set.all()
+    data = defaultdict(list)
+
+    for subject_and_level in subject_and_level_list:
+        data[subject_and_level.subject.name].append(subject_and_level.level.name) 
+    
+    res = []
+    res = [{"subject": subject, "levels": levels} for subject, levels in data.items()]
+
+    return Response(res)
+    
+    
