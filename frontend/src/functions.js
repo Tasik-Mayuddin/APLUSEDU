@@ -5,60 +5,134 @@ const tutorTokenJohn = "Token 06c0896f0f30736f21862c880722b2bbe52df02d"
 const currentToken = tutorToken
 
 // function to fetch from API, GET
-export const fetchAPI = async (endpoint) => {
-    const res = await fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
-        method: "GET",
-        headers: {
-            "Authorization": currentToken
-        }
-    })
-    const data = await res.json()
-    return(data)
-}
+// export const fetchAPI = async (endpoint) => {
+//     const res = await fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
+//         method: "GET",
+//         headers: {
+//             "Authorization": currentToken
+//         }
+//     })
+//     const data = await res.json()
+//     return(data)
+// }
+
+// // function to fetch from API, DEL
+// export const fetchDeleteAPI = async (endpoint, toDel) => {
+//   const res = await fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
+//       method: "DELETE",
+//       headers: {
+//           'Content-type': 'application/json',
+//           "Authorization": currentToken
+//       },
+//       body: JSON.stringify(toDel)
+//   })
+//   const data = await res.json()
+//   return(data)
+// }
+
+// // function to fetch API POST, posting toPost
+// export const fetchPostAPI = async(endpoint, toPost) => {
+//     console.log(JSON.stringify(toPost))
+//     const res = await fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
+//         method:'POST',
+//         headers: {
+//           'Content-type': 'application/json',
+//           "Authorization": currentToken
+//         },
+//         body: JSON.stringify(toPost)
+//       })
+//     const data = await res.json()
+//     return data
+// }
+
+
+// // function to fetch API PUT, posting toPost
+// export const fetchPutAPI = async(endpoint, toPost) => {
+//     console.log(JSON.stringify(toPost))
+//     const res = await fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
+//         method:'PUT',
+//         headers: {
+//           'Content-type': 'application/json',
+//           "Authorization": currentToken
+//         },
+//         body: JSON.stringify(toPost)
+//       })
+//     const data = await res.json()
+//     return data
+// }
+
+
+// PRODUCTION TEST
 
 // function to fetch from API, GET
-export const fetchDeleteAPI = async (endpoint, toDel) => {
+export const fetchAPI = async (endpoint) => {
   const res = await fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
-      method: "DELETE",
-      headers: {
-          'Content-type': 'application/json',
-          "Authorization": currentToken
-      },
-      body: JSON.stringify(toDel)
+      method: "GET",
   })
   const data = await res.json()
   return(data)
 }
 
+// function to fetch from API, DEL
+export const fetchDeleteAPI = async (endpoint, toDel) => {
+  // Get the CSRF token from the cookie
+  const csrftoken = getCookie('csrftoken');
+  
+  // Send the DELETE request with the CSRF token in the headers
+  const res = await fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-type': 'application/json',
+      'X-CSRFToken': csrftoken
+    },
+    body: JSON.stringify(toDel)
+  });
+
+  const data = await res.json();
+  return data;
+};
+
 // function to fetch API POST, posting toPost
 export const fetchPostAPI = async(endpoint, toPost) => {
-    console.log(JSON.stringify(toPost))
-    const res = await fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
-        method:'POST',
-        headers: {
-          'Content-type': 'application/json',
-          "Authorization": currentToken
-        },
-        body: JSON.stringify(toPost)
-      })
-    const data = await res.json()
-    return data
-}
+  // Get the CSRF token from the cookie
+  const csrftoken = getCookie('csrftoken');
+
+  // Send the POST request with the CSRF token in the headers
+  const res = await fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
+      method:'POST',
+      headers: {
+        'Content-type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify(toPost)
+    });
+
+  const data = await res.json();
+  return data;
+};
 
 
 // function to fetch API PUT, posting toPost
 export const fetchPutAPI = async(endpoint, toPost) => {
-    console.log(JSON.stringify(toPost))
-    const res = await fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
-        method:'PUT',
-        headers: {
-          'Content-type': 'application/json',
-          "Authorization": currentToken
-        },
-        body: JSON.stringify(toPost)
-      })
-    const data = await res.json()
-    return data
-}
+  // Get the CSRF token from the cookie
+  const csrftoken = getCookie('csrftoken');
 
+  // Send the PUT request with the CSRF token in the headers
+  const res = await fetch(`http://127.0.0.1:8000/api/${endpoint}`, {
+      method:'PUT',
+      headers: {
+        'Content-type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify(toPost)
+    });
 
+  const data = await res.json();
+  return data;
+};
+
+// Function to get the value of a cookie by name
+export const getCookie = (name) => {
+  const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+  return cookieValue ? cookieValue.pop() : '';
+};
