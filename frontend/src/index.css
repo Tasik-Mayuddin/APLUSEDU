@@ -253,6 +253,14 @@ a {
   justify-content: space-between;
 }
 
+.tutor-availability-main {
+  min-width: 600px;
+  border-radius: 8px;
+  padding: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
 
 .profile-details {
   text-align: left;
@@ -319,4 +327,25 @@ a {
   left: 50%; /* Added left property */
   transform: translate(-50%, -50%);
   z-index: 10000;
+}
+
+.request-details {
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 1px 10px;
+}
+.request-details h3 {
+  font-size: 26px;
+  margin: 2px auto;
+}
+.request-details h4 {
+  font-size: 20px;
+  margin: 4px auto;
+  font-weight: normal;
+}
+.request-details p {
+  font-size: 18px;
+  margin: 4px auto;
+  font-weight: normal;
 }

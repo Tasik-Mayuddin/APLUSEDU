@@ -16,9 +16,21 @@ class SubjectSerializer(serializers.ModelSerializer):
         model = Subject
         fields = "__all__"
 
+class SubjectAndLevelSerializer(serializers.ModelSerializer):
+    __str__ = serializers.ReadOnlyField()
+    class Meta:
+        model = SubjectAndLevel
+        fields = ["__str__"]
+
+class ParentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["username"]
+
 class ChildrenSerializer(serializers.ModelSerializer):
     level = LevelSerializer()
     subjects = SubjectSerializer(many=True)
+    parent = ParentSerializer()
     class Meta:
         model = Student
         fields = "__all__"
@@ -70,10 +82,18 @@ class BookedSlotCreateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class DayAndTimeSerializer(serializers.ModelSerializer):
-    bookedslot_set = BookedSlotSerializer(many=True)
+    bookedslot_set = BookedSlotSerializer(many=True, required=False)
     class Meta:
         model = DayAndTime
-        fields = ["day", "start_time", "end_time", "bookedslot_set"]
+        fields = ["day", "start_time", "end_time", "bookedslot_set", "tutor"]
+
+class RequestSerializer(serializers.ModelSerializer):
+    student = ChildrenSerializer()
+    subject_and_level = SubjectAndLevelSerializer()
+    day_and_time = DayAndTimeSerializer()
+    class Meta:
+        model = BookedSlot
+        fields = "__all__"
 
 class TutorAvailabilitySerializer(serializers.ModelSerializer):
     dayandtime_set = DayAndTimeSerializer(many=True)
@@ -86,5 +106,7 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = "__all__"
+
+
 
     

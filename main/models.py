@@ -42,6 +42,9 @@ class SubjectAndLevel (models.Model):
     level = models.ForeignKey(Level, on_delete=models.RESTRICT)
     tutors = models.ManyToManyField(User)
 
+    def __str__(self):
+        return self.level.name + ' ' + self.subject.name
+
 # Represents the original available times of the tutors
 class DayAndTime (models.Model):
     day = models.CharField(max_length=20, choices=DAY_CHOICES)
@@ -50,8 +53,13 @@ class DayAndTime (models.Model):
     tutor = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # Determine if new booking clashes with existing approved bookings (check against the student/tutor bookedslots)
-    def bookingClash(self, student, start_time, end_time):
-        for bslot_approved in self.bookedslot_set.filter(status="approved") | student.bookedslot_set.all(): # .all for student to avoid clashing booking requests
+    def bookingClash(self,  start_time, end_time, student = ""):
+
+        # extract relevant query set
+        query_set = self.bookedslot_set.filter(status="approved")
+        if student:
+            query_set = query_set | student.bookedslot_set.all()
+        for bslot_approved in query_set: # .all for student to avoid clashing booking requests
             if clash_check(start_time, end_time, bslot_approved.start_time, bslot_approved.end_time):
                 return True
         return False

@@ -10,13 +10,14 @@ from rest_framework.response import Response
 from .serializers import ChildrenSerializer, ChildrenCreateSerializer,\
       LevelSerializer, SubjectSerializer, BookedSlotSerializer, BookedSlotCreateSerializer,\
           TutorSerializer, TutorAvailabilitySerializer, AccountSerializer, TutorProfileSerializer,\
-          TutorProfileCreateSerializer
+          TutorProfileCreateSerializer, DayAndTimeSerializer, RequestSerializer
 
 from main.models import SubjectAndLevel, Level, Subject, TutorProfile
 from chat.models import ChatRoom, Message
 from parent.models import Student, BookedSlot
 from django.contrib.auth.models import User
 from collections import defaultdict
+from APLUSEDU.utils import clash_check
 
 
 # Create your views here.
@@ -120,65 +121,100 @@ def tutorQuery(request):
     return Response(serializer.data)
 
 # Tutor availability, user = Parent
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 @login_required
 def tutorAvailability(request, id):
-    tutor = User.objects.get(id=id)
-    serializer = TutorAvailabilitySerializer(tutor)
-    return Response(serializer.data)
+    if request.method == 'GET':
+        tutor = User.objects.get(id=id)
+        serializer = TutorAvailabilitySerializer(tutor)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        tutor = request.user
+        request.data['tutor'] = tutor.id
 
-# Tutor request, user = Parent
-@api_view(['POST'])
-@login_required
-def tutorRequest(request, id):
-    tutor = User.objects.get(id=id)
-    student = request.user.student_set.get(id=request.data['child_id'])
-
-    dnt_extracted = tutor.dayandtime_set.filter( 
-        day = request.data['day'], 
-        start_time__lte = request.data['start_time'], 
-        end_time__gte = request.data['end_time'], 
-    ).first() # since it will only return a single object, the first()
-
-    # Ensure that DayAndTime instance exists, and call method to determine if clash
-    if dnt_extracted is not None and not dnt_extracted.bookingClash(student, request.data['start_time'], request.data['end_time']):
-
-        # if parent condition true, a bookedslot with the status "pending" is created
+        # Find if there are existing 
+        dnt_query = request.user.dayandtime_set.filter(day=request.data['day'])
+        intercept = False
+        if dnt_query.exists():                   
+            for x in dnt_query:
+                if clash_check(request.data['start_time'], request.data['end_time'], x.start_time, x.end_time):
+                    intercept = True
+                    break
         
-        subject_and_level = SubjectAndLevel.objects.get(
-            subject = Subject.objects.get(id=request.data['subject']['id']), 
-            level = student.level
-            )
-        # verify that tutor has instance of SubjectAndLevel
-        if subject_and_level in tutor.subjectandlevel_set.all():
-            req_data = request.data
-            req_data.pop('child_id')
-            req_data.pop('subject')
-            req_data['day_and_time'] = dnt_extracted.id
-            req_data['subject_and_level'] = subject_and_level.id
-            req_data['student'] = student.id
-            req_data['status'] = "pending"
+        if intercept:
+            return Response("clashing with other free slots!")
 
-        serializer = BookedSlotCreateSerializer(data=req_data)
+        serializer = DayAndTimeSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
 
-            # create chatroom between tutor and parent upon request of tutor
-            chatroom, created = ChatRoom.objects.get_or_create(tutor = tutor, parent = request.user)
+        serializer_res = TutorAvailabilitySerializer(tutor)
+        return Response(serializer_res.data)
 
-            # send initial tutor request message
-            req_msg = f"Hi Mr/Mrs {tutor.username}, I would like to request \
-                {subject_and_level.level} {subject_and_level.subject} \
-                for my child, {student.name}, for {req_data['day']}: {req_data['start_time']} - {req_data['end_time']}"
+
+# Tutor request, user = Parent
+@api_view(['POST', 'GET'])
+@login_required
+def tutorRequest(request, id):
+    if request.method == 'POST':
+        tutor = User.objects.get(id=id)
+        student = request.user.student_set.get(id=request.data['child_id'])
+
+        dnt_extracted = tutor.dayandtime_set.filter( 
+            day = request.data['day'], 
+            start_time__lte = request.data['start_time'], 
+            end_time__gte = request.data['end_time'], 
+        ).first() # since it will only return a single object, the first()
+
+        # Ensure that DayAndTime instance exists, and call method to determine if clash
+        if dnt_extracted is not None and not dnt_extracted.bookingClash(request.data['start_time'], request.data['end_time'], student=student):
+
+            # if parent condition true, a bookedslot with the status "pending" is created
             
-            Message.objects.create(
-                author = request.user,
-                content = req_msg,
-                chat_room = chatroom
-        )
+            subject_and_level = SubjectAndLevel.objects.get(
+                subject = Subject.objects.get(id=request.data['subject']['id']), 
+                level = student.level
+                )
+            # verify that tutor has instance of SubjectAndLevel
+            if subject_and_level in tutor.subjectandlevel_set.all():
+                req_data = request.data
+                req_data.pop('child_id')
+                req_data.pop('subject')
+                req_data['day_and_time'] = dnt_extracted.id
+                req_data['subject_and_level'] = subject_and_level.id
+                req_data['student'] = student.id
+                req_data['status'] = "pending"
 
-    return Response(serializer.data)
+            serializer = BookedSlotCreateSerializer(data=req_data)
+            if serializer.is_valid():
+                serializer.save()
 
+                # create chatroom between tutor and parent upon request of tutor
+                chatroom, created = ChatRoom.objects.get_or_create(tutor = tutor, parent = request.user)
+
+                # send initial tutor request message
+                req_msg = f"Hi Mr/Mrs {tutor.username}, I would like to request \
+                    {subject_and_level.level} {subject_and_level.subject} \
+                    for my child, {student.name}, for {req_data['day']}: {req_data['start_time']} - {req_data['end_time']}"
+                
+                Message.objects.create(
+                    author = request.user,
+                    content = req_msg,
+                    chat_room = chatroom
+            )
+
+        return Response(serializer.data)
+
+    elif request.method == 'GET':
+        # retrieve all unapproved booked slots as the list of requests
+        dnt_query = request.user.dayandtime_set.all()
+        requests = BookedSlot.objects.none() # create an empty query set
+        for dnt in dnt_query:
+            requests = requests | dnt.bookedslot_set.filter(status="pending") 
+
+        serializer = RequestSerializer(requests, many=True)
+
+        return Response(serializer.data)
 
 # Get whole list of levels
 @api_view(['GET'])
@@ -204,9 +240,7 @@ def subjectList(request):
 def userRole(request):
     account = request.user.account
     serializer = AccountSerializer(account)
-    res = serializer.data
-    res = {'role': res['user_role']}
-    return Response(res)
+    return Response(serializer.data)
     
 
 # Get tutor profile

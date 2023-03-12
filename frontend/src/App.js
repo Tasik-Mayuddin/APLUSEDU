@@ -9,22 +9,25 @@ import { fetchAPI } from './functions'
 import { useState, useEffect } from 'react'
 import Profile from './components/Tutor/Profile'
 import SubjectsAndLevels from './components/Tutor/SubjectsAndLevels'
+import AllocationAndRequests from './components/Tutor/AllocationAndRequests'
 
 function App() {
 
   const [role, setRole] = useState('')
+  const [id, setId] = useState('')
 
   useEffect(()=>{
     const get_role = async() => {
       const fetchRole = await fetchAPI('role')
-      setRole(fetchRole.role)
+      setRole(fetchRole.user_role)
+      setId(fetchRole.user)
     }
     get_role()
   }, [])
   
 
   const parentSideMenu = [['My Children', '/children'], ['Chat with Tutors', '/chat']]
-  const tutorSideMenu = [['My Profile', '/profile'], ['Subjects and Levels', '/subjectsandlevels'], ['Chat with Parents', '/chat']]
+  const tutorSideMenu = [['My Profile', '/profile'], ['Subjects and Levels', '/subjectsandlevels'], ['Allocations', '/allocations'], ['Chat with Parents', '/chat']]
 
   return (
     <>
@@ -47,6 +50,7 @@ function App() {
               {/*tutor interface routing */}
               <Route path='/profile' element={<Profile />} />
               <Route path='/subjectsandlevels' element={<SubjectsAndLevels />} />
+              <Route path='/allocations' element={<AllocationAndRequests userId={id} />} />
             </Routes>
           }
           
