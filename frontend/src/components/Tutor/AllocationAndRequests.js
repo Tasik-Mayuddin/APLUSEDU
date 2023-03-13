@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
-import { fetchAPI, fetchPostAPI } from "../../functions"
+import { fetchAPI, fetchPutAPI, fetchPostAPI } from "../../functions"
 import AvailabilityTimetable from "../Common/AvailabilityTimetable"
 import DropdownMenu from "../Inputs/DropdownMenu"
 import TimeInput from "../Inputs/TimeInput"
-import RequestIndie from "./RequestIndie"
+import Requests from "./Requests"
 
 const AllocationAndRequests = ({ userId }) => {
 
@@ -36,7 +36,11 @@ const AllocationAndRequests = ({ userId }) => {
         const fetchAvailability = await fetchPostAPI(`tutors/${userId}/availability`, toPost)
         setAvailability(fetchAvailability)
     }
-
+    // accepting a request
+    const onAccept = async(toPost) => {
+        const fetchRequest = await fetchPutAPI(`tutors/${userId}/request`, toPost)
+        setAvailability(fetchRequest)
+      }
     
 
     return (
@@ -71,7 +75,8 @@ const AllocationAndRequests = ({ userId }) => {
 
                     <div>
                         <h2>Requests</h2>
-                        {requests&&requests.map((item, id) => <RequestIndie key={id} request={item} />)}
+                        {availability&&<Requests availability={availability} onAccept={onAccept} />}
+                        {/* {requests&&requests.map((item, id) => <RequestIndie key={id} request={item} userId={userId} onAccept={onAccept} />)} */}
                     </div>
                 </div>
             </div>

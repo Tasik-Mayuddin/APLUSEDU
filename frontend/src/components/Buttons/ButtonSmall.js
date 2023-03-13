@@ -1,8 +1,8 @@
 
 const ButtonSmall = ({ color, text, onClick }) => {
+  
   return (
     <button 
-    
     className={'btn-small'} 
     onClick={onClick}
     >

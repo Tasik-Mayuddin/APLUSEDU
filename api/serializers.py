@@ -102,6 +102,29 @@ class TutorAvailabilitySerializer(serializers.ModelSerializer):
         fields = ["username", "dayandtime_set"]
 
 
+# Series of nested serializers to present relevant info for the tutor interface.
+class ChildrenPovSerializer(serializers.ModelSerializer):
+    parent = ParentSerializer()
+    class Meta:
+        model = Student
+        fields = ["name", "parent"]
+class BookedSlotPovSerializer(serializers.ModelSerializer):
+    student = ChildrenPovSerializer()
+    subject_and_level = SubjectAndLevelSerializer()
+    class Meta:
+        model = BookedSlot
+        fields = "__all__"      
+class DayAndTimePovSerializer(DayAndTimeSerializer):
+    bookedslot_set = BookedSlotPovSerializer(many=True, required=False)
+    class Meta(DayAndTimeSerializer.Meta):
+        pass
+class TutorPovAvailabilitySerializer(serializers.ModelSerializer):
+    dayandtime_set = DayAndTimePovSerializer(many=True)
+    class Meta:
+        model = User
+        fields = ["dayandtime_set"]
+
+
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account

@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from .serializers import ChildrenSerializer, ChildrenCreateSerializer,\
       LevelSerializer, SubjectSerializer, BookedSlotSerializer, BookedSlotCreateSerializer,\
           TutorSerializer, TutorAvailabilitySerializer, AccountSerializer, TutorProfileSerializer,\
-          TutorProfileCreateSerializer, DayAndTimeSerializer, RequestSerializer
+          TutorProfileCreateSerializer, DayAndTimeSerializer, RequestSerializer, TutorPovAvailabilitySerializer
 
 from main.models import SubjectAndLevel, Level, Subject, TutorProfile
 from chat.models import ChatRoom, Message
@@ -124,10 +124,19 @@ def tutorQuery(request):
 @api_view(['GET', 'POST'])
 @login_required
 def tutorAvailability(request, id):
+    # for parent AND tutor to get tutor's free time
     if request.method == 'GET':
         tutor = User.objects.get(id=id)
-        serializer = TutorAvailabilitySerializer(tutor)
-        return Response(serializer.data)
+        
+        # additional info if tutor interface (student, parent, subject, level, etc)
+        if request.user == tutor:
+            serializer = TutorPovAvailabilitySerializer(tutor)
+            return Response(serializer.data)
+        else:
+            serializer = TutorAvailabilitySerializer(tutor)
+            return Response(serializer.data)
+        
+    # for tutor to set free time
     elif request.method == 'POST':
         tutor = request.user
         request.data['tutor'] = tutor.id
@@ -148,14 +157,15 @@ def tutorAvailability(request, id):
         if serializer.is_valid():
             serializer.save()
 
-        serializer_res = TutorAvailabilitySerializer(tutor)
+        serializer_res = TutorPovAvailabilitySerializer(tutor)
         return Response(serializer_res.data)
 
 
 # Tutor request, user = Parent
-@api_view(['POST', 'GET'])
+@api_view(['POST', 'GET', 'PUT'])
 @login_required
 def tutorRequest(request, id):
+    # for parent to send request
     if request.method == 'POST':
         tutor = User.objects.get(id=id)
         student = request.user.student_set.get(id=request.data['child_id'])
@@ -205,6 +215,7 @@ def tutorRequest(request, id):
 
         return Response(serializer.data)
 
+    # for tutor to get requests - depreciated
     elif request.method == 'GET':
         # retrieve all unapproved booked slots as the list of requests
         dnt_query = request.user.dayandtime_set.all()
@@ -215,6 +226,19 @@ def tutorRequest(request, id):
         serializer = RequestSerializer(requests, many=True)
 
         return Response(serializer.data)
+    
+    # for tutor to accept request
+    elif request.method == 'PUT':
+        bookedslot_id = request.data['bSlotId']
+        booked_slot_to_approve = BookedSlot.objects.get(id=bookedslot_id)
+        if booked_slot_to_approve.day_and_time.tutor != request.user:
+            return Response('Invalid user')
+        serializer = BookedSlotSerializer(instance=booked_slot_to_approve, data={"status": "approved"}, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+        serializer_res = TutorPovAvailabilitySerializer(request.user)
+        return Response(serializer_res.data)
+        
 
 # Get whole list of levels
 @api_view(['GET'])
