@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { fetchAPI, fetchPutAPI, fetchPostAPI } from "../../functions"
+import { fetchAPI, fetchPutAPI, fetchPostAPI, fetchDeleteAPI } from "../../functions"
 import AvailabilityTimetable from "../Common/AvailabilityTimetable"
 import DropdownMenu from "../Inputs/DropdownMenu"
 import TimeInput from "../Inputs/TimeInput"
@@ -41,7 +41,11 @@ const AllocationAndRequests = ({ userId }) => {
         const fetchRequest = await fetchPutAPI(`tutors/${userId}/request`, toPost)
         setAvailability(fetchRequest)
       }
-    
+    // declining a request (delete)
+    const onDecline = async(toPost) => {
+        const fetchRequest = await fetchDeleteAPI(`tutors/${userId}/request`, toPost)
+        setAvailability(fetchRequest)
+      }
 
     return (
         <>
@@ -75,7 +79,7 @@ const AllocationAndRequests = ({ userId }) => {
 
                     <div>
                         <h2>Requests</h2>
-                        {availability&&<Requests availability={availability} onAccept={onAccept} />}
+                        {availability&&<Requests availability={availability} onAccept={onAccept} onDecline={onDecline} />}
                         {/* {requests&&requests.map((item, id) => <RequestIndie key={id} request={item} userId={userId} onAccept={onAccept} />)} */}
                     </div>
                 </div>

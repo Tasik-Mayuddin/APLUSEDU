@@ -3,7 +3,7 @@ import ButtonSmall from "../Buttons/ButtonSmall"
 import { fetchPutAPI } from "../../functions"
 
 
-const RequestIndie = ({ request, day, onAccept }) => {
+const RequestIndie = ({ request, day, onAccept, onDecline }) => {
 
   
 
@@ -19,7 +19,7 @@ const RequestIndie = ({ request, day, onAccept }) => {
 
       <div className="request-details-right">
         <ButtonSmall text={'Accept'} onClick={()=>onAccept({bSlotId: request.id})} />
-        <ButtonSmall text={'Decline'} />
+        <ButtonSmall text={'Decline'} onClick={()=>onDecline({bSlotId: request.id})} />
       </div>
     </div>
   )

@@ -2,7 +2,7 @@ import RequestIndie from "./RequestIndie"
 import React from "react"
 
 
-const Requests = ({ availability, onAccept }) => {
+const Requests = ({ availability, onAccept, onDecline }) => {
   return (
     <>
             {/* get list of teacher's free time */}
@@ -10,7 +10,7 @@ const Requests = ({ availability, onAccept }) => {
                 <React.Fragment key={id}>
                     {/* get inner list of pending bookedslots */}
                     {item.bookedslot_set.filter(bslot=>bslot.status==="pending").map((bslot, id)=>(
-                        <RequestIndie key={id} request={bslot} day={item.day} onAccept={onAccept} />
+                        <RequestIndie key={id} request={bslot} day={item.day} onAccept={onAccept} onDecline={onDecline} />
                     ))}
                 </React.Fragment>       
             ))}

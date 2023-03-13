@@ -162,7 +162,7 @@ def tutorAvailability(request, id):
 
 
 # Tutor request, user = Parent
-@api_view(['POST', 'GET', 'PUT'])
+@api_view(['POST', 'GET', 'PUT', 'DELETE'])
 @login_required
 def tutorRequest(request, id):
     # for parent to send request
@@ -231,13 +231,31 @@ def tutorRequest(request, id):
     elif request.method == 'PUT':
         bookedslot_id = request.data['bSlotId']
         booked_slot_to_approve = BookedSlot.objects.get(id=bookedslot_id)
+
+        # to verify the user and prevent clashes with existing approved booked slots
         if booked_slot_to_approve.day_and_time.tutor != request.user:
             return Response('Invalid user')
+        elif booked_slot_to_approve.day_and_time.bookingClash(booked_slot_to_approve.start_time, booked_slot_to_approve.end_time):
+            return Response('Clashes with existing approved time slots!')
+        
         serializer = BookedSlotSerializer(instance=booked_slot_to_approve, data={"status": "approved"}, partial=True)
         if serializer.is_valid():
             serializer.save()
         serializer_res = TutorPovAvailabilitySerializer(request.user)
         return Response(serializer_res.data)
+    
+    # for tutor to decline request, which just deletes the request
+    elif request.method == 'DELETE':
+        bookedslot_id = request.data['bSlotId']
+        booked_slot_to_decline = BookedSlot.objects.get(id=bookedslot_id)
+
+        if booked_slot_to_decline.day_and_time.tutor != request.user:
+            return Response('Invalid user')
+        
+        booked_slot_to_decline.delete()
+        serializer_res = TutorPovAvailabilitySerializer(request.user)
+        return Response(serializer_res.data)
+
         
 
 # Get whole list of levels

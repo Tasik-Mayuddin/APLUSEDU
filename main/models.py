@@ -52,7 +52,7 @@ class DayAndTime (models.Model):
     end_time = models.TimeField()
     tutor = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    # Determine if new booking clashes with existing approved bookings (check against the student/tutor bookedslots)
+    # Determine if new booking clashes with existing approved bookings (check against the student/tutor bookedslots), Parent (student) Pov
     def bookingClash(self,  start_time, end_time, student = ""):
 
         # extract relevant query set
