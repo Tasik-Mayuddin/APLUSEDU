@@ -154,3 +154,23 @@ export const formatTime = (time) => {
   let formattedTime = hours + ':' + minutes + ' ' + ampm;
   return formattedTime;
 }
+
+// Make an arbituary Date() with Day and Time
+export const getDateFromDayAndTime = (day, time) => {
+  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const dayOfWeekIndex = daysOfWeek.indexOf(day);
+  if (dayOfWeekIndex < 0) {
+    throw new Error('Invalid day of week: ' + day);
+  }
+  const date = new Date();
+  const daysUntilNextDayOfWeek = (dayOfWeekIndex + 7 - date.getDay()) % 7;
+  console.log(daysUntilNextDayOfWeek)
+  const timeParts = time.split(':');
+  // date.setDate(date.getDate() + daysUntilNextDayOfWeek -7);
+  dayOfWeekIndex < date.getDay() ? date.setDate(date.getDate() + daysUntilNextDayOfWeek - 7) : date.setDate(date.getDate() + daysUntilNextDayOfWeek)
+  date.setHours(Number(timeParts[0]));
+  date.setMinutes(Number(timeParts[1]));
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+  return date;
+}

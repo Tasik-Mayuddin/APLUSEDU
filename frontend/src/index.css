@@ -258,7 +258,11 @@ a {
   border-radius: 8px;
   padding: 40px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+}
+
+.tutor-availability-left{
+  width: 70%;
 }
 
 
@@ -354,5 +358,7 @@ a {
 .request-details-right {
   text-align: right;
 }
+
+
 
 

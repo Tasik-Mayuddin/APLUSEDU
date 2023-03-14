@@ -1,34 +1,77 @@
 import { useState, useEffect } from "react"
-import { fetchAPI, fetchPutAPI, fetchPostAPI, fetchDeleteAPI } from "../../functions"
+import { fetchAPI, fetchPutAPI, fetchPostAPI, fetchDeleteAPI, getDateFromDayAndTime } from "../../functions"
 import AvailabilityTimetable from "../Common/AvailabilityTimetable"
 import DropdownMenu from "../Inputs/DropdownMenu"
 import TimeInput from "../Inputs/TimeInput"
 import Requests from "./Requests"
 
+
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+import { Calendar, momentLocalizer } from 'react-big-calendar'
+import moment from 'moment'
+import BigCalendar from "../Common/BigCalendar"
+
 const AllocationAndRequests = ({ userId }) => {
 
     // fetch API data
     const [availability, setAvailability] = useState('')
-    const [requests, setRequests] = useState('')
+
+    const [backgroundEvents, setBackgroundEvents] = useState([])
+    const [events, setEvents] = useState([])
 
     // form fields
     const [day, setFormDay] = useState('')
     const [start_time, setStartTime] = useState('')
     const [end_time, setEndTime] = useState('')
 
-
+    
     useEffect(()=>{
         const getAvailability = async () => {
             const fetchAvailability = await fetchAPI(`tutors/${userId}/availability`)
             setAvailability(fetchAvailability)
-        }
-        const getRequests = async () => {
-            const fetchRequests = await fetchAPI(`tutors/${userId}/request`)
-            setRequests(fetchRequests)
+
+            // timetable
+            const backgroundEventExtract = await fetchAvailability.dayandtime_set.map(({ day, start_time, end_time }) => {
+                const [startHour, startMinute, startSecond] = start_time.split(':');
+                const [endHour, endMinute, endSecond] = end_time.split(':');
+                const start = getDateFromDayAndTime(day, start_time)
+                
+                const end = getDateFromDayAndTime(day, end_time)
+                
+                return {
+                
+                start: start,
+                end: end,
+                allDay:false,
+                bSlotId: 123,
+                }
+            })
+
+            setBackgroundEvents(backgroundEventExtract)
+
+            const eventExtract = await fetchAvailability.dayandtime_set.map(({ day, bookedslot_set }) => {
+                return bookedslot_set.map(({ start_time, end_time })=>{
+                    const start = getDateFromDayAndTime(day, start_time)
+                    
+                    const end = getDateFromDayAndTime(day, end_time)
+                    
+                    return {
+                    
+                    start: start,
+                    end: end,
+                    allDay:false,
+                    bSlotId: 123,
+                };
+                })
+                
+            }).flat()
+
+            setEvents(eventExtract)
         }
 
         getAvailability()
-        getRequests()
+
     }, [userId]) 
 
     const onSubmit = async (e, toPost) => {
@@ -46,14 +89,18 @@ const AllocationAndRequests = ({ userId }) => {
         const fetchRequest = await fetchDeleteAPI(`tutors/${userId}/request`, toPost)
         setAvailability(fetchRequest)
       }
+    
+
+    
 
     return (
         <>
             <div className="tutor-availability-main">
 
-                <div>
-                    <h2>Available times: </h2>
-                    {availability&&<AvailabilityTimetable availability={availability} />}
+                <div className="tutor-availability-left">
+                    {/* <h2>Available times: </h2> */}
+                    
+                    {backgroundEvents.length&&<BigCalendar backgroundEvents={backgroundEvents} events={events} />}
                     
                 </div>
 

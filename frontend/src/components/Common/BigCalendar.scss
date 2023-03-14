@@ -1,0 +1,37 @@
+
+@import 'react-big-calendar/lib/sass/styles';
+
+/* hide all day row */
+.rbc-allday-cell {
+    display: none;
+  }
+
+.rbc-today {
+    background-color: inherit;
+}
+
+.rbc-day-slot .rbc-time-slot {
+    border-top: 1px solid #bebebe;
+}
+
+.rbc-day-slot .rbc-background-event {
+    background-color: rgba(0, 255, 0, 0.712);
+}
+
+.rbc-day-slot .rbc-event, .rbc-day-slot .rbc-background-event {
+    border: 1px solid rgb(0, 0, 0)
+}
+
+.rbc-time-slot {
+    font-size: 18px;
+    text-align: center;
+}
+.rbc-timeslot-group {
+    border-bottom: 1px solid #000000;
+}
+
+.rbc-event-label, .rbc-event {
+    width: 100%; 
+}
+
+
