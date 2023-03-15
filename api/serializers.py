@@ -85,7 +85,7 @@ class DayAndTimeSerializer(serializers.ModelSerializer):
     bookedslot_set = BookedSlotSerializer(many=True, required=False)
     class Meta:
         model = DayAndTime
-        fields = ["day", "start_time", "end_time", "bookedslot_set", "tutor"]
+        fields = ["id", "day", "start_time", "end_time", "bookedslot_set", "tutor"]
 
 class RequestSerializer(serializers.ModelSerializer):
     student = ChildrenSerializer()

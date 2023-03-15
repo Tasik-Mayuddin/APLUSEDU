@@ -18,6 +18,8 @@
     background-color: rgba(0, 255, 0, 0.712);
 }
 
+
+
 .rbc-day-slot .rbc-event, .rbc-day-slot .rbc-background-event {
     border: 1px solid rgb(0, 0, 0)
 }
@@ -34,4 +36,13 @@
     width: 100%; 
 }
 
+.rbc-day-slot, .rbc-time-column {
+    border-right: 1px solid black;
+}
 
+.rbc-header {
+    border-right: 1px solid black;
+}
+.rbc-header span{
+    font-size: 18px;
+}

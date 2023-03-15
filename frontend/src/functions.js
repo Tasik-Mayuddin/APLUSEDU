@@ -2,7 +2,7 @@
 const parentToken = "Token b1bdeda32b6c9514b2b81623fb5362a7aab22646"
 const tutorToken = "Token 2553ca17566263e55681ee82da318ee0eb71e51b"
 const tutorTokenJohn = "Token 06c0896f0f30736f21862c880722b2bbe52df02d"
-const currentToken = tutorToken
+const currentToken = tutorTokenJohn
 
 // function to fetch from API, GET
 export const fetchAPI = async (endpoint) => {
@@ -164,7 +164,6 @@ export const getDateFromDayAndTime = (day, time) => {
   }
   const date = new Date();
   const daysUntilNextDayOfWeek = (dayOfWeekIndex + 7 - date.getDay()) % 7;
-  console.log(daysUntilNextDayOfWeek)
   const timeParts = time.split(':');
   // date.setDate(date.getDate() + daysUntilNextDayOfWeek -7);
   dayOfWeekIndex < date.getDay() ? date.setDate(date.getDate() + daysUntilNextDayOfWeek - 7) : date.setDate(date.getDate() + daysUntilNextDayOfWeek)

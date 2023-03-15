@@ -1,15 +1,9 @@
 import { useState, useEffect } from "react"
-import { fetchAPI, fetchPutAPI, fetchPostAPI, fetchDeleteAPI, getDateFromDayAndTime } from "../../functions"
+import { fetchAPI, fetchPutAPI, fetchPostAPI, fetchDeleteAPI, formatTime, getDateFromDayAndTime } from "../../functions"
 import AvailabilityTimetable from "../Common/AvailabilityTimetable"
 import DropdownMenu from "../Inputs/DropdownMenu"
 import TimeInput from "../Inputs/TimeInput"
 import Requests from "./Requests"
-
-
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-
-import { Calendar, momentLocalizer } from 'react-big-calendar'
-import moment from 'moment'
 import BigCalendar from "../Common/BigCalendar"
 
 const AllocationAndRequests = ({ userId }) => {
@@ -17,62 +11,86 @@ const AllocationAndRequests = ({ userId }) => {
     // fetch API data
     const [availability, setAvailability] = useState('')
 
+    // big calendar states
     const [backgroundEvents, setBackgroundEvents] = useState([])
     const [events, setEvents] = useState([])
+    const [maxMin, setMaxMin] = useState('')
 
     // form fields
     const [day, setFormDay] = useState('')
     const [start_time, setStartTime] = useState('')
     const [end_time, setEndTime] = useState('')
 
+    // timetable onSelect states, prefix 'b' for booked slots
+    const [bDay, setBDay] = useState('')
+    const [bTime, setBTime] = useState('')
+    const [bSubjectAndLevel, setBSubjectAndLevel] = useState('')
+    const [bStudent, setBStudent] = useState('')
     
     useEffect(()=>{
         const getAvailability = async () => {
             const fetchAvailability = await fetchAPI(`tutors/${userId}/availability`)
             setAvailability(fetchAvailability)
 
-            // timetable
-            const backgroundEventExtract = await fetchAvailability.dayandtime_set.map(({ day, start_time, end_time }) => {
-                const [startHour, startMinute, startSecond] = start_time.split(':');
-                const [endHour, endMinute, endSecond] = end_time.split(':');
-                const start = getDateFromDayAndTime(day, start_time)
-                
-                const end = getDateFromDayAndTime(day, end_time)
-                
-                return {
-                
-                start: start,
-                end: end,
-                allDay:false,
-                bSlotId: 123,
-                }
-            })
-
-            setBackgroundEvents(backgroundEventExtract)
-
-            const eventExtract = await fetchAvailability.dayandtime_set.map(({ day, bookedslot_set }) => {
-                return bookedslot_set.map(({ start_time, end_time })=>{
-                    const start = getDateFromDayAndTime(day, start_time)
-                    
-                    const end = getDateFromDayAndTime(day, end_time)
-                    
-                    return {
-                    
-                    start: start,
-                    end: end,
-                    allDay:false,
-                    bSlotId: 123,
-                };
-                })
-                
-            }).flat()
-
-            setEvents(eventExtract)
+            
         }
 
         getAvailability()
 
     }, [userId]) 
+
+    useEffect(()=>{
+        // timetable
+        const getEvents = () => {
+            const backgroundEventExtract = availability.dayandtime_set.map(({ id, day, start_time, end_time }) => {
+                const start = getDateFromDayAndTime(day, start_time)
+                const end = getDateFromDayAndTime(day, end_time)
+                return {
+                start: start,
+                end: end,
+                allDay:false,
+                dayAndTimeId: id,
+                }
+            })
+            setBackgroundEvents(backgroundEventExtract)
+    
+    
+            // extract max and min times for timetable
+            const maxTime = availability.dayandtime_set.reduce((max, { end_time }) => max > end_time ? max : end_time , '00:00:00')
+            const minTime = availability.dayandtime_set.reduce((min, { start_time }) => min < start_time ? min : start_time , '24:00:00')
+            setMaxMin({
+                max: maxTime,
+                min: minTime,
+            })
+            
+    
+            
+    
+            const eventExtract = availability.dayandtime_set.map(({ day, bookedslot_set }) => {
+                return bookedslot_set.filter(bslot=>bslot.status == 'approved').map(({ start_time, end_time, id, subject_and_level, student })=>{
+                    const start = getDateFromDayAndTime(day, start_time)
+                    const end = getDateFromDayAndTime(day, end_time)
+                    
+                    return {
+                    title: 'Booked',
+                    start: start,
+                    end: end,
+                    allDay:false,
+                    bSlotId: id,
+                    day: day,
+                    time: `${formatTime(start_time)} - ${formatTime(end_time)}`,
+                    subject_and_level: subject_and_level.__str__,
+                    student: student.name
+                };
+                })
+                
+            }).flat()
+    
+            setEvents(eventExtract)
+        }
+        
+        availability&&getEvents()
+    }, [availability])
 
     const onSubmit = async (e, toPost) => {
         e.preventDefault()
@@ -90,18 +108,35 @@ const AllocationAndRequests = ({ userId }) => {
         setAvailability(fetchRequest)
       }
     
+    // callback when selecting event on timetable
+    const handleSlotSelect = (item) => {
+        // if booked slot is selected
+        if (item.bSlotId) {
+            setBDay(item.day)
+            setBStudent(item.student)
+            setBSubjectAndLevel(item.subject_and_level)
+            setBTime(item.time)
+        }
 
+        // if free time slot is selected
+        else if (item.dayAndTimeId) {
+            console.log(item.dayAndTimeId)
+        }
+    }
     
 
     return (
         <>
             <div className="tutor-availability-main">
 
-                <div className="tutor-availability-left">
-                    {/* <h2>Available times: </h2> */}
-                    
-                    {backgroundEvents.length&&<BigCalendar backgroundEvents={backgroundEvents} events={events} />}
-                    
+                <div className="tutor-availability-left">            
+                    {backgroundEvents.length&&<BigCalendar backgroundEvents={backgroundEvents} events={events} handleSlotSelect={handleSlotSelect} maxMin={maxMin} />}
+                    <div>
+                        <h2>{bDay}</h2>
+                        <h3>{bTime}</h3>
+                        <h4>{bSubjectAndLevel}</h4>
+                        <p>{bStudent}</p>
+                    </div>
                 </div>
 
                 <div>
