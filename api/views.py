@@ -121,7 +121,7 @@ def tutorQuery(request):
     return Response(serializer.data)
 
 # Tutor availability, user = Parent
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PUT'])
 @login_required
 def tutorAvailability(request, id):
     # for parent AND tutor to get tutor's free time
@@ -159,6 +159,9 @@ def tutorAvailability(request, id):
 
         serializer_res = TutorPovAvailabilitySerializer(tutor)
         return Response(serializer_res.data)
+    
+    # elif request.method == 'PUT':
+
 
 
 # Tutor request, user = Parent

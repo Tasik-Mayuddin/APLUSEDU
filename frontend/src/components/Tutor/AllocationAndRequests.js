@@ -5,6 +5,8 @@ import DropdownMenu from "../Inputs/DropdownMenu"
 import TimeInput from "../Inputs/TimeInput"
 import Requests from "./Requests"
 import BigCalendar from "../Common/BigCalendar"
+import AddOrEditDnT from "./AddOrEditDnT"
+import ButtonSmall from "../Buttons/ButtonSmall"
 
 const AllocationAndRequests = ({ userId }) => {
 
@@ -16,27 +18,22 @@ const AllocationAndRequests = ({ userId }) => {
     const [events, setEvents] = useState([])
     const [maxMin, setMaxMin] = useState('')
 
-    // form fields
-    const [day, setFormDay] = useState('')
-    const [start_time, setStartTime] = useState('')
-    const [end_time, setEndTime] = useState('')
-
-    // timetable onSelect states, prefix 'b' for booked slots
-    const [bDay, setBDay] = useState('')
-    const [bTime, setBTime] = useState('')
-    const [bSubjectAndLevel, setBSubjectAndLevel] = useState('')
-    const [bStudent, setBStudent] = useState('')
     
+    // timetable onSelect states, prefix 'b' for booked slots
+    const [onSeclectDetails, setOnSelectDetails] = useState('')
+    const [editFields, setEditFields] = useState('')
+
+    // toggle views
+    const [showEventInfo , setShowEventInfo] = useState(false)
+    const [showForm , setShowForm] = useState(false)
+
+
     useEffect(()=>{
         const getAvailability = async () => {
             const fetchAvailability = await fetchAPI(`tutors/${userId}/availability`)
             setAvailability(fetchAvailability)
-
-            
         }
-
         getAvailability()
-
     }, [userId]) 
 
     useEffect(()=>{
@@ -50,6 +47,10 @@ const AllocationAndRequests = ({ userId }) => {
                 end: end,
                 allDay:false,
                 dayAndTimeId: id,
+                day: day,
+                start_time: start_time,
+                end_time: end_time,
+                time: `${formatTime(start_time)} - ${formatTime(end_time)}`,
                 }
             })
             setBackgroundEvents(backgroundEventExtract)
@@ -63,11 +64,8 @@ const AllocationAndRequests = ({ userId }) => {
                 min: minTime,
             })
             
-    
-            
-    
             const eventExtract = availability.dayandtime_set.map(({ day, bookedslot_set }) => {
-                return bookedslot_set.filter(bslot=>bslot.status == 'approved').map(({ start_time, end_time, id, subject_and_level, student })=>{
+                return bookedslot_set.filter(bslot=>bslot.status === 'approved').map(({ start_time, end_time, id, subject_and_level, student })=>{
                     const start = getDateFromDayAndTime(day, start_time)
                     const end = getDateFromDayAndTime(day, end_time)
                     
@@ -80,7 +78,8 @@ const AllocationAndRequests = ({ userId }) => {
                     day: day,
                     time: `${formatTime(start_time)} - ${formatTime(end_time)}`,
                     subject_and_level: subject_and_level.__str__,
-                    student: student.name
+                    student: student.name,
+                    
                 };
                 })
                 
@@ -94,8 +93,12 @@ const AllocationAndRequests = ({ userId }) => {
 
     const onSubmit = async (e, toPost) => {
         e.preventDefault()
-        const fetchAvailability = await fetchPostAPI(`tutors/${userId}/availability`, toPost)
-        setAvailability(fetchAvailability)
+        console.log(e.target.submit.value)
+        // switch (e.target.submit.value) {
+        //     case 'Add':
+        //         // const addAvailability = await fetchPostAPI(`tutors/${userId}/availability`, toPost)
+        //         // setAvailability(addAvailability)
+        //         // break
     }
     // accepting a request
     const onAccept = async(toPost) => {
@@ -112,52 +115,88 @@ const AllocationAndRequests = ({ userId }) => {
     const handleSlotSelect = (item) => {
         // if booked slot is selected
         if (item.bSlotId) {
-            setBDay(item.day)
-            setBStudent(item.student)
-            setBSubjectAndLevel(item.subject_and_level)
-            setBTime(item.time)
-        }
+            setOnSelectDetails({
+                day: item.day,
+                student: item.student,
+                subject_and_level: item.subject_and_level,
+                time: item.time,
+            })
 
+            // toggling views
+            toggleView('details')  
+        }
         // if free time slot is selected
         else if (item.dayAndTimeId) {
-            console.log(item.dayAndTimeId)
+            setOnSelectDetails({
+                day: item.day,
+                time: item.time,
+
+                // edit fields
+                dayAndTimeId: item.dayAndTimeId,
+                start_time: item.start_time,
+                end_time: item.end_time,
+            })
+
+            // toggling views
+            toggleView('details')       
         }
     }
     
+    const toggleView = (view) => {
+        if (view === 'form') {
+            setShowEventInfo(false)
+            setShowForm(true)
+        }
+        else if (view === 'details') {
+            setShowEventInfo(true)
+            setShowForm(false)
+        }
+    }
 
     return (
         <>
+            <div className="allocation-requests-header">
+                <ButtonSmall className={'add-availability'} text={'Add Availability'} onClick={()=>{
+                    toggleView('form')
+                    setEditFields('')
+                }}/>
+            </div>
             <div className="tutor-availability-main">
 
                 <div className="tutor-availability-left">            
                     {backgroundEvents.length&&<BigCalendar backgroundEvents={backgroundEvents} events={events} handleSlotSelect={handleSlotSelect} maxMin={maxMin} />}
-                    <div>
-                        <h2>{bDay}</h2>
-                        <h3>{bTime}</h3>
-                        <h4>{bSubjectAndLevel}</h4>
-                        <p>{bStudent}</p>
-                    </div>
+                    
+                    
                 </div>
 
                 <div>
-                    <form onSubmit={(e)=>onSubmit(e, {day, start_time, end_time})}>
-                        <div className="form-control">
-                            <DropdownMenu 
-                                label = {"Day: "} 
-                                placeholder = {"Select Day"} 
-                                extra_options = {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]}
-                                onChange={(e) => setFormDay(e.target.value)} 
-                                oriSelected={day}
-                            />
-                        </div>
-                        <div className="form-control">
-                            <TimeInput label={"Start Time:"} name={"start_time"} onChange={(e)=>setStartTime(e.target.value)} />
-                        </div>
-                        <div className="form-control">
-                            <TimeInput label={"End Time:"} name={"end_time"} onChange={(e)=>setEndTime(e.target.value)} />
-                        </div>
-                        <input type='submit' value="Add" className="btn btn-block"/>
-                    </form>
+                    
+                    {(onSeclectDetails.dayAndTimeId && showEventInfo)&&<div>
+                        <h2>{onSeclectDetails.day}</h2>
+                        <h3>{onSeclectDetails.time}</h3>
+                        <ButtonSmall text={'Edit'} onClick={()=>{
+                                setEditFields({
+                                    dayAndTimeId: onSeclectDetails.dayAndTimeId,
+                                    day: onSeclectDetails.day,
+                                    start_time: onSeclectDetails.start_time,
+                                    end_time: onSeclectDetails.end_time,
+                                })
+                                toggleView('form')
+                            }
+                        } />
+                        <ButtonSmall text={'Delete'} />
+                    </div>}
+                    {onSeclectDetails.student&&
+                    <div>
+                        <h2>{onSeclectDetails.day}</h2>
+                        <h3>{onSeclectDetails.time}</h3>
+                        <h4>{onSeclectDetails.subject_and_level}</h4>
+                        <p>{onSeclectDetails.student}</p>
+                        <ButtonSmall text={'Delete'} />
+                    </div>}
+                    {showForm&&<AddOrEditDnT onSubmit={onSubmit} editFields={editFields} onCancel={()=>{
+                        toggleView('details')
+                    }} />}
 
                     <div>
                         <h2>Requests</h2>
