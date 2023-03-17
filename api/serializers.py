@@ -80,12 +80,25 @@ class BookedSlotCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookedSlot
         fields = "__all__"
+    def validate(self, data):
+        start_time = data.get('start_time')
+        end_time = data.get('end_time')
+        if start_time >= end_time:
+            raise serializers.ValidationError("Start time must be less than end time")
+        return data
 
 class DayAndTimeSerializer(serializers.ModelSerializer):
     bookedslot_set = BookedSlotSerializer(many=True, required=False)
     class Meta:
         model = DayAndTime
         fields = ["id", "day", "start_time", "end_time", "bookedslot_set", "tutor"]
+
+    def validate(self, data):
+        start_time = data.get('start_time')
+        end_time = data.get('end_time')
+        if start_time >= end_time:
+            raise serializers.ValidationError("Start time must be less than end time")
+        return data
 
 class RequestSerializer(serializers.ModelSerializer):
     student = ChildrenSerializer()

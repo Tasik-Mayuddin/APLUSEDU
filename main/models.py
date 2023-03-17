@@ -38,8 +38,8 @@ class Level (models.Model):
     
 # Subject and Level
 class SubjectAndLevel (models.Model):      
-    subject = models.ForeignKey(Subject, on_delete=models.RESTRICT)
-    level = models.ForeignKey(Level, on_delete=models.RESTRICT)
+    subject = models.ForeignKey(Subject, on_delete=models.PROTECT)
+    level = models.ForeignKey(Level, on_delete=models.PROTECT)
     tutors = models.ManyToManyField(User)
 
     def __str__(self):

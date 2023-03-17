@@ -10,6 +10,7 @@ urlpatterns = [
 
     path('tutors', views.tutorQuery, name="tutors"),
     path('tutors/<int:id>/availability', views.tutorAvailability, name="tutor-availability"),
+    path('tutors/<int:id>/availability/confirmedslots', views.tutorConfirmedSlots, name="tutor-availability-confirmed-slots"),
     path('tutors/<int:id>/request', views.tutorRequest, name="tutor-request"),
 
     path('levels', views.levelList, name="levels"),

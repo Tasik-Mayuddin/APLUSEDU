@@ -35,7 +35,7 @@ const AddOrEditDnT = ({ editFields, onSubmit, onCancel }) => {
                 <div className="form-control">
                     <TimeInput label={"End Time:"} name={"end_time"} onChange={(e)=>setEndTime(e.target.value)} defaultValue = {end_time} />
                 </div>
-                {idEdit?<input type='submit' name="submit" value="Save" className="btn btn-block"/>:<input type='submit' name="submit" value="Add" className="btn btn-block"/>}
+                <input type='submit' name="submit" value={idEdit?"Save":"Add"} className="btn btn-block"/>
             </form>
             <button name="cancel" value="Cancel" onClick={onCancel} className="btn btn-block">Cancel</button>
         </>

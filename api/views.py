@@ -12,12 +12,12 @@ from .serializers import ChildrenSerializer, ChildrenCreateSerializer,\
           TutorSerializer, TutorAvailabilitySerializer, AccountSerializer, TutorProfileSerializer,\
           TutorProfileCreateSerializer, DayAndTimeSerializer, RequestSerializer, TutorPovAvailabilitySerializer
 
-from main.models import SubjectAndLevel, Level, Subject, TutorProfile
+from main.models import SubjectAndLevel, Level, Subject, TutorProfile, DayAndTime
 from chat.models import ChatRoom, Message
 from parent.models import Student, BookedSlot
 from django.contrib.auth.models import User
 from collections import defaultdict
-from APLUSEDU.utils import clash_check
+from APLUSEDU.utils import clash_check, string_to_date
 
 
 # Create your views here.
@@ -121,9 +121,26 @@ def tutorQuery(request):
     return Response(serializer.data)
 
 # Tutor availability, user = Parent
-@api_view(['GET', 'POST', 'PUT'])
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 @login_required
 def tutorAvailability(request, id):
+
+    # Find if there are existing dnt slots on the day, if yes: check that there wont be clashes
+    def dnt_clash_check(exclude_self=False):
+        print(request.data)
+        dnt_query = request.user.dayandtime_set.filter(day=request.data['day'])
+        if exclude_self:
+            dnt_query = dnt_query.exclude(id=request.data['idEdit'])
+        if dnt_query.exists():                   
+            for x in dnt_query:
+                print(type(x.start_time))
+                print(type(x.end_time))
+                print(type(request.data['start_time']))
+                print(type(request.data['end_time']))
+                if clash_check(request.data['start_time'], request.data['end_time'], x.start_time, x.end_time):
+                    return True
+        return False
+    
     # for parent AND tutor to get tutor's free time
     if request.method == 'GET':
         tutor = User.objects.get(id=id)
@@ -141,17 +158,10 @@ def tutorAvailability(request, id):
         tutor = request.user
         request.data['tutor'] = tutor.id
 
-        # Find if there are existing 
-        dnt_query = request.user.dayandtime_set.filter(day=request.data['day'])
-        intercept = False
-        if dnt_query.exists():                   
-            for x in dnt_query:
-                if clash_check(request.data['start_time'], request.data['end_time'], x.start_time, x.end_time):
-                    intercept = True
-                    break
-        
-        if intercept:
-            return Response("clashing with other free slots!")
+        if dnt_clash_check():
+            print("clashing with other free slots!")
+            serializer_res = TutorPovAvailabilitySerializer(tutor)
+            return Response(serializer_res.data)
 
         serializer = DayAndTimeSerializer(data=request.data)
         if serializer.is_valid():
@@ -160,9 +170,67 @@ def tutorAvailability(request, id):
         serializer_res = TutorPovAvailabilitySerializer(tutor)
         return Response(serializer_res.data)
     
-    # elif request.method == 'PUT':
+    # edit availability (DayAndTime) slot
+    elif request.method == 'PUT':
+        tutor = request.user
 
+        # prevent clash with other instances of DayAndTime
+        if dnt_clash_check(exclude_self = True):
+            print("clashing with other free slots!")
+            serializer_res = TutorPovAvailabilitySerializer(tutor)
+            return Response(serializer_res.data)
+        
+        
+        instance = tutor.dayandtime_set.get(id=request.data['idEdit'])
+        if instance.bookedslot_set.exists():
+            # prevent changing day with booked slots within
+            if instance.day != request.data['day']: 
+                print("cannot change day with confirmed slots")
+                serializer_res = TutorPovAvailabilitySerializer(tutor)
+                return Response(serializer_res.data)
+            # makes sure that updated DayAndTime instance contains approved booked slots
+            for bslot in instance.bookedslot_set.all():
+                if bslot.start_time < string_to_date(request.data['start_time']) or bslot.end_time > string_to_date(request.data['end_time']):
+                    print("edited time range must contain confirmed slots")
+                    serializer_res = TutorPovAvailabilitySerializer(tutor)
+                    return Response(serializer_res.data)
 
+        serializer = DayAndTimeSerializer(
+                instance=tutor.dayandtime_set.get(id=request.data.pop('idEdit')), 
+                data=request.data,
+                partial = True,
+            )
+
+        if serializer.is_valid():
+            serializer.save()
+        
+        serializer_res = TutorPovAvailabilitySerializer(tutor)
+        return Response(serializer_res.data)
+    
+    elif request.method == 'DELETE':
+        tutor = request.user
+        dnt_id = request.data['dayAndTimeId']
+        dnt_to_delete = DayAndTime.objects.get(id=dnt_id)
+        if dnt_to_delete.tutor != tutor:
+            serializer_res = TutorPovAvailabilitySerializer(tutor)
+            return Response(serializer_res.data)
+        dnt_to_delete.delete()
+        serializer_res = TutorPovAvailabilitySerializer(tutor)
+        return Response(serializer_res.data)
+
+@api_view(['DELETE'])
+@login_required
+def tutorConfirmedSlots(request, id):
+    if request.method == 'DELETE':
+        tutor = request.user
+        bslot_id = request.data['bSlotId']
+        confirmed_slot_to_delete = BookedSlot.objects.get(id=bslot_id)
+        if confirmed_slot_to_delete.day_and_time.tutor != tutor:
+            serializer_res = TutorPovAvailabilitySerializer(tutor)
+            return Response(serializer_res.data)
+        confirmed_slot_to_delete.delete()
+        serializer_res = TutorPovAvailabilitySerializer(tutor)
+        return Response(serializer_res.data)
 
 # Tutor request, user = Parent
 @api_view(['POST', 'GET', 'PUT', 'DELETE'])
@@ -235,11 +303,19 @@ def tutorRequest(request, id):
         bookedslot_id = request.data['bSlotId']
         booked_slot_to_approve = BookedSlot.objects.get(id=bookedslot_id)
 
-        # to verify the user and prevent clashes with existing approved booked slots
+        # to verify the user, prevent clashes with existing approved booked slots, and ensure in is within the limits of the parent DayAndTime instance in case of edits
         if booked_slot_to_approve.day_and_time.tutor != request.user:
-            return Response('Invalid user')
+            print('Invalid user')
+            serializer_res = TutorPovAvailabilitySerializer(request.user)
+            return Response(serializer_res.data)
         elif booked_slot_to_approve.day_and_time.bookingClash(booked_slot_to_approve.start_time, booked_slot_to_approve.end_time):
-            return Response('Clashes with existing approved time slots!')
+            print('Clashes with existing approved time slots!')
+            serializer_res = TutorPovAvailabilitySerializer(request.user)
+            return Response(serializer_res.data)
+        elif booked_slot_to_approve.checkLeakedBoundaries():
+            print('Leak out of DnT boundaries detected.')
+            serializer_res = TutorPovAvailabilitySerializer(request.user)
+            return Response(serializer_res.data)
         
         serializer = BookedSlotSerializer(instance=booked_slot_to_approve, data={"status": "approved"}, partial=True)
         if serializer.is_valid():
