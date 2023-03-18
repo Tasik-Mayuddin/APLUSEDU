@@ -18,8 +18,8 @@ const RequestIndie = ({ request, day, onAccept, onDecline }) => {
       </div>
 
       <div className="request-details-right">
-        <ButtonSmall text={'Accept'} onClick={()=>onAccept({bSlotId: request.id})} />
-        <ButtonSmall text={'Decline'} onClick={()=>onDecline({bSlotId: request.id})} />
+        <ButtonSmall color={'green'} text={'Accept'} onClick={()=>onAccept({bSlotId: request.id})} />
+        <ButtonSmall color={'red'} text={'Decline'} onClick={()=>onDecline({bSlotId: request.id})} />
       </div>
     </div>
   )

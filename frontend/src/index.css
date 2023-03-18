@@ -52,6 +52,7 @@ a {
   border-radius: 5px;
   max-width: 1400px;
   min-height: 720px;
+  max-height: 800px;
   margin: 60px 30px 0px 300px;
   padding: 30px;
   text-align: center;
@@ -74,9 +75,23 @@ a {
   margin: auto 5px;
   height: 40px;
 }
+.btn-red {
+  background-color: red
+}
+.btn-green {
+  background-color: green
+}
 
 .btn-small:hover {
   background-color: #00b7ff;
+  color: white;
+}
+.btn-red:hover {
+  background-color: #ff6c6c;
+  color: white;
+}
+.btn-green:hover {
+  background-color: #07c700;
   color: white;
 }
 
@@ -124,10 +139,6 @@ a {
   font-family: inherit;
 }
 
-.btn-block {
-  display: block;
-  width: 100%;
-}
 
 .child-details {
   width: 250px;
@@ -256,7 +267,7 @@ a {
 .tutor-availability-main {
   min-width: 600px;
   border-radius: 8px;
-  padding: 40px;
+  padding: 20px;
   display: flex;
   justify-content: space-around;
 }
@@ -334,18 +345,22 @@ a {
 }
 
 .request-details {
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 8px;
+  background-color: rgba(219, 219, 219, 0.199);
   padding: 10px 10px;
+  max-width: 360px;
+  border-radius: 8px;
+  border: 1px solid rgb(153, 153, 153);
+  margin-bottom: 5px;
 }
 .request-details h3 {
-  font-size: 26px;
+  font-size: 22px;
   margin: 2px auto;
 }
 .request-details h4 {
-  font-size: 20px;
+  font-size: 18px;
   margin: 4px auto;
   font-weight: normal;
+  font-style: italic;
 }
 .request-details p {
   font-size: 18px;
@@ -364,4 +379,68 @@ a {
   border-bottom: 1px solid rgba(0, 0, 0, 0.726);
   justify-content: flex-end;
   text-align: right;
+}
+
+.event-details {
+  background-color: rgba(255, 255, 255, 0.692);
+  border-radius: 8px;
+  height: 350px;
+  min-width: 360px;
+  padding-top: 0px;
+}
+
+.event-details h2, .requestlist-main h2 {
+  font-size: 28px;
+}
+.event-details h3 {
+  font-size: 22px;
+  font-weight: normal;
+}
+
+.event-details-header, .requestlist-header {
+  background-color: rgba(128, 128, 128, 0.521);
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+}
+.event-details-header h2, .requestlist-header h2 {
+  font-weight: normal;
+  margin: 2px auto;
+}
+
+.requestlist-main {
+  margin-top: 30px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.507);
+  max-width: 370px;
+}
+
+.requestlist-body {
+  height: 320px;
+  overflow-y: scroll;
+}
+.requestlist-body-empty {
+  text-align: center;
+}
+
+/* site wide scroll bar ################################################################################################################################## */
+/* scrollbar starts on line 31 */
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
 }

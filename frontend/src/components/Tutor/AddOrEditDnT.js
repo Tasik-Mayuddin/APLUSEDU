@@ -1,6 +1,7 @@
 import DropdownMenu from "../Inputs/DropdownMenu"
 import TimeInput from "../Inputs/TimeInput"
 import { useState, useEffect } from "react"
+import ButtonSmall from "../Buttons/ButtonSmall"
 
 const AddOrEditDnT = ({ editFields, onSubmit, onCancel }) => {
 
@@ -35,9 +36,10 @@ const AddOrEditDnT = ({ editFields, onSubmit, onCancel }) => {
                 <div className="form-control">
                     <TimeInput label={"End Time:"} name={"end_time"} onChange={(e)=>setEndTime(e.target.value)} defaultValue = {end_time} />
                 </div>
-                <input type='submit' name="submit" value={idEdit?"Save":"Add"} className="btn btn-block"/>
+                <input type='submit' name="submit" value={idEdit?"Save":"Add"} className="btn-small btn-green btn-submit"/>
+                <ButtonSmall text={'Cancel'} onClick={onCancel} />
             </form>
-            <button name="cancel" value="Cancel" onClick={onCancel} className="btn btn-block">Cancel</button>
+            
         </>
     )
 }

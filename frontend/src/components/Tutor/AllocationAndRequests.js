@@ -174,7 +174,7 @@ const AllocationAndRequests = ({ userId }) => {
     return (
         <>
             <div className="allocation-requests-header">
-                <ButtonSmall className={'add-availability'} text={'Add Availability'} onClick={()=>{
+                <ButtonSmall color={'green'} className={'add-availability'} text={'Add Availability'} onClick={()=>{
                     toggleView('form')
                     setEditFields('')
                 }}/>
@@ -186,34 +186,48 @@ const AllocationAndRequests = ({ userId }) => {
                 </div>
 
                 <div>
-                    {(onSelectDetails.dayAndTimeId&&showEventInfo)&&<div>
-                        <h2>{onSelectDetails.day}</h2>
-                        <h3>{onSelectDetails.time}</h3>
-                        <ButtonSmall text={'Edit'} onClick={()=>{
-                                setEditFields({
-                                    dayAndTimeId: onSelectDetails.dayAndTimeId,
-                                    day: onSelectDetails.day,
-                                    start_time: onSelectDetails.start_time,
-                                    end_time: onSelectDetails.end_time,
-                                })
-                                toggleView('form')
-                            }
-                        } />
-                        <ButtonSmall text={'Delete'} onClick={()=>onDeleteAvailability({dayAndTimeId: onSelectDetails.dayAndTimeId})} />
-                    </div>}
+                <div className="event-details">
+                    
+                    {(onSelectDetails.dayAndTimeId&&showEventInfo)&&
+                        <>
+                            <div className="event-details-header"><h2>Availability</h2></div>
+                            <h2>{onSelectDetails.day}</h2>
+                            <h3>{onSelectDetails.time}</h3>
+                            <ButtonSmall text={'Edit'} onClick={()=>{
+                                    setEditFields({
+                                        dayAndTimeId: onSelectDetails.dayAndTimeId,
+                                        day: onSelectDetails.day,
+                                        start_time: onSelectDetails.start_time,
+                                        end_time: onSelectDetails.end_time,
+                                    })
+                                    toggleView('form')
+                                }
+                            } />
+                            <ButtonSmall color={'red'} text={'Delete'} onClick={()=>onDeleteAvailability({dayAndTimeId: onSelectDetails.dayAndTimeId})} />
+                        </>}
                     {onSelectDetails.student&&
-                    <div>
-                        <h2>{onSelectDetails.day}</h2>
-                        <h3>{onSelectDetails.time}</h3>
-                        <h4>{onSelectDetails.subject_and_level}</h4>
-                        <p>{onSelectDetails.student}</p>
-                        <ButtonSmall text={'Delete'} onClick={()=>onDeleteConfirmed({bSlotId: onSelectDetails.bSlotId})} />
-                    </div>}
-                    {showForm&&<AddOrEditDnT onSubmit={onSubmit} editFields={editFields} onCancel={()=>toggleView('details')} />}
+                        <>
+                            <div className="event-details-header"><h2>Booked</h2></div>
+                            <h2>{onSelectDetails.day}</h2>
+                            <h3>{onSelectDetails.time}</h3>
+                            <h4>{onSelectDetails.subject_and_level}</h4>
+                            <p>with {onSelectDetails.student}</p>
+                            <ButtonSmall color={'red'} text={'Delete'} onClick={()=>onDeleteConfirmed({bSlotId: onSelectDetails.bSlotId})} />
+                        </>
+                        }
+                        {showForm&&<AddOrEditDnT onSubmit={onSubmit} editFields={editFields} onCancel={()=>toggleView('details')} />}
+
+
+                        {/* On load default */}
+                        {/* {(!showEventInfo&&!showForm)&&<h2>Add Availabity or Click on a Timeslot</h2>} */}
+                    </div>
+                    
 
                     <div className="requestlist-main">
-                        <h2>Requests</h2>
-                        {availability&&<Requests availability={availability} onAccept={onAccept} onDecline={onDecline} />}
+                        <div className="requestlist-header"><h2>Requests</h2></div>
+                        <div className={`requestlist-body`}>
+                            {availability&&<Requests availability={availability} onAccept={onAccept} onDecline={onDecline} />}
+                        </div>
                         {/* {requests&&requests.map((item, id) => <RequestIndie key={id} request={item} userId={userId} onAccept={onAccept} />)} */}
                     </div>
                 </div>
