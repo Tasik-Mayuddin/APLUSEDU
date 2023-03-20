@@ -1,15 +1,15 @@
-import { useParams, Link } from 'react-router-dom'
-import ButtonBig from '../Buttons/ButtonBig'
+import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import AddOrEditChild from './AddOrEditChild'
-import { fetchAPI, fetchPutAPI } from '../../functions'
+import { fetchAPI, fetchPostAPI, fetchPutAPI } from '../../functions'
 import StudentAllocation from './StudentAllocation'
 import ButtonSmall from '../Buttons/ButtonSmall'
+import TutorQuerySamePage from './TutorQuerySamePage'
 
 const Child = () => {
   const { slug } = useParams();
 	const [toggleEdit, setToggleEdit] = useState(false)
-	const [child, setChild] = useState([])
+	const [child, setChild] = useState('')
 	const [allocations, setAllocations] = useState([])
 
 	useEffect(() => {
@@ -36,6 +36,17 @@ const Child = () => {
 	setToggleEdit(false)
   }
 
+  	const onRequest = async (e, hideModal, currentTutorId, toPost) => {
+		e.preventDefault()
+		await fetchPostAPI(`tutors/${currentTutorId}/request`, toPost)
+		hideModal()
+
+		// fetch updated allocation list
+		const fetchAllocations = await fetchAPI(`children/${slug}/allocations`)
+		setAllocations(fetchAllocations)
+	}	
+
+
   return (
     <>
 			<div className='child-header'>
@@ -44,14 +55,26 @@ const Child = () => {
 			</div>
 			{toggleEdit&&<AddOrEditChild onSubmit={onSubmit} editName={child.name} editLevel={child.level} editSubjects={child.subjects} hideModal={()=>setToggleEdit(false)} />}
 			
-			<Link to={`/children/${slug}/tutors`}>
-				<ButtonBig text={"Look for a Tutor!"} />
-			</Link>
+			<div className='child-main'>
 
-			<h2>Allocations</h2>
-			{allocations.map((item, id)=>(
-				<StudentAllocation key={id} allocationDetails={item} />
-			))}
+				<div className='child-left'>
+					{child&&<TutorQuerySamePage subjects={child.subjects} level={child.level} child_id={slug} onRequest={onRequest} />}
+				</div>
+
+
+				<div className='child-right'>
+					{/* <Link to={`/children/${slug}/tutors`}>
+						<ButtonBig text={"Look for a Tutor!"} />
+					</Link> */}
+
+					<h2>Allocations</h2>
+					<div className='student-allocations'>
+						{allocations.map((item, id)=>(
+							<StudentAllocation key={id} allocationDetails={item} />
+						))}
+					</div>
+				</div>
+			</div>
 		</>
   )
 }

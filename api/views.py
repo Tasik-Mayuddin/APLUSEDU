@@ -241,6 +241,7 @@ def tutorRequest(request, id):
         tutor = User.objects.get(id=id)
         student = request.user.student_set.get(id=request.data['child_id'])
 
+
         dnt_extracted = tutor.dayandtime_set.filter( 
             day = request.data['day'], 
             start_time__lte = request.data['start_time'], 
@@ -283,7 +284,7 @@ def tutorRequest(request, id):
                     content = req_msg,
                     chat_room = chatroom
             )
-
+        
         return Response(serializer.data)
 
     # for tutor to get requests - depreciated

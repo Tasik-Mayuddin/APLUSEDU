@@ -139,6 +139,27 @@ a {
   font-family: inherit;
 }
 
+.children-list {
+  height: 500px;
+  overflow-y: scroll;
+}
+
+.child-main {
+  display: flex;
+  width: 100%;
+  
+}
+.child-right {
+  width: 37%;
+  background-color: rgba(255, 255, 255, 0.514);
+  border-radius: 8px;
+  padding: 10px;
+  height: 600px;
+}
+.child-left {
+  width: 63%;
+  padding-right: 40px;
+}
 
 .child-details {
   width: 250px;
@@ -342,6 +363,46 @@ a {
   left: 50%; /* Added left property */
   transform: translate(-50%, -50%);
   z-index: 10000;
+}
+
+.student-allocations {
+  
+  padding: 10px 0px;
+  border-radius: 8px;
+  overflow-y: scroll;
+  margin-bottom: 5px;
+  text-align: left;
+  height: 80%;
+}
+.student-allocation {
+  background-color: rgb(255, 255, 255);
+  padding: 10px 10px;
+  width: 90%;
+  border-radius: 8px;
+  border: 1px solid rgb(153, 153, 153);
+  margin-bottom: 2px;
+  margin-left: 2px;
+  /* default is pending, red left border */
+  border-left: 10px solid red; 
+}
+.student-allocation-approved {
+  /* approved, green left border */
+  border-left: 10px solid green; 
+}
+.student-allocation h3 {
+  font-size: 22px;
+  margin: 2px auto;
+}
+.student-allocation h4 {
+  font-size: 18px;
+  margin: 4px auto;
+  font-weight: normal;
+  font-style: italic;
+}
+.student-allocation p {
+  font-size: 18px;
+  margin: 4px auto;
+  font-weight: normal;
 }
 
 .request-details {

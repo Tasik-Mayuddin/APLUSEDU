@@ -58,7 +58,8 @@ class DayAndTime (models.Model):
         # extract relevant query set
         query_set = self.bookedslot_set.filter(status="approved")
         if student:
-            query_set = query_set | student.bookedslot_set.all()
+            query_set = query_set | student.bookedslot_set.filter(day_and_time__day=self.day)
+            
         for bslot_approved in query_set: # .all for student to avoid clashing booking requests
             if clash_check(start_time, end_time, bslot_approved.start_time, bslot_approved.end_time):
                 return True

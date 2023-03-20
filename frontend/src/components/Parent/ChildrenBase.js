@@ -36,11 +36,15 @@ const ChildrenBase = () => {
 
       {toggleView&&<AddOrEditChild onSubmit={onSubmit} hideModal={()=>setToggleView(false)} />}
 
-      {childrenList.map((child, id)=>(
-        <ChildDetails child={child} key={id} />
-      ))}
+      <div className="children-list">
+        {childrenList.map((child, id)=>(
+          <ChildDetails child={child} key={id} />
+        ))}
 
       <ButtonBig text={"+"} color={'green'} onClick={()=>setToggleView(true)} />
+      </div>
+
+      
 
     </div>
   )
