@@ -2,7 +2,7 @@
 
 const DropdownMenu = ({ label, placeholder, list, onChange, oriSelected, extra_options, valueName }) => {
   return (
-    <>
+    <div className="dropdownmenu">
       <label>{label}</label>
       <select type="text" onChange={onChange} value={oriSelected} > 
         <option value='' disabled>{placeholder}</option>
@@ -17,7 +17,7 @@ const DropdownMenu = ({ label, placeholder, list, onChange, oriSelected, extra_o
           </option>
         ))}
       </select>
-    </>
+    </div>
   )
 }
 

@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import './BigCalendar.scss'
 
-const BigCalendar = ({ backgroundEvents, events, handleSlotSelect, maxMin }) => {
+const BigCalendar = ({ backgroundEvents, events, handleEventSelect, maxMin, handleSlotSelect }) => {
     const localizer = momentLocalizer(moment)
     const formats = {
         dayFormat: 'dddd',
@@ -30,8 +30,9 @@ const BigCalendar = ({ backgroundEvents, events, handleSlotSelect, maxMin }) => 
                 timeslots={2}
                 step={30}
                 
-                selectable  
-                onSelectEvent={handleSlotSelect}
+                selectable={handleSlotSelect&&true}
+                onSelectEvent={handleEventSelect}
+                onSelectSlot={handleSlotSelect}
             />
         </div>
     )

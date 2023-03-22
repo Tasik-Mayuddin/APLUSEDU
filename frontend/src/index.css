@@ -232,7 +232,7 @@ a {
 }
 
 .form-control select {
-  width: 100%;
+  width: 60%;
   height: 100%;
   margin: 5px;
   padding: 3px 7px;
@@ -271,8 +271,8 @@ a {
   max-width: 1200px;
 }
 
-.tutor-availability {
-  min-width: 600px;
+.tutorpov-availability {
+  width: 1200px;
   position: absolute;
   border-radius: 8px;
   padding: 40px;
@@ -282,8 +282,15 @@ a {
   background-color: rgb(255, 255, 255);
   z-index: 10000;
   display: flex;
-  justify-content: space-between;
 }
+.tutorpov-availability-left {
+  width: 70%;
+}
+.tutorpov-availability-right {
+  width: 30%;
+}
+
+
 
 .tutor-availability-main {
   min-width: 600px;

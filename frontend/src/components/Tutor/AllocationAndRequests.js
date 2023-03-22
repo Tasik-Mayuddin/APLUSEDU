@@ -129,7 +129,7 @@ const AllocationAndRequests = ({ userId }) => {
       }
     
     // callback when selecting event on timetable
-    const handleSlotSelect = (item) => {
+    const handleEventSelect = (item) => {
         // if booked slot is selected
         if (item.bSlotId) {
             setOnSelectDetails({
@@ -182,7 +182,13 @@ const AllocationAndRequests = ({ userId }) => {
             <div className="tutor-availability-main">
 
                 <div className="tutor-availability-left">            
-                    {backgroundEvents.length&&<BigCalendar backgroundEvents={backgroundEvents} events={events} handleSlotSelect={handleSlotSelect} maxMin={maxMin} />}
+                    {backgroundEvents.length&&
+                        <BigCalendar 
+                            backgroundEvents={backgroundEvents} 
+                            events={events} 
+                            handleEventSelect={handleEventSelect} 
+                            maxMin={maxMin} 
+                        />}
                 </div>
 
                 <div>
