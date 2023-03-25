@@ -10,7 +10,8 @@ from rest_framework.response import Response
 from .serializers import ChildrenSerializer, ChildrenCreateSerializer,\
       LevelSerializer, SubjectSerializer, BookedSlotSerializer, BookedSlotCreateSerializer,\
           TutorSerializer, TutorAvailabilitySerializer, AccountSerializer, TutorProfileSerializer,\
-          TutorProfileCreateSerializer, DayAndTimeSerializer, RequestSerializer, TutorPovAvailabilitySerializer
+          TutorProfileCreateSerializer, DayAndTimeSerializer, RequestSerializer, TutorPovAvailabilitySerializer,\
+          ChatSerializer
 
 from main.models import SubjectAndLevel, Level, Subject, TutorProfile, DayAndTime
 from chat.models import ChatRoom, Message
@@ -431,3 +432,20 @@ def tutorSubjectsAndLevels(request):
     return Response(res)
     
     
+
+
+# Get list of chats of a user
+@api_view(['GET'])
+@login_required
+def chats(request):
+    role = request.user.account.user_role
+
+    # the part that generates the list of all chatrooms
+    if role == 'Tutor':
+        chat_list = request.user.tutor_chats.all()
+    elif role == 'Parent':
+        chat_list = request.user.parent_chats.all() 
+
+    serializer = ChatSerializer(chat_list, many=True)
+
+    return Response(serializer.data)

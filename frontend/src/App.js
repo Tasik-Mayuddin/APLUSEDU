@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react'
 import Profile from './components/Tutor/Profile'
 import SubjectsAndLevels from './components/Tutor/SubjectsAndLevels'
 import AllocationAndRequests from './components/Tutor/AllocationAndRequests'
+import Chat from './components/Common/Chat'
 
 function App() {
 
@@ -36,7 +37,7 @@ function App() {
       <SideMenu nameHrefTupleList={role==='Parent'?parentSideMenu:tutorSideMenu}/>
         <div className="container">
 
-          {role==='Parent'?
+          {role&&(role==='Parent')?
             <Routes>
 
               {/*parent interface routing */}
@@ -44,6 +45,7 @@ function App() {
               <Route path='/children' element={<ChildrenBase />}/>
               <Route path='/children/:slug' element={<Child />} />
               <Route path='/children/:slug/tutors' element={<TutorQuery />} />
+              <Route path='/chat' element={<Chat role={role} currentUser = {'Chin'} chatId = {2} />} />
 
             </Routes>:
             <Routes>
@@ -51,6 +53,7 @@ function App() {
               <Route path='/profile' element={<Profile />} />
               <Route path='/subjectsandlevels' element={<SubjectsAndLevels />} />
               <Route path='/allocations' element={<AllocationAndRequests userId={id} />} />
+              <Route path='/chat' element={<Chat role={role} currentUser = {'Mirul'} chatId = {1} />} />
             </Routes>
           }
           

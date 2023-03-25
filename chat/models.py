@@ -13,7 +13,7 @@ class ChatRoom (models.Model):
 
     # retrieve last 10 messages of a chatroom
     def last_10_messages(self):
-        return reversed(self.message_set.order_by('-timestamp')[:10])
+        return (self.message_set.order_by('-timestamp')[:10])
     
     # authenticate id, returns True or False validating that user is indeed part of the chatroom, with the option to retrieve the responder's username
     def auth_id(self, user, responder=False):

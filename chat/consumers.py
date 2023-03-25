@@ -23,6 +23,8 @@ class ChatConsumer(WebsocketConsumer):
 
 
         author = data['from']
+        # print(self.scope['user'])
+        # author = self.scope['user']
         author_user = User.objects.get(username=author)
         message = Message.objects.create(author=author_user, content=data['message'], chat_room = chatroom)
         content = {

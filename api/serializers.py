@@ -4,6 +4,7 @@ from parent.models import Student, BookedSlot
 from register.models import Account
 from django.contrib.auth.models import User
 from collections import defaultdict
+from chat.models import ChatRoom
 
 
 class LevelSerializer(serializers.ModelSerializer):
@@ -144,5 +145,18 @@ class AccountSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+
+
+# Chat serializer
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["username"]
+class ChatSerializer(serializers.ModelSerializer):
+    tutor = UserSerializer()
+    parent = UserSerializer()
+    class Meta:
+        model = ChatRoom
+        fields = "__all__"
 
     
