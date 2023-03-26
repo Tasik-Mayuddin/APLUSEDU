@@ -11,17 +11,20 @@ import Profile from './components/Tutor/Profile'
 import SubjectsAndLevels from './components/Tutor/SubjectsAndLevels'
 import AllocationAndRequests from './components/Tutor/AllocationAndRequests'
 import Chat from './components/Common/Chat'
+import ChatHOC from './components/Common/ChatHOC'
 
 function App() {
 
   const [role, setRole] = useState('')
   const [id, setId] = useState('')
+  const [username, setUsername] = useState('')
 
   useEffect(()=>{
     const get_role = async() => {
       const fetchRole = await fetchAPI('role')
       setRole(fetchRole.user_role)
-      setId(fetchRole.user)
+      setId(fetchRole.user.id)
+      setUsername(fetchRole.user.username)
     }
     get_role()
   }, [])
@@ -45,7 +48,7 @@ function App() {
               <Route path='/children' element={<ChildrenBase />}/>
               <Route path='/children/:slug' element={<Child />} />
               <Route path='/children/:slug/tutors' element={<TutorQuery />} />
-              <Route path='/chat' element={<Chat role={role} currentUser = {'Chin'} chatId = {2} />} />
+              <Route path='/chat' element={<ChatHOC role={role} username = {username} />} />
 
             </Routes>:
             <Routes>
@@ -53,7 +56,7 @@ function App() {
               <Route path='/profile' element={<Profile />} />
               <Route path='/subjectsandlevels' element={<SubjectsAndLevels />} />
               <Route path='/allocations' element={<AllocationAndRequests userId={id} />} />
-              <Route path='/chat' element={<Chat role={role} currentUser = {'Mirul'} chatId = {1} />} />
+              <Route path='/chat' element={<ChatHOC role={role} username = {username} />} />
             </Routes>
           }
           

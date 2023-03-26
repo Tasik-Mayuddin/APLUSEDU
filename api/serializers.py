@@ -139,10 +139,6 @@ class TutorPovAvailabilitySerializer(serializers.ModelSerializer):
         fields = ["dayandtime_set"]
 
 
-class AccountSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Account
-        fields = "__all__"
 
 
 
@@ -151,7 +147,7 @@ class AccountSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["username"]
+        fields = ["id", "username"]
 class ChatSerializer(serializers.ModelSerializer):
     tutor = UserSerializer()
     parent = UserSerializer()
@@ -160,3 +156,9 @@ class ChatSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     
+
+class AccountSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    class Meta:
+        model = Account
+        fields = "__all__"

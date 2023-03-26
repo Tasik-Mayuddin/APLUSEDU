@@ -1,5 +1,4 @@
-
-const ButtonSmall = ({ color, text, onClick }) => {
+const ButtonSmall = ({ color, text, onClick, Icon }) => {
   
   return (
     <button 
@@ -7,9 +6,12 @@ const ButtonSmall = ({ color, text, onClick }) => {
     onClick={onClick}
     type={'button'}
     >
+        {Icon}
         {text}
     </button>
   )
 }
 
+
 export default ButtonSmall
+

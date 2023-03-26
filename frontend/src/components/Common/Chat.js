@@ -4,14 +4,15 @@ import './Chat.css'
 import WebSocketInstance from './WebSocket';
 import { HiChevronDoubleRight } from "react-icons/hi2"
 import { fetchAPI } from '../../functions';
+import { useLocation } from 'react-router-dom';
 
 
 class Chat extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            chatId: this.props.chatId,
-            messages: []
+            messages: [],
+            message: ''
         }
         this.waitForSocketConnection(() => {
           WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
@@ -20,14 +21,26 @@ class Chat extends React.Component {
     }
 
     componentDidMount() {
-        WebSocketInstance.connect(`ws://127.0.0.1:8000/ws/chat/${this.state.chatId}/`)
 
         const getChats = async () => {
             const fetchChats = await fetchAPI('chats')
-            this.state.chats = fetchChats
+            const callbackChatId = await this.props.chatId?this.props.chatId:fetchChats[0].id
+            this.setState({
+                chats: fetchChats,
+                chatId: callbackChatId
+            })
+
+            WebSocketInstance.connect(`ws://127.0.0.1:8000/ws/chat/${callbackChatId}/`)
+            
           }
         
         getChats()
+        this.scrollToBottom()
+        
+    }
+
+    componentDidUpdate() {
+        this.scrollToBottom()
     }
 
     waitForSocketConnection(callback) {
@@ -78,7 +91,7 @@ class Chat extends React.Component {
                 className={message.author === this.props.currentUser ? 'sent' : 'replies'}>
                 
                 <p>
-                    <small className='msg-content-author'>{message.author}</small>
+                    <small className='msg-content-author'>{message.author === this.props.currentUser ?'Me':message.author}</small>
                     <br />
                     {message.content}
                     <br />
@@ -101,12 +114,16 @@ class Chat extends React.Component {
         })
     }
 
+    scrollToBottom = () => {
+        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+      };
+
     render() {
         const messages = this.state.messages;
         
         return (
             <div id="frame">
-                {this.state.chats&&<SidePanel chats={this.state.chats} role = {this.props.role} switchChat={this.switchChat} currentChatId={this.state.chatId} />}
+                {this.state.chats&&<SidePanel chats={this.state.chats} role = {this.props.role} switchChat={this.switchChat} currentChatId={this.state.chatId} currentUser={this.props.currentUser} />}
                 <div className="content">
                     <div className="contact-profile">
                         <p>{this.state.chats&&(this.props.role==='Parent'?this.state.chats[this.state.chats.findIndex((obj) => obj.id === this.state.chatId)].tutor.username:this.state.chats[this.state.chats.findIndex((obj) => obj.id === this.state.chatId)].parent.username)}</p>
@@ -118,6 +135,12 @@ class Chat extends React.Component {
                             this.renderMessages(messages) 
                         }
                         </ul>
+                        <div
+                            style={{ float: "left", clear: "both" }}
+                                ref={el => {
+                                this.messagesEnd = el;
+                            }}
+                        />
                     </div>
                     <div className="message-input">
                         <form onSubmit={this.sendMessageHandler}>

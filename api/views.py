@@ -94,13 +94,15 @@ def studentAllocations(request, id):
     # additional fields to serializer.data->res
     for i, booked_slot in enumerate(booked_slots):
 
-        tutor = booked_slot.day_and_time.tutor.username
+        tutor = booked_slot.day_and_time.tutor
         day = booked_slot.day_and_time.day
         subject = booked_slot.subject_and_level.subject.name
-        
-        res[i]['tutor'] = tutor
+        chat_id = ChatRoom.objects.get(tutor=tutor, parent=request.user).id
+
+        res[i]['tutor'] = tutor.username
         res[i]['subject'] = subject
         res[i]['day'] = day
+        res[i]['chatId'] = chat_id
         
     return Response(res)
 

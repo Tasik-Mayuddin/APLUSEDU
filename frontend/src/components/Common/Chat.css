@@ -33,6 +33,8 @@
   #frame #sidepanel #profile {
     width: 80%;
     margin: 25px auto;
+    background-color: #215f88;
+    border-radius: 6px;
   }
   @media screen and (max-width: 735px) {
     #frame #sidepanel #profile {
@@ -103,8 +105,8 @@
     border: 2px solid #95a5a6;
   }
   #frame #sidepanel #profile .wrap p {
-    float: left;
-    margin-left: 15px;
+    text-align: center;
+
   }
   @media screen and (max-width: 735px) {
     #frame #sidepanel #profile .wrap p {
@@ -565,9 +567,9 @@
     width: calc(100% - 25px);
     font-size: 0.9em;
   }
-  #frame .content .messages ul li:nth-last-child(1) {
+  #frame .content .messages ul li:last-child {
     margin-bottom: 20px;
-    padding-bottom: 80px;
+    padding-bottom: 40px;
   }
 
   #frame .content .messages ul li p {
@@ -614,6 +616,7 @@
     width: 100%;
     z-index: 99;
     height: 40px;
+    max-height: 40px;
   }
   #frame .content .message-input .wrap {
     position: relative;
@@ -623,7 +626,7 @@
     float: left;
     border: none;
     width: calc(100% - 90px);
-    padding: 11px 32px 10px 8px;
+    padding: 11px 32px 3px 8px;
     font-size: 22px;
     color: #32465a;
   }

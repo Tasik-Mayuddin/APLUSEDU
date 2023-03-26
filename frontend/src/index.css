@@ -81,6 +81,9 @@ a {
 .btn-green {
   background-color: green
 }
+.btn-yellow {
+  background-color: #ff9100
+}
 
 .btn-small:hover {
   background-color: #00b7ff;
@@ -92,6 +95,10 @@ a {
 }
 .btn-green:hover {
   background-color: #07c700;
+  color: white;
+}
+.btn-yellow:hover {
+  background-color: #ffb67a;
   color: white;
 }
 

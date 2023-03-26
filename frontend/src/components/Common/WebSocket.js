@@ -14,6 +14,7 @@ class WebSocketService {
     }
   
     connect(path) {
+      !(this.socketRef===null)&&this.socketRef.close();
       this.socketRef = new WebSocket(path);
       this.socketRef.onopen = () => {
         console.log('WebSocket open');
@@ -29,10 +30,15 @@ class WebSocketService {
       };
       this.socketRef.onclose = () => {
         console.log("WebSocket closed let's reopen");
-        this.connect(path);
+        // this.connect(path);
       };
     }
   
+    disconnect() {
+      if (this.socketRef) {
+        this.socketRef.close();
+      }
+    }
     
     socketNewMessage(data) {
       const parsedData = JSON.parse(data);

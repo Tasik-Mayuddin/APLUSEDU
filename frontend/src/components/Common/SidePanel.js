@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchAPI } from '../../functions';
 
 
-const SidePanel = ({ chats, role, switchChat, currentChatId }) => {
+const SidePanel = ({ chats, role, switchChat, currentChatId, currentUser }) => {
 
 
 
@@ -10,7 +10,7 @@ const SidePanel = ({ chats, role, switchChat, currentChatId }) => {
         <div id="sidepanel">
         <div id="profile">
             <div className="wrap">
-                <p>Logged in as Mike Ross</p>
+                <p>Logged in as {currentUser}</p>
                 <i className="fa fa-chevron-down expand-button" aria-hidden="true"></i>
                 <div id="status-options">
                     <ul>
