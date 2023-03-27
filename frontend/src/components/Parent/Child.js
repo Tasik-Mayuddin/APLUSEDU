@@ -63,10 +63,6 @@ const Child = () => {
 
 
 				<div className='child-right'>
-					{/* <Link to={`/children/${slug}/tutors`}>
-						<ButtonBig text={"Look for a Tutor!"} />
-					</Link> */}
-
 					<h2>Allocations</h2>
 					<div className='student-allocations'>
 						{allocations.map((item, id)=>(

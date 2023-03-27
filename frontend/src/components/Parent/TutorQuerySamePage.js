@@ -36,12 +36,6 @@ const TutorQuerySamePage = ({ subjects, level, child_id, onRequest }) => {
 		setToggleView(true)
 	}
 
-	// const onRequest = (e, toPost) => {
-    //     e.preventDefault()
-    //     fetchPostAPI(`tutors/${currentTutorId}/request`, toPost)
-	// 	setToggleView(false)
-    // }
-
 	return (
 		<>
 			<div className="tutor-query-header">
@@ -55,18 +49,20 @@ const TutorQuerySamePage = ({ subjects, level, child_id, onRequest }) => {
 					</React.Fragment> 
 				))}
 			</div>
-			{tutors.map((tutor, id)=>(
-				<TutorDetails 
-					key={id} 
-					name={tutor.username} 
-					summary={tutor.tutorprofile.summary} 
-					experience={tutor.tutorprofile.experience_years}
-					occupation={tutor.tutorprofile.occupation}
-					education={tutor.tutorprofile.education}
-					tutor_id = {tutor.id}
-					onClick={onCheck}
-				/>
-			))}
+			<div className="tutor-details-wrap">
+				{tutors.map((tutor, id)=>(
+					<TutorDetails 
+						key={id} 
+						name={tutor.username} 
+						summary={tutor.tutorprofile.summary} 
+						experience={tutor.tutorprofile.experience_years}
+						occupation={tutor.tutorprofile.occupation}
+						education={tutor.tutorprofile.education}
+						tutor_id = {tutor.id}
+						onClick={onCheck}
+					/>
+				))}
+			</div>
 			{toggleView&&
 			<TutorAvailability 
 				availability={tutorTime} 

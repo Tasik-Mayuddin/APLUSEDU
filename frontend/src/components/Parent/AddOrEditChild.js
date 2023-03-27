@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { fetchAPI } from '../../functions'
+import ButtonSmall from '../Buttons/ButtonSmall'
 import CheckboxMultiple from '../Inputs/CheckboxMultiple'
 import DropdownMenu from '../Inputs/DropdownMenu'
 
@@ -46,7 +47,7 @@ const AddOrEditChild = ({ onSubmit, editName, editLevel, editSubjects, hideModal
               <div className="form-control">
                 <CheckboxMultiple label = {"Subject: "} name = {"subject"} list = {subjectList} setState={(data) => setFormSubjects(data)} oriChecked={subjects} /> 
               </div>
-              <input type='submit' value={editName?'Save Changes':'Add Child'} className="btn btn-block"/>
+              <ButtonSmall type='submit' text={editName?'Save Changes':'Add Child'} color={'green'} />
           </form>
       </div>
     </>

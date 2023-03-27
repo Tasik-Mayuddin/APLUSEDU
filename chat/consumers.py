@@ -75,7 +75,7 @@ class ChatConsumer(WebsocketConsumer):
         self.commands[data['command']](self, data)
         
     def send_chat_message(self, message):
-
+        print(message)
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name, {"type": "chat_message", "message": message}

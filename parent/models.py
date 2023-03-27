@@ -2,6 +2,7 @@ from django.db import models
 from main.models import Subject, Level, DayAndTime, SubjectAndLevel
 from APLUSEDU.constants import DAY_CHOICES
 from django.contrib.auth.models import User
+from chat.models import ChatRoom
 
 # Create your models here.
 
@@ -31,3 +32,7 @@ class BookedSlot (models.Model):
             return False
         else:
             return True
+        
+    # method to get the chatId between tutor and parent
+    def chatId(self):
+        return ChatRoom.objects.get(tutor=self.day_and_time.tutor, parent=self.student.parent).id

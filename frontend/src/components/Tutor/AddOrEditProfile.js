@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react'
+import ButtonSmall from '../Buttons/ButtonSmall'
 
 const AddOrEditProfile = ({ onSubmit, editProfile, hideModal }) => {
     const [summary, setSummary] = useState(editProfile?editProfile.summary:'')
@@ -36,7 +37,7 @@ const AddOrEditProfile = ({ onSubmit, editProfile, hideModal }) => {
                     <label>Occupation:</label>
                     <input type="text" placeholder="What is your occupation?" onChange={(e) => setOccupation(e.target.value)} defaultValue={occupation} />
                 </div>
-                <input type='submit' value={editProfile?'Save Changes':'Save'} className="btn btn-block"/>
+                <ButtonSmall type={'submit'} text={editProfile?'Save Changes':'Save'} color={'green'} />
             </form>
         </div>
         </>

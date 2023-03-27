@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     
+    'crispy_forms',
+    'crispy_bootstrap4',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -73,7 +75,7 @@ ROOT_URLCONF = 'APLUSEDU.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "frontend/build"),],
+        'DIRS': [os.path.join(BASE_DIR, "frontend/build"), BASE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -188,3 +190,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Modify user model to add user_role field
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"

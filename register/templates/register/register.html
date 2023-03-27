@@ -1,5 +1,5 @@
 {% extends 'main/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %}
 Register with APlusEDU
 {% endblock %}
@@ -8,8 +8,8 @@ Register with APlusEDU
 <h3>Create an Account</h3>
 <form method="POST">
     {% csrf_token %}
-    {{form.as_p}}
+    {{form|crispy}}
 
-    <button type="submit">Register</button>
+    <button type="submit" class="btn btn-success">Register</button>
 </form>
 {% endblock %}

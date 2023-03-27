@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { RiLogoutBoxRLine } from "react-icons/ri";
 
 const SideMenu = ({ nameHrefTupleList }) => {
 
@@ -23,13 +24,21 @@ const SideMenu = ({ nameHrefTupleList }) => {
     // };
     const location = useLocation()
     return (
-        <div id="mySidenav" className="sidenav">
-            
-            {nameHrefTupleList.map((item, id)=>(
-
-                <Link key={id} to={item[1]} className={location.pathname.startsWith(item[1])?'current':''} >{item[0]}</Link>
-
-            ))}
+        <div id="mySidenav" className="topnav">
+            <div className='topnav-left'>
+                <ul>
+                    {nameHrefTupleList.map((item, id)=>(
+                        <li key={id}>
+                            <Link to={item[1]} className={location.pathname.startsWith(item[1])?'current':''} >{item[0]}</Link>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className='topnav-right'>
+                <div className='link-wrap'>
+                    <Link to={'/login/'}><RiLogoutBoxRLine color={'white'} size={'20px'} /> Logout</Link>
+                </div>
+            </div>
         </div>
     )
 }

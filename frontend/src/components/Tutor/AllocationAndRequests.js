@@ -7,6 +7,8 @@ import Requests from "./Requests"
 import BigCalendar from "../Common/BigCalendar"
 import AddOrEditDnT from "./AddOrEditDnT"
 import ButtonSmall from "../Buttons/ButtonSmall"
+import { Link } from "react-router-dom"
+import { BsFillChatDotsFill } from "react-icons/bs"
 
 const AllocationAndRequests = ({ userId }) => {
 
@@ -64,7 +66,7 @@ const AllocationAndRequests = ({ userId }) => {
                 min: minTime,
             })
             const eventExtract = availability.dayandtime_set.map(({ day, bookedslot_set }) => {
-                return bookedslot_set.filter(bslot=>bslot.status === 'approved').map(({ start_time, end_time, id, subject_and_level, student })=>{
+                return bookedslot_set.filter(bslot=>bslot.status === 'approved').map(({ start_time, end_time, id, subject_and_level, student, chatId })=>{
                     // necessary fields are defined here to be passed to onSelect callbacks
                     const start = getDateFromDayAndTime(day, start_time)
                     const end = getDateFromDayAndTime(day, end_time)
@@ -78,6 +80,7 @@ const AllocationAndRequests = ({ userId }) => {
                     time: `${formatTime(start_time)} - ${formatTime(end_time)}`,
                     subject_and_level: subject_and_level.__str__,
                     student: student.name,
+                    chatId: chatId,
                 };
                 })
             }).flat()
@@ -138,6 +141,7 @@ const AllocationAndRequests = ({ userId }) => {
                 subject_and_level: item.subject_and_level,
                 time: item.time,
                 bSlotId: item.bSlotId,
+                chatId: item.chatId,
             })
 
             // toggling views
@@ -211,13 +215,16 @@ const AllocationAndRequests = ({ userId }) => {
                             } />
                             <ButtonSmall color={'red'} text={'Delete'} onClick={()=>onDeleteAvailability({dayAndTimeId: onSelectDetails.dayAndTimeId})} />
                         </>}
-                    {onSelectDetails.student&&
+                    {(onSelectDetails.student&&showEventInfo)&&
                         <>
                             <div className="event-details-header"><h2>Booked</h2></div>
                             <h2>{onSelectDetails.day}</h2>
                             <h3>{onSelectDetails.time}</h3>
                             <h4>{onSelectDetails.subject_and_level}</h4>
                             <p>with {onSelectDetails.student}</p>
+                            <Link to="/chat" state={{ chatId: onSelectDetails.chatId }}>
+                                <ButtonSmall Icon={<BsFillChatDotsFill style={{margin: 'auto 10px auto 0'}} />} text={'Chat with Parent'} color={'yellow'} />
+                            </Link>
                             <ButtonSmall color={'red'} text={'Delete'} onClick={()=>onDeleteConfirmed({bSlotId: onSelectDetails.bSlotId})} />
                         </>
                         }

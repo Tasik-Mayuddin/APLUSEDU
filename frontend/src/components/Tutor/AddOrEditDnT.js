@@ -21,7 +21,7 @@ const AddOrEditDnT = ({ editFields, onSubmit, onCancel }) => {
     return (
         <>
             <form onSubmit={(e)=>onSubmit(e, {idEdit, day, start_time, end_time})}>
-                <div className="form-control">
+                <div className="form-control" style={{marginTop: '0'}}>
                     <DropdownMenu 
                         label = {"Day: "} 
                         placeholder = {"Select Day"} 

@@ -6,7 +6,7 @@ const SubjectsAndLevelsDetails = ({ subjectAndLevels, onDelete }) => {
     <div className='subjlvl-details'>
       <div className='subjlvl-details-header'>
         <h2>{subjectAndLevels.subject}</h2>
-        <ButtonSmall text={'Delete'} onClick={()=>onDelete(subjectAndLevels.subject)} />
+        <ButtonSmall color={'red'} text={'Delete'} onClick={()=>onDelete(subjectAndLevels.subject)} />
       </div>
       <div>
         <h3>Levels: {subjectAndLevels.levels.map(item=>item).join(', ')}</h3>

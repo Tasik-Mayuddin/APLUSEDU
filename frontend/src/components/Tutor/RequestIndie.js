@@ -1,7 +1,8 @@
 import { formatTime } from "../../functions"
 import ButtonSmall from "../Buttons/ButtonSmall"
 import { fetchPutAPI } from "../../functions"
-
+import { BsFillChatDotsFill } from "react-icons/bs"
+import { Link } from "react-router-dom"
 
 const RequestIndie = ({ request, day, onAccept, onDecline }) => {
 
@@ -18,6 +19,9 @@ const RequestIndie = ({ request, day, onAccept, onDecline }) => {
       </div>
 
       <div className="request-details-right">
+        <Link to="/chat" state={{ chatId: request.chatId }}>
+          <ButtonSmall Icon={<BsFillChatDotsFill style={{margin: 'auto 10px auto 0'}} />} text={'Chat'} color={'yellow'} />
+        </Link>
         <ButtonSmall color={'green'} text={'Accept'} onClick={()=>onAccept({bSlotId: request.id})} />
         <ButtonSmall color={'red'} text={'Decline'} onClick={()=>onDecline({bSlotId: request.id})} />
       </div>

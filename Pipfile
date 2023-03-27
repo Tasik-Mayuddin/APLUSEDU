@@ -11,6 +11,9 @@ channels-redis = "*"
 redis = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
+django-crispy-forms = "*"
+django-bootstrap4 = "*"
+crispy-bootstrap4 = "*"
 
 [dev-packages]
 

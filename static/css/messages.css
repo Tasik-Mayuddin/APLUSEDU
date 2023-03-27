@@ -1,4 +1,4 @@
-body,
+/* body,
 html {
   height: 100%;
   margin: 0;
@@ -256,7 +256,9 @@ html {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
-
+/*
 .messages-wrapper{
   height: 100%;
-}
+} 
+
+*/

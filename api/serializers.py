@@ -125,6 +125,7 @@ class ChildrenPovSerializer(serializers.ModelSerializer):
 class BookedSlotPovSerializer(serializers.ModelSerializer):
     student = ChildrenPovSerializer()
     subject_and_level = SubjectAndLevelSerializer()
+    chatId = serializers.ReadOnlyField()
     class Meta:
         model = BookedSlot
         fields = "__all__"      
