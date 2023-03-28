@@ -21,6 +21,7 @@ urlpatterns = [
     
     path('tutor_profile', views.tutorProfile, name="tutor-profile"),
     path('tutor_subjectsandlevels', views.tutorSubjectsAndLevels, name="tutor-subjectsandlevels"),
+    path('tutor_profile_picture', views.tutorProfilePicture, name="tutor-profile-picture"),
 
     path('chats', views.chats, name="chats")
 ]

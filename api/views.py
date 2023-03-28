@@ -401,6 +401,18 @@ def tutorProfile(request):
             serializer_res = TutorProfileSerializer(request.user.tutorprofile)
             return Response(serializer_res.data)
         
+# Edit tutor's profile picture
+@api_view(['PUT'])
+@login_required
+def tutorProfilePicture(request):
+    tutor_profile = request.user.tutorprofile
+    serializer = TutorProfileCreateSerializer(instance=tutor_profile, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+    serializer_res = TutorProfileSerializer(request.user.tutorprofile)
+    return Response(serializer_res.data)
+    
+
 
 # Get tutor's subjects and levels
 @api_view(['GET', 'POST', 'DELETE'])

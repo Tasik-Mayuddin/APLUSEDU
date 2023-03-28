@@ -45,9 +45,10 @@ class ChildrenCreateSerializer(serializers.ModelSerializer):
 # used for parent and tutor interface
 class TutorProfileSerializer(serializers.ModelSerializer):
     experience_years = serializers.ReadOnlyField()
+    profile_pic_url = serializers.ReadOnlyField()
     class Meta:
         model = TutorProfile
-        fields = ["summary", "education", "occupation", "experience_years", "initial_experience", "created_at"]
+        fields = ["summary", "education", "occupation", "experience_years", "initial_experience", "created_at", "profile_pic_url"]
 
 # used for tutor interface
 class TutorProfileCreateSerializer(serializers.ModelSerializer):

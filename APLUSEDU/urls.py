@@ -21,8 +21,12 @@ from register import views as rViews
 from frontend.views import react
 from main.models import Subject, Level, SubjectAndLevel
 
+urlpatterns = []
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-urlpatterns = [
+urlpatterns += [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
     path('', include('parent.urls')),
@@ -40,9 +44,8 @@ urlpatterns = [
 
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+    
 
 # Create the subject and level models upon server deployment
 def subjectsLevelsInit():

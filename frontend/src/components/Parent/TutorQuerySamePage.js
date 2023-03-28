@@ -60,6 +60,7 @@ const TutorQuerySamePage = ({ subjects, level, child_id, onRequest }) => {
 						education={tutor.tutorprofile.education}
 						tutor_id = {tutor.id}
 						onClick={onCheck}
+						pictureUrl = {tutor.tutorprofile.profile_pic_url}
 					/>
 				))}
 			</div>

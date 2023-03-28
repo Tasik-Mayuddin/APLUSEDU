@@ -6,6 +6,9 @@ from django.utils import timezone
 
 
 # Create your models here.
+def upload_path (instance, filename):
+    return '/'.join(['images/profile_pictures', str(instance.author.username), filename])
+
 
 # Profile summary, for tutors, intended to be resume-ish
 class TutorProfile (models.Model):
@@ -15,11 +18,15 @@ class TutorProfile (models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     education = models.CharField(max_length=255)
     occupation = models.CharField(max_length=255)
-    
+    profile_picture = models.ImageField(default='images/profile_pictures/default.jpg', upload_to=upload_path)
+
     # Calculate years of experience dynamically
     @property
     def experience_years(self):
         return round((timezone.now() - self.created_at).days/365 + self.initial_experience)
+    
+    def profile_pic_url(self):
+        return self.profile_picture.url 
 
     def __str__(self):
         return self.summary

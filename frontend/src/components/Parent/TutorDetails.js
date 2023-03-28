@@ -1,11 +1,13 @@
 import ButtonSmall from "../Buttons/ButtonSmall"
+import { backendDir } from "../../functions"
 
 
-const TutorDetails = ({ name, summary, experience, occupation, education, tutor_id, onClick }) => {
+const TutorDetails = ({ name, summary, experience, occupation, education, tutor_id, onClick, pictureUrl }) => {
   return (
     <div className="tutor-details">
       <div className="tutor-details-left">
         <h2>{name}</h2>
+        <img src={`${backendDir}${pictureUrl}`} alt="Avatar" class="avatar" />
         {experience&&
         <ul>
           <li>{experience} years of tutoring</li>
