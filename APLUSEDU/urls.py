@@ -43,6 +43,7 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+
 # Create the subject and level models upon server deployment
 def subjectsLevelsInit():
     subject_choices = ['Mathematics', 'English', 'Science']

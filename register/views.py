@@ -18,7 +18,7 @@ def register(response):
             account = Account.objects.create(user = form.instance, user_role = form.cleaned_data['user_role'])
             account.save()
 
-        return redirect("/")
+        return redirect("/login/")
     else:
         form = RegisterForm()
         

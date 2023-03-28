@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load static %}
 
 {% block title %}
 Login Here
@@ -6,20 +7,28 @@ Login Here
 
 {% load crispy_forms_tags %}
 {% block content %}
-    <form method="POST" class="form-group">
-        {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username">
-        <br>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password">
-        <br>
-        <input type="submit" value="Log In">
-        
 
-        {{form|crispy}}
-        <p>Don't have an account? Create one <a href="/register/">here</a></p>
-        <button type="submit" class="btn btn-success">Login</button>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}?v=1">
+
+<div class="overall-wrap">
+
+    <div class="img-responsive-wrap">
+        <img src="{% static 'images/aplusedu-icon.png' %}" class="img-responsive" />
+    </div>
+
+    <div class="form-div">
         
-    </form>
+        <form method="POST">
+            {% csrf_token %}
+            
+
+            {{form|crispy}}
+            <p>Don't have an account? Create one <a href="/register/">here</a></p>
+            <button type="submit" class="btn btn-success">Login</button>
+            
+        </form>
+    </div>
+</div>
+
 {% endblock %}

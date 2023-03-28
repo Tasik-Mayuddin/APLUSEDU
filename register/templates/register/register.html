@@ -1,15 +1,24 @@
 {% extends 'main/base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block title %}
 Register with APlusEDU
 {% endblock %}
 
 {% block content %}
-<h3>Create an Account</h3>
-<form method="POST">
-    {% csrf_token %}
-    {{form|crispy}}
+<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}?v=1">
 
-    <button type="submit" class="btn btn-success">Register</button>
-</form>
+<div class="overall-wrap">
+<div class="form-div">
+    <h1>Create an Account</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{form|crispy}}
+
+        <button type="submit" class="btn btn-success">Register</button>
+    </form>
+</div>
+</div>
+
+
 {% endblock %}

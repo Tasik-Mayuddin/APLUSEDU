@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
 import ParentDash from './components/Parent/ParentDash'
 import ChildrenBase from './components/Parent/ChildrenBase'
@@ -44,7 +44,7 @@ function App() {
             <Routes>
 
               {/*parent interface routing */}
-              <Route path='/dashboard' element={<ParentDash />}/>
+              <Route path='/dashboard' element={<Navigate to="/children" />}/>
               <Route path='/children' element={<ChildrenBase />}/>
               <Route path='/children/:slug' element={<Child />} />
               <Route path='/children/:slug/tutors' element={<TutorQuery />} />
@@ -53,6 +53,7 @@ function App() {
             </Routes>:
             <Routes>
               {/*tutor interface routing */}
+              <Route path='/dashboard' element={<Navigate to="/profile" />}/>
               <Route path='/profile' element={<Profile />} />
               <Route path='/subjectsandlevels' element={<SubjectsAndLevels />} />
               <Route path='/allocations' element={<AllocationAndRequests userId={id} />} />

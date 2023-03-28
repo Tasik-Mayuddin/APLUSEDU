@@ -36,7 +36,7 @@ const SideMenu = ({ nameHrefTupleList }) => {
             </div>
             <div className='topnav-right'>
                 <div className='link-wrap'>
-                    <Link to={'/login/'}><RiLogoutBoxRLine color={'white'} size={'20px'} /> Logout</Link>
+                    <a href={'/login/'}><RiLogoutBoxRLine color={'white'} size={'20px'} /> Logout</a>
                 </div>
             </div>
         </div>

@@ -1,0 +1,42 @@
+html {
+  height: 100%;
+}
+body {
+  
+  background-image: url('https://res.cloudinary.com/luxuryp/image/upload/w_1280,c_limit,f_auto,q_auto/QsyY8xeFE40L8167');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.overall-wrap {
+  width: 800px;
+  margin: auto;
+  margin-top: 30px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.952);
+  padding-bottom: 30px;
+}
+
+.form-div {
+    margin: auto;
+    max-width: 360px;
+  }
+
+.form-div h1 {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.img-responsive-wrap {
+  width: 720px;
+  margin: 50px auto;
+}
+
+.img-responsive {
+  width: 720px;
+  object-fit: cover;
+  height: 180px;
+}
+
+
+  
