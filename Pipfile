@@ -15,6 +15,7 @@ django-crispy-forms = "*"
 django-bootstrap4 = "*"
 crispy-bootstrap4 = "*"
 pillow = "*"
+mysqlclient = "*"
 
 [dev-packages]
 

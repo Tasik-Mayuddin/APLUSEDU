@@ -15,11 +15,13 @@ def welcome(request):
     if request.user.is_authenticated:
         token = Token.objects.get_or_create(user=request.user)
         print(token)
-        return HttpResponseRedirect('/dashboard')
-        # if request.user.account.user_role == 'Tutor':
-        #     return HttpResponseRedirect('/tutor_dashboard/')
-        # elif request.user.account.user_role == 'Parent':
-        #     return HttpResponseRedirect('/parent_dashboard/')
+        # return HttpResponseRedirect('/dashboard')
+        if request.user.account.user_role == 'Tutor':
+            print('why')
+            return HttpResponseRedirect('/profile')
+        elif request.user.account.user_role == 'Parent':
+            print('why')
+            return HttpResponseRedirect('/children')
     return HttpResponseRedirect('/login/')
 
 # # Url for React to obtain token

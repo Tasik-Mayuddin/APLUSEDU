@@ -25,8 +25,8 @@ const BigCalendar = ({ backgroundEvents, events, handleEventSelect, maxMin, hand
                 toolbar={false}
                 showAllEvents={false}
                 allDayAccessor={null}
-                min={new Date(2017, 10, 0, Number(maxMin.min.split(':')[0])-1, Number(maxMin.min.split(':')[1]), 0)}
-                max={new Date(2017, 10, 0, Number(maxMin.max.split(':')[0])+1, Number(maxMin.min.split(':')[1]), 0)} 
+                min={maxMin?new Date(2017, 10, 0, Number(maxMin.min.split(':')[0])-1, Number(maxMin.min.split(':')[1]), 0):new Date(2017, 10, 0, 9, 0, 0)}
+                max={maxMin?new Date(2017, 10, 0, Number(maxMin.max.split(':')[0])+1, Number(maxMin.max.split(':')[1]), 0):new Date(2017, 10, 0, 17, 0, 0)} 
                 timeslots={2}
                 step={30}
                 

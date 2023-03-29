@@ -1,148 +1,150 @@
 // GLOBAL CONST
 export const backendDir = 'http://127.0.0.1:8000'
 
-// FOR DEVELOPMENT
-const parentToken = "Token b1bdeda32b6c9514b2b81623fb5362a7aab22646"
-const tutorToken = "Token 2553ca17566263e55681ee82da318ee0eb71e51b"
-const tutorTokenJohn = "Token 06c0896f0f30736f21862c880722b2bbe52df02d"
-const currentToken = parentToken
-// function to fetch from API, GET
-export const fetchAPI = async (endpoint) => {
-    const res = await fetch(`${backendDir}/api/${endpoint}`, {
-        method: "GET",
-        headers: {
-            "Authorization": currentToken
-        }
-    })
-    const data = await res.json()
-    return(data)
-}
-
-// function to fetch from API, DEL
-export const fetchDeleteAPI = async (endpoint, toDel) => {
-  const res = await fetch(`${backendDir}/api/${endpoint}`, {
-      method: "DELETE",
-      headers: {
-          'Content-type': 'application/json',
-          "Authorization": currentToken
-      },
-      body: JSON.stringify(toDel)
-  })
-  const data = await res.json()
-  return(data)
-}
-
-// function to fetch API POST, posting toPost
-export const fetchPostAPI = async(endpoint, toPost) => {
-    console.log(JSON.stringify(toPost))
-    const res = await fetch(`${backendDir}/api/${endpoint}`, {
-        method:'POST',
-        headers: {
-          'Content-type': 'application/json',
-          "Authorization": currentToken
-        },
-        body: JSON.stringify(toPost)
-      })
-    const data = await res.json()
-    return data
-}
-
-
-// function to fetch API PUT, posting toPost
-export const fetchPutAPI = async(endpoint, toPost, file_transfer=false) => {
-    console.log(JSON.stringify(toPost))
-    const res = await fetch(`${backendDir}/api/${endpoint}`, {
-        method:'PUT',
-        headers: file_transfer?
-        {
-          "Authorization": currentToken
-        }:
-        {
-          'Content-type': 'application/json',
-          "Authorization": currentToken
-        },
-        body: file_transfer?toPost:JSON.stringify(toPost)
-      })
-    const data = await res.json()
-    return data
-}
-
-
-
-// // PRODUCTION TEST
-
+// // FOR DEVELOPMENT
+// const parentToken = "Token b1bdeda32b6c9514b2b81623fb5362a7aab22646"
+// const tutorToken = "Token 2553ca17566263e55681ee82da318ee0eb71e51b"
+// const tutorTokenJohn = "Token 06c0896f0f30736f21862c880722b2bbe52df02d"
+// const currentToken = parentToken
 // // function to fetch from API, GET
 // export const fetchAPI = async (endpoint) => {
+//     const res = await fetch(`${backendDir}/api/${endpoint}`, {
+//         method: "GET",
+//         headers: {
+//             "Authorization": currentToken
+//         }
+//     })
+//     const data = await res.json()
+//     return(data)
+// }
+
+// // function to fetch from API, DEL
+// export const fetchDeleteAPI = async (endpoint, toDel) => {
 //   const res = await fetch(`${backendDir}/api/${endpoint}`, {
-//       method: "GET",
+//       method: "DELETE",
+//       headers: {
+//           'Content-type': 'application/json',
+//           "Authorization": currentToken
+//       },
+//       body: JSON.stringify(toDel)
 //   })
 //   const data = await res.json()
 //   return(data)
 // }
 
-// // function to fetch from API, DEL
-// export const fetchDeleteAPI = async (endpoint, toDel) => {
-//   // Get the CSRF token from the cookie
-//   const csrftoken = getCookie('csrftoken');
-  
-//   // Send the DELETE request with the CSRF token in the headers
-//   const res = await fetch(`${backendDir}/api/${endpoint}`, {
-//     method: 'DELETE',
-//     headers: {
-//       'Content-type': 'application/json',
-//       'X-CSRFToken': csrftoken
-//     },
-//     body: JSON.stringify(toDel)
-//   });
-
-//   const data = await res.json();
-//   return data;
-// };
-
 // // function to fetch API POST, posting toPost
 // export const fetchPostAPI = async(endpoint, toPost) => {
-//   // Get the CSRF token from the cookie
-//   const csrftoken = getCookie('csrftoken');
-
-//   // Send the POST request with the CSRF token in the headers
-//   const res = await fetch(`${backendDir}/api/${endpoint}`, {
-//       method:'POST',
-//       headers: {
-//         'Content-type': 'application/json',
-//         'X-CSRFToken': csrftoken
-//       },
-//       body: JSON.stringify(toPost)
-//     });
-
-//   const data = await res.json();
-//   return data;
-// };
+//     console.log(JSON.stringify(toPost))
+//     const res = await fetch(`${backendDir}/api/${endpoint}`, {
+//         method:'POST',
+//         headers: {
+//           'Content-type': 'application/json',
+//           "Authorization": currentToken
+//         },
+//         body: JSON.stringify(toPost)
+//       })
+//     const data = await res.json()
+//     return data
+// }
 
 
 // // function to fetch API PUT, posting toPost
-// export const fetchPutAPI = async(endpoint, toPost) => {
-//   // Get the CSRF token from the cookie
-//   const csrftoken = getCookie('csrftoken');
+// export const fetchPutAPI = async(endpoint, toPost, file_transfer=false) => {
+//     console.log(JSON.stringify(toPost))
+//     const res = await fetch(`${backendDir}/api/${endpoint}`, {
+//         method:'PUT',
+//         headers: file_transfer?
+//         {
+//           "Authorization": currentToken
+//         }:
+//         {
+//           'Content-type': 'application/json',
+//           "Authorization": currentToken
+//         },
+//         body: file_transfer?toPost:JSON.stringify(toPost)
+//       })
+//     const data = await res.json()
+//     return data
+// }
 
-//   // Send the PUT request with the CSRF token in the headers
-//   const res = await fetch(`${backendDir}/api/${endpoint}`, {
-//       method:'PUT',
-//       headers: {
-//         'Content-type': 'application/json',
-//         'X-CSRFToken': csrftoken
-//       },
-//       body: JSON.stringify(toPost)
-//     });
 
-//   const data = await res.json();
-//   return data;
-// };
 
-// // Function to get the value of a cookie by name
-// export const getCookie = (name) => {
-//   const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
-//   return cookieValue ? cookieValue.pop() : '';
-// };
+// PRODUCTION TEST
+
+// function to fetch from API, GET
+export const fetchAPI = async (endpoint) => {
+  const res = await fetch(`${backendDir}/api/${endpoint}`, {
+      method: "GET",
+  })
+  const data = await res.json()
+  return(data)
+}
+
+// function to fetch from API, DEL
+export const fetchDeleteAPI = async (endpoint, toDel) => {
+  // Get the CSRF token from the cookie
+  const csrftoken = getCookie('csrftoken');
+  
+  // Send the DELETE request with the CSRF token in the headers
+  const res = await fetch(`${backendDir}/api/${endpoint}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-type': 'application/json',
+      'X-CSRFToken': csrftoken
+    },
+    body: JSON.stringify(toDel)
+  });
+
+  const data = await res.json();
+  return data;
+};
+
+// function to fetch API POST, posting toPost
+export const fetchPostAPI = async(endpoint, toPost) => {
+  // Get the CSRF token from the cookie
+  const csrftoken = getCookie('csrftoken');
+
+  // Send the POST request with the CSRF token in the headers
+  const res = await fetch(`${backendDir}/api/${endpoint}`, {
+      method:'POST',
+      headers: {
+        'Content-type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify(toPost)
+    });
+
+  const data = await res.json();
+  return data;
+};
+
+
+// function to fetch API PUT, posting toPost
+export const fetchPutAPI = async(endpoint, toPost, file_transfer=false) => {
+  // Get the CSRF token from the cookie
+  const csrftoken = getCookie('csrftoken');
+  console.log(JSON.stringify(toPost))
+  const res = await fetch(`${backendDir}/api/${endpoint}`, {
+      method:'PUT',
+      headers: file_transfer?
+      {
+        'X-CSRFToken': csrftoken
+      }:
+      {
+        'Content-type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: file_transfer?toPost:JSON.stringify(toPost)
+    })
+  const data = await res.json()
+  return data
+}
+
+// Function to get the value of a cookie by name
+export const getCookie = (name) => {
+  const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+  return cookieValue ? cookieValue.pop() : '';
+};
 
 
 

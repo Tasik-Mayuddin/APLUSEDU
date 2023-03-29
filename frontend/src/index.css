@@ -468,6 +468,15 @@ a {
   font-weight: normal;
 }
 
+
+
+.no-requests p {
+  font-weight: bold;
+  color: grey;
+  padding: 90px 10px 80px 30px;
+}
+
+
 .request-details {
   background-color: rgba(219, 219, 219, 0.199);
   padding: 10px 10px;
@@ -505,11 +514,18 @@ a {
   text-align: right;
 }
 
+.blank-space p {
+  font-weight: bold;
+  color: grey;
+  padding: 140px 20px;
+  margin: 0;
+}
+
 .event-details {
   background-color: rgba(255, 255, 255, 0.692);
   border-radius: 8px;
   height: 350px;
-  min-width: 360px;
+  width: 380px;
   padding-top: 0px;
 }
 
@@ -603,4 +619,14 @@ a {
   display: none;
   opacity: 0;
   cursor: pointer;
+}
+
+
+.icon-button {
+  border: 0px;
+  background-color: transparent;
+}
+
+.icon-button {
+  cursor: pointer
 }

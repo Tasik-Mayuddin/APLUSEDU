@@ -175,6 +175,14 @@ const AllocationAndRequests = ({ userId }) => {
         }
     }
 
+    const blankSpace = () => {
+        return(
+            <div className="blank-space">
+                <p>Click 'Add Availabilty' above to set your available time!</p>
+            </div>
+        )
+    }
+
     return (
         <>
             <div className="allocation-requests-header">
@@ -185,14 +193,13 @@ const AllocationAndRequests = ({ userId }) => {
             </div>
             <div className="tutor-availability-main">
 
-                <div className="tutor-availability-left">            
-                    {backgroundEvents.length&&
-                        <BigCalendar 
-                            backgroundEvents={backgroundEvents} 
-                            events={events} 
-                            handleEventSelect={handleEventSelect} 
-                            maxMin={maxMin} 
-                        />}
+                <div className="tutor-availability-left">    
+                    <BigCalendar 
+                        backgroundEvents={backgroundEvents} 
+                        events={events} 
+                        handleEventSelect={handleEventSelect} 
+                        maxMin={backgroundEvents.length?maxMin:undefined} 
+                    />
                 </div>
 
                 <div>
@@ -229,6 +236,11 @@ const AllocationAndRequests = ({ userId }) => {
                         </>
                         }
                         {showForm&&<AddOrEditDnT onSubmit={onSubmit} editFields={editFields} onCancel={()=>toggleView('details')} />}
+
+                        {/* blank space placeholder */}
+                        {(!showForm&&!showEventInfo)&&
+                            blankSpace()
+                        }
 
 
                         {/* On load default */}
