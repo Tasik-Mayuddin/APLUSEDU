@@ -18,6 +18,7 @@ pillow = "*"
 mysqlclient = "*"
 django-on-heroku = "*"
 daphne = "*"
+gunicorn = "*"
 
 [dev-packages]
 
