@@ -17,6 +17,7 @@ crispy-bootstrap4 = "*"
 pillow = "*"
 mysqlclient = "*"
 django-on-heroku = "*"
+daphne = "*"
 
 [dev-packages]
 
