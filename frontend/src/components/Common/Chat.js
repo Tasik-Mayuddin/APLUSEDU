@@ -30,7 +30,7 @@ class Chat extends React.Component {
                 chatId: callbackChatId
             })
 
-            WebSocketInstance.connect(`ws://127.0.0.1:8000/ws/chat/${callbackChatId}/`)
+            WebSocketInstance.connect(`wss://${window.location.host}/ws/chat/${callbackChatId}/`)
             
           }
         
