@@ -1,6 +1,6 @@
 // GLOBAL CONST
 // export const backendDir = 'http://127.0.0.1:8000'
-export const backendDir = 'https://aplusedu-django-deploy.herokuapp.com/'
+export const backendDir = 'https://aplusedu-django-deploy.herokuapp.com'
 
 // // FOR DEVELOPMENT
 // const parentToken = "Token b1bdeda32b6c9514b2b81623fb5362a7aab22646"
