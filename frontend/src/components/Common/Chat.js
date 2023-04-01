@@ -14,10 +14,7 @@ class Chat extends React.Component {
             messages: [],
             message: ''
         }
-        this.waitForSocketConnection(() => {
-          WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
-          WebSocketInstance.fetchMessages(this.props.currentUser);
-        });
+
     }
 
     componentDidMount() {
@@ -30,8 +27,11 @@ class Chat extends React.Component {
                 chatId: callbackChatId
             })
 
-            WebSocketInstance.connect(`ws://127.0.0.1:8000/ws/chat/${callbackChatId}/`)
-            
+            WebSocketInstance.connect(`ws://${window.location.host}/ws/chat/${callbackChatId}/`)
+            this.waitForSocketConnection(() => {
+                WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
+                WebSocketInstance.fetchMessages(this.props.currentUser);
+              });
           }
         
         getChats()
@@ -104,7 +104,7 @@ class Chat extends React.Component {
     }
 
     switchChat = (id) => {
-        WebSocketInstance.connect(`ws://127.0.0.1:8000/ws/chat/${id}/`);
+        WebSocketInstance.connect(`ws://${window.location.host}/ws/chat/${id}/`);
         this.waitForSocketConnection(() => {
             WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
             WebSocketInstance.fetchMessages(this.props.currentUser);
