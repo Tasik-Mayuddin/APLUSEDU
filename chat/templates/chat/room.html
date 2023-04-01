@@ -137,7 +137,7 @@
     var username = "{{ user.username }}";
 
     var chatSocket = new WebSocket(
-        'ws://' + window.location.host +
+        'wss://' + window.location.host +
         '/ws/chat/' + roomId + '/');
 
     chatSocket.onopen = function(e) {

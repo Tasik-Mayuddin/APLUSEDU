@@ -104,7 +104,7 @@ class Chat extends React.Component {
     }
 
     switchChat = (id) => {
-        WebSocketInstance.connect(`ws://127.0.0.1:8000/ws/chat/${id}/`);
+        WebSocketInstance.connect(`wss://${window.location.host}/ws/chat/${id}/`);
         this.waitForSocketConnection(() => {
             WebSocketInstance.addCallbacks(this.setMessages.bind(this), this.addMessage.bind(this))
             WebSocketInstance.fetchMessages(this.props.currentUser);
