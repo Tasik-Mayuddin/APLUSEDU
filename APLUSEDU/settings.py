@@ -167,6 +167,8 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+CSRF_TRUSTED_ORIGINS = ['https://aplusedu-django-deploy.herokuapp.com/']
+
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
 ]
