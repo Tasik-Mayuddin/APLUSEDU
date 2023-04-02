@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -106,7 +105,6 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-
 DATABASES = {
     'old': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -114,18 +112,14 @@ DATABASES = {
     },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'heroku_7824d9481854f66',
-        'USER': 'bbaf775507817d',
-        'PASSWORD': '5b48369d',
-        'HOST': 'us-cdbr-east-06.cleardb.net',
+        'NAME': 'cadxuyen77l6np8k',
+        'USER': 'rhzthe5rgsq8r1v8',
+        'PASSWORD': 'qto0ejc789813krv',
+        'HOST': 'w3epjhex7h2ccjxx.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         'PORT': '3306',
     },
 }
 
-if "DATABASE_URL" in os.environ:
-    # Configure Django for DATABASE_URL environment variable.
-    DATABASES["default"] = dj_database_url.config(
-        conn_max_age=600, ssl_require=False)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -209,3 +203,5 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 # Configure Django App for Heroku.
 import django_on_heroku
 django_on_heroku.settings(locals())
+
+del DATABASES['default']['OPTIONS']['sslmode'] 
