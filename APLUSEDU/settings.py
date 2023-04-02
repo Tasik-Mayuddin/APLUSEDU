@@ -112,10 +112,10 @@ DATABASES = {
     },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'heroku_7824d9481854f66',
-        'USER': 'bbaf775507817d',
-        'PASSWORD': '5b48369d',
-        'HOST': 'us-cdbr-east-06.cleardb.net',
+        'NAME': 'cadxuyen77l6np8k',
+        'USER': 'rhzthe5rgsq8r1v8',
+        'PASSWORD': 'qto0ejc789813krv',
+        'HOST': 'w3epjhex7h2ccjxx.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         'PORT': '3306',
     },
 }
