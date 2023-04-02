@@ -204,4 +204,3 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 import django_on_heroku
 django_on_heroku.settings(locals())
 
-del DATABASES['default']['OPTIONS']['sslmode'] 
