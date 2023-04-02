@@ -625,8 +625,60 @@ a {
 .icon-button {
   border: 0px;
   background-color: transparent;
+  cursor: pointer
 }
 
-.icon-button {
-  cursor: pointer
+.sidenav {
+  height: 100%; /* 100% Full-height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 10000; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #00013b; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #ffffff;
+  display: block;
+  transition: 0.3s;
+}
+.sidenav a:hover {
+  color: #00eeff;
+  background-color: white;
+}
+.sidenav a.current {
+  color: #ffffff;
+  background-color: rgb(0, 153, 255);
+}
+
+@media screen and (max-width: 1030px) {
+  .tutor-availability-main {
+    border-radius: 8px;
+    display: block;
+    min-width: 600px;
+    padding: 20px;
+  }
+  .container {
+    background-color: hsla(0,0%,100%,.753);
+    border-radius: 5px;
+    margin: 15px auto auto;
+    max-height: 1400px;
+    max-width: 1400px;
+    min-height: 720px;
+    padding: 30px;
+    position: relative;
+    text-align: center;
+  }
+  .tutor-availability-main .event-details, .tutor-availability-main .requestlist-main {
+    margin: 30px auto;
+  }
+  .tutor-availability-left {
+    width: 100%;
+  }
 }
