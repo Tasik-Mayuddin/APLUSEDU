@@ -112,7 +112,7 @@ DATABASES = {
     },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'aplusedu',
+        'NAME': 'heroku_7824d9481854f66',
         'USER': 'bbaf775507817d',
         'PASSWORD': '5b48369d',
         'HOST': 'us-cdbr-east-06.cleardb.net',
