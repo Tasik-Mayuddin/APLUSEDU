@@ -106,16 +106,16 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'old': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
-    'mysql': {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'aplusedu',
-        'USER': 'root',
-        'PASSWORD': 'bester123',
-        'HOST': '127.0.0.1',
+        'USER': 'bbaf775507817d',
+        'PASSWORD': '5b48369d',
+        'HOST': 'us-cdbr-east-06.cleardb.net',
         'PORT': '3306',
     },
 }
