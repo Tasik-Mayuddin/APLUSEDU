@@ -9,7 +9,8 @@ const SubjectsAndLevelsDetails = ({ subjectAndLevels, onDelete }) => {
         <button className='icon-button' onClick={()=>onDelete(subjectAndLevels.subject)}><RxCross1 size={'24px'} /></button>
       </div>
       <div>
-        <h3>Levels: {subjectAndLevels.levels.map(item=>item).join(', ')}</h3>
+        <h3>Levels taught: </h3>
+        <p>{subjectAndLevels.levels.map(item=>item).join(', ')}</p>
       </div>
     </div>
   )
