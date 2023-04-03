@@ -405,6 +405,10 @@ a {
   margin: 10px;
 }
 .subjlvl-details h3 {
+  font-weight: bold;
+  margin: 10px;
+}
+.subjlvl-details p {
   font-weight: normal;
   margin: 10px;
 }
