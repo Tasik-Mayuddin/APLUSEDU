@@ -288,6 +288,8 @@ a {
 .tutor-details-wrap {
   overflow-y: scroll;
   background-color: rgba(255, 255, 255, 0.514);
+  height: 567px;
+  max-height: 567px;
 }
 .tutor-details {
   background-color: rgba(255, 255, 255, 0.699);

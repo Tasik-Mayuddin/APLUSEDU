@@ -26,7 +26,8 @@ class WebSocketService {
         this.socketNewMessage(e.data);
       };
       this.socketRef.onerror = e => {
-        console.log(e.message);
+        console.log(e);
+        this.connect(path)
       };
       this.socketRef.onclose = () => {
         console.log("WebSocket closed let's reopen");
