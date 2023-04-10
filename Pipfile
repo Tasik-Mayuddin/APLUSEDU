@@ -19,6 +19,8 @@ mysqlclient = "*"
 django-on-heroku = "*"
 daphne = "*"
 gunicorn = "*"
+django-storages = "*"
+boto3 = "*"
 
 [dev-packages]
 
