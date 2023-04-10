@@ -26,11 +26,20 @@ from APLUSEDU.utils import clash_check, string_to_date
 @api_view(['GET'])
 def apiOverview(request):
     api_urls = {
-        'List': '/task-list/',
-        'Detail View': '/task-detail/<str:pk>/',
-        'Create': '/task-create/',
-        'Update': '/task-update/<str:pk>/',
-        'Delete': '/task-delete/<str:pk>/',
+        'children-list': '/children',
+        'child': '/children/<int:id>',
+        'student-allocations': '/children/<int:id>/allocations',
+        'tutors': '/tutors',
+        'tutor-availability': '/tutors/<int:id>/availability',
+        'tutor-availability-confirmed-slots': '/tutors/<int:id>/availability/confirmedslots',
+        'tutor-request': '/tutors/<int:id>/request',
+        'levels': '/levels',
+        'subjects': '/subjects',
+        'user-role': '/role',
+        'tutor-profile': '/tutor_profile',
+        'tutor-subjectsandlevels': '/tutor_subjectsandlevels',
+        'tutor-profile-picture': '/tutor_profile_picture',
+        'chats': '/chats'
     }
     return Response(api_urls)
 
