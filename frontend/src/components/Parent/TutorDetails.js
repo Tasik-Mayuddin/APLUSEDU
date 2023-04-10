@@ -7,7 +7,7 @@ const TutorDetails = ({ name, summary, experience, occupation, education, tutor_
     <div className="tutor-details">
       <div className="tutor-details-left">
         <h2>{name}</h2>
-        <img src={`${backendDir}${pictureUrl}`} alt="Avatar" class="avatar" />
+        <img src={`${pictureUrl}`} alt="Avatar" class="avatar" />
         {experience&&
         <ul>
           <li>{experience} years of tutoring</li>
