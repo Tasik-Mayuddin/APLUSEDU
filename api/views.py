@@ -83,28 +83,35 @@ def child(request, id):
         return Response('Child deleted')
 
 # List of allocations for each student
-@api_view(['GET'])
+@api_view(['GET', 'DELETE'])
 @login_required
 def studentAllocations(request, id):
     child = request.user.student_set.get(id=id) # Get instance of child
-    booked_slots = child.bookedslot_set.all()
-    serializer = BookedSlotSerializer(booked_slots, many=True)
+    if request.method == 'GET':
+        booked_slots = child.bookedslot_set.all()
+        serializer = BookedSlotSerializer(booked_slots, many=True)
 
-    res = serializer.data
-    # additional fields to serializer.data->res
-    for i, booked_slot in enumerate(booked_slots):
+        res = serializer.data
+        # additional fields to serializer.data->res
+        for i, booked_slot in enumerate(booked_slots):
 
-        tutor = booked_slot.day_and_time.tutor
-        day = booked_slot.day_and_time.day
-        subject = booked_slot.subject_and_level.subject.name
-        chat_id = ChatRoom.objects.get(tutor=tutor, parent=request.user).id
+            tutor = booked_slot.day_and_time.tutor
+            day = booked_slot.day_and_time.day
+            subject = booked_slot.subject_and_level.subject.name
+            chat_id = ChatRoom.objects.get(tutor=tutor, parent=request.user).id
+            bslot_id = booked_slot.id
 
-        res[i]['tutor'] = tutor.username
-        res[i]['subject'] = subject
-        res[i]['day'] = day
-        res[i]['chatId'] = chat_id
-        
-    return Response(res)
+            res[i]['tutor'] = tutor.username
+            res[i]['subject'] = subject
+            res[i]['day'] = day
+            res[i]['chatId'] = chat_id
+            res[i]['bSlotId'] = bslot_id
+            
+        return Response(res)
+    elif request.method == 'DELETE':
+        booked_slot_to_delete = child.bookedslot_set.get(id=request.data['bSlotId'])
+        booked_slot_to_delete.delete()
+        return Response('Allocation deleted')
 
 
 # Tutor query
