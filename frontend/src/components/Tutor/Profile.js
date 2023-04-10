@@ -53,7 +53,7 @@ const Profile = () => {
             <div>
                 <div className="profile-header">
                     <label htmlFor="file-input" className="image-input-label">
-                        {profile&&<div className="image-input-preview" style={{backgroundImage: `url(${backendDir}${profile.profile_pic_url})`}}></div>}
+                        {profile&&<div className="image-input-preview" style={{backgroundImage: `url(${profile.profile_pic_url})`}}></div>}
                     </label>
                     <input id="file-input" type="file" onChange={(e) => {
                         setPic(e.target.files[0])
