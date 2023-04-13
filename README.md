@@ -23,10 +23,29 @@ For example, Tutor John can teach maths for primary 1, primary 2, and primary 3,
 - Confirmed timeslots for the tutor
 ## Usage
 ### Tutors
-As a tutor, you can register on APlusEdu, create a profile, and set your subjects and levels taught. You can also set your availability for each subject you teach. Parents can then send you requests, and you can chat with them to discuss details like payment and zoom links. You can accept or decline a request based on your availability.
+As a tutor, you can register on APlusEdu, create a profile, and set your subjects and levels taught. You set your availability, then wait for parents to send you requests, and you can chat with them to discuss details like payment and zoom links. 
+
+![1](https://user-images.githubusercontent.com/88143539/231831702-02cfd67e-73ae-4f4a-97d5-46ae8a1bd221.png)
+
+![2](https://user-images.githubusercontent.com/88143539/231831725-8c3986a3-d058-49c8-a26e-f6a147e2cb32.png)
+
+![3](https://user-images.githubusercontent.com/88143539/231831744-407512e2-c44b-4da7-8cdd-b574be307ea2.png)
+
+![4](https://user-images.githubusercontent.com/88143539/231831759-c93c721b-f278-4375-86b9-9050ad86671f.png)
 
 ### Parents
-As a parent, you can register on APlusEdu, add your child's details (name, level, and subjects they need help with). For each child, you will be presented with a list of tutors based on the matching criteria of subject and level compatibility with tutors. You will also see the tutor's profile summary and basic details provided by the tutor. You can check the availability of a tutor (it shows the parent the availability set by the tutor earlier, along with already booked timeslots) and submit a request for a certain time based on the tutor's availability.
+As a parent, you can register on APlusEdu, add your child's d
+etails (name, level, and subjects they need help with). For each child, you will be presented with a list of tutors based on the matching criteria of subject and level compatibility with tutors. You will also see the tutor's profile summary and basic details provided by the tutor. You can check the availability of a tutor (it shows the parent the availability set by the tutor earlier, along with already booked timeslots) and submit a request for a certain time based on the tutor's availability.
+
+![5](https://user-images.githubusercontent.com/88143539/231831938-3110a7a2-6af1-4267-8adb-f2d2754be45a.png)
+
+![6](https://user-images.githubusercontent.com/88143539/231831963-0d54a6e8-5cca-408b-88ea-b64d54ae9c74.png)
+
+![7](https://user-images.githubusercontent.com/88143539/231831976-e6ef9d0e-836e-4154-8d63-ce2d23d1830b.png)
+
+![8](https://user-images.githubusercontent.com/88143539/231831994-cc8df3d5-ad47-470b-bde0-551547743652.png)
+
+![9](https://user-images.githubusercontent.com/88143539/231832001-9bb369d2-8496-402a-bbd7-b2dda7c78fa3.png)
 
 ## Technologies Used
 - Django
