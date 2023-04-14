@@ -22,6 +22,7 @@ const CheckboxMultiple = ({ label, name, list, setState, oriChecked, valueName }
   return (
     <>
         <label>{label}</label>
+        <div className="checkbox-multiple">
         {list.map((item, id) => (
                 <div key={item.id} className={'form-control-checkbox'}>
                   <label htmlFor={"id_"+name+"_"+id}>{item.name} 
@@ -29,6 +30,7 @@ const CheckboxMultiple = ({ label, name, list, setState, oriChecked, valueName }
                   </label>
                 </div>
             ))}
+        </div>
     </>
   )
 }
