@@ -24,6 +24,10 @@ const Child = () => {
 			const fetchChild = await fetchAPI(`children/${slug}`)
 			setChild(fetchChild)
 		}
+		const getAllocations = async () => {
+			const fetchAllocations = await fetchAPI(`children/${slug}/allocations`)
+			setAllocations(fetchAllocations)
+		}
 		
 		getChild()
 		getAllocations()
@@ -58,8 +62,13 @@ const Child = () => {
   return (
     <>
 		<div className='child-header'>
-			<h1>{child.name}</h1>
-			<ButtonSmall text={'Edit Child Details'} color={'blue'} onClick={()=>(setToggleEdit(true))}></ButtonSmall>
+			<div>
+				<h1>{child.name}</h1>
+				{child&&<p>Level: {child.level.name}</p>}
+			</div>
+			<div>
+				<ButtonSmall text={'Edit Child Details'} color={'blue'} onClick={()=>(setToggleEdit(true))}></ButtonSmall>
+			</div>
 		</div>
 		{toggleEdit&&<AddOrEditChild onSubmit={onSubmit} editName={child.name} editLevel={child.level} editSubjects={child.subjects} hideModal={()=>setToggleEdit(false)} />}
 		

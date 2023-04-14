@@ -4,6 +4,7 @@ import TimeInput from "../Inputs/TimeInput"
 import BigCalendar from "../Common/BigCalendar"
 import { getDateFromDayAndTime, formatTime } from "../../functions"
 import moment from 'moment'
+import ButtonSmall from "../Buttons/ButtonSmall"
 
 const TutorAvailability = ({ availability, child_id, subject, onRequest, currentTutorId, hideModal }) => {
     const [day, setFormDay] = useState('')
@@ -75,7 +76,7 @@ const TutorAvailability = ({ availability, child_id, subject, onRequest, current
             <div className="overlay" onClick={hideModal}></div>
             <div className="tutorpov-availability">
                 <div className="tutorpov-availability-left">
-                    <h1>{availability.username}</h1>
+                    <h2>{availability.username}'s availability</h2>
 
                         {/* get list of teacher's free time */}
                         {backgroundEvents.length&&<BigCalendar 
@@ -103,7 +104,7 @@ const TutorAvailability = ({ availability, child_id, subject, onRequest, current
                         <div className="form-control">
                             <TimeInput label={"End Time:"} name={"end_time"} onChange={(e)=>setEndTime(e.target.value)} defaultValue={end_time} />
                         </div>
-                        <input type='submit' value="Request" className="btn btn-block"/>
+                        <ButtonSmall type='submit' text="Request" color={'green'}/>
                     </form>
                 </div>
             </div>

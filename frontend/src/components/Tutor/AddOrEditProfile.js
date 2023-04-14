@@ -22,7 +22,7 @@ const AddOrEditProfile = ({ onSubmit, editProfile, hideModal }) => {
             <form className="add-edit-form" onSubmit={(e)=>onSubmit(e, {summary, initial_experience, education, occupation})}>
                 <div className="form-control">
                     <label>About me:</label>
-                    <input type="text" placeholder="Tell us about yourself" onChange={(e) => setSummary(e.target.value)} defaultValue={summary} />
+                    <textarea type="text" placeholder="Tell us about yourself" onChange={(e) => setSummary(e.target.value)} defaultValue={summary} />
                 </div>
                 <div className="form-control">
                     
