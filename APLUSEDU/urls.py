@@ -49,8 +49,8 @@ urlpatterns += [
 
 # Create the subject and level models upon server deployment
 def subjectsLevelsInit():
-    subject_choices = ['Mathematics', 'English', 'Science']
-    level_choices = ['Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6']
+    subject_choices = ['Mathematics', 'English', 'Science', 'History', 'Accounting']
+    level_choices = ['Primary 1', 'Primary 2', 'Primary 3', 'Primary 4', 'Primary 5', 'Primary 6', 'Secondary 1', 'Secondary 2', 'Secondary 3', 'Secondary 4', 'Secondary 5']
     for subject in subject_choices:
         for level in level_choices:
             subject, _ = Subject.objects.get_or_create(name=subject)
