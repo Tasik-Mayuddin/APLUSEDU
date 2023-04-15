@@ -106,6 +106,16 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+
+
+db_url = os.environ.get('JAWSDB_URL')
+db_url = db_url[8:]
+
+user_pass, host_port_db = db_url.split('@')
+user, password = user_pass.split(':')
+host, port_db = host_port_db.split(':')
+port, db = port_db.split('/')
+
 DATABASES = {
     'sqlite': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -113,11 +123,11 @@ DATABASES = {
     },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cadxuyen77l6np8k',
-        'USER': 'rhzthe5rgsq8r1v8',
-        'PASSWORD': 'qto0ejc789813krv',
-        'HOST': 'w3epjhex7h2ccjxx.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-        'PORT': '3306',
+        'NAME': db,
+        'USER': user,
+        'PASSWORD': password,
+        'HOST': host,
+        'PORT': port,
     },
 }
 

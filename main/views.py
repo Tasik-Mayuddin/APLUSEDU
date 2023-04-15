@@ -11,7 +11,7 @@ from rest_framework.authtoken.models import Token
 from asgiref.sync import sync_to_async
 
 # Create your views here.
-@sync_to_async
+
 def welcome(request):
     if request.user.is_authenticated:
         if request.user.account.user_role == 'Tutor':
