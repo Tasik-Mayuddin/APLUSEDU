@@ -25,27 +25,40 @@ For example, Tutor John can teach maths for primary 1, primary 2, and primary 3,
 ### Tutors
 As a tutor, you can register on APlusEdu, create a profile, and set your subjects and levels taught. You set your availability, then wait for parents to send you requests, and you can chat with them to discuss details like payment and zoom links. 
 
-![1](https://user-images.githubusercontent.com/88143539/231831702-02cfd67e-73ae-4f4a-97d5-46ae8a1bd221.png)
 
-![2](https://user-images.githubusercontent.com/88143539/231831725-8c3986a3-d058-49c8-a26e-f6a147e2cb32.png)
+![1](https://user-images.githubusercontent.com/88143539/232249160-eae1f3e4-b35b-471d-bc3d-465dd212f4db.png)
 
-![3](https://user-images.githubusercontent.com/88143539/231831744-407512e2-c44b-4da7-8cdd-b574be307ea2.png)
 
-![4](https://user-images.githubusercontent.com/88143539/231831759-c93c721b-f278-4375-86b9-9050ad86671f.png)
+![2](https://user-images.githubusercontent.com/88143539/232249165-aba1c1b6-5a7a-4bfa-83d8-ae910db2400c.png)
+
+
+![3](https://user-images.githubusercontent.com/88143539/232249167-9b7d5bd2-2e01-416b-a800-fbce295749aa.png)
+
+
+![4](https://user-images.githubusercontent.com/88143539/232249169-8442e80c-d583-4cc0-b421-a5b522e32ddc.png)
+
 
 ### Parents
 As a parent, you can register on APlusEdu, add your child's d
 etails (name, level, and subjects they need help with). For each child, you will be presented with a list of tutors based on the matching criteria of subject and level compatibility with tutors. You will also see the tutor's profile summary and basic details provided by the tutor. You can check the availability of a tutor (it shows the parent the availability set by the tutor earlier, along with already booked timeslots) and submit a request for a certain time based on the tutor's availability.
 
-![5](https://user-images.githubusercontent.com/88143539/231831938-3110a7a2-6af1-4267-8adb-f2d2754be45a.png)
+![5](https://user-images.githubusercontent.com/88143539/232249219-655997ab-ab50-469f-a91b-ac8f7d7a5b6a.png)
 
-![6](https://user-images.githubusercontent.com/88143539/231831963-0d54a6e8-5cca-408b-88ea-b64d54ae9c74.png)
 
-![7](https://user-images.githubusercontent.com/88143539/231831976-e6ef9d0e-836e-4154-8d63-ce2d23d1830b.png)
+![6](https://user-images.githubusercontent.com/88143539/232249223-6475f354-fd43-4a27-af95-10a81777fba8.png)
 
-![8](https://user-images.githubusercontent.com/88143539/231831994-cc8df3d5-ad47-470b-bde0-551547743652.png)
 
-![9](https://user-images.githubusercontent.com/88143539/231832001-9bb369d2-8496-402a-bbd7-b2dda7c78fa3.png)
+![7](https://user-images.githubusercontent.com/88143539/232249227-f84aa640-f3cc-4900-8080-52fe6be9b012.png)
+
+
+![8](https://user-images.githubusercontent.com/88143539/232249231-6befd0b3-fd3c-4204-9ba1-d95943c65430.png)
+
+
+![9](https://user-images.githubusercontent.com/88143539/232249232-e12d7ec5-eb34-4edc-9c50-7090a3ddf078.png)
+
+
+![10](https://user-images.githubusercontent.com/88143539/232249233-2f7054f9-76cf-4dfa-93dd-6e66cb57e7a8.png)
+
 
 ## Technologies Used
 - Django
