@@ -8,14 +8,12 @@ from .forms import AddSubjectForm, AddDayForm
 from collections import defaultdict
 from APLUSEDU.utils import clash_check
 from rest_framework.authtoken.models import Token
-
+from asgiref.sync import sync_to_async
 
 # Create your views here.
+@sync_to_async
 def welcome(request):
     if request.user.is_authenticated:
-        # token = Token.objects.get_or_create(user=request.user)
-        # print(token)
-        # return HttpResponseRedirect('/dashboard')
         if request.user.account.user_role == 'Tutor':
             return HttpResponseRedirect('/profile')
         elif request.user.account.user_role == 'Parent':
